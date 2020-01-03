@@ -131,3 +131,6 @@ dmypy.json
 # Smile CDR
 smilecdr/bin/
 *.gz
+
+# Kids First model
+kf-model-fhir/
