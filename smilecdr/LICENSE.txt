@@ -1,0 +1,6 @@
+- License - Smile CDR -
+
+This software is Copyright 2016 Simpatico Intelligent Systems Inc.
+
+This software is provided for trial use only and may not be used in a
+"production" context (i.e. used with real data for non-testing processing).

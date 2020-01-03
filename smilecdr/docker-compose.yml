@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  smilecdr:
+    container_name: smilecdr
+    build:
+      context: .
+    image: smilecdr_pg
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+      - "9100:9100"
+      - "8001:8001"
+      - "9200:9200"
+      - "9201:9201"
+    depends_on:
+      - postgresdb
+    volumes:
+      - smilecdr_log:/home/smile/smilecdr/log
+      - smilecdr_mq:/home/smile/smilecdr/activemq-data
+      - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
+    restart: unless-stopped
+  postgresdb:
+    container_name: postgres_cdr
+    build:
+      context: ./postgres
+    image: postgres_cdr
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_SUPER_USER_ID}
+      - POSTGRES_PASSWORD=${DB_SUPER_USER_PASSWORD}
+      - CDR_DB_NAME=${DB_CDR_NAME}
+      - CDR_USER=${DB_CDR_USERID}
+      - CDR_PASSWORD=${DB_CDR_PASSWORD}
+    volumes:
+      - smilecdr_db:/var/lib/postgresql/data
+    restart: unless-stopped
+volumes:
+  smilecdr_db:
+  smilecdr_mq:
+  smilecdr_log:
+  smilecdr_lucene:
