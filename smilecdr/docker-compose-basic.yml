@@ -1,3 +1,4 @@
+# Smile CDR stack that uses in-memory database
 version: "3.7"
 services:
   smilecdr:
