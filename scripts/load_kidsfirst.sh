@@ -15,9 +15,10 @@ set -eo pipefail
 REFRESH="$1"
 
 # Vars
+source smilecdr/.env
 BASE_URL=${SMILE_CDR_BASE_URL:-http://localhost:8000}
-SERVER_UNAME=${SMILE_CDR_USERNAME:-admin}
-SERVER_PW=${SMILE_CDR_PASSWORD:-password}
+SERVER_UNAME=${SMILE_CDR_USERNAME:-$DB_CDR_USERID}
+SERVER_PW=${SMILE_CDR_PASSWORD:-$DB_CDR_PASSWORD}
 GIT_REPO="kf-model-fhir"
 
 if [[ ! -d $GIT_REPO ]]; then
