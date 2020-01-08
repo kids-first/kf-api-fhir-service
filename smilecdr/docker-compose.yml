@@ -13,10 +13,10 @@ services:
     depends_on:
       - postgresdb
     volumes:
+      - ./classes/cdr-config-Master.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
       - smilecdr_log:/home/smile/smilecdr/log
       - smilecdr_mq:/home/smile/smilecdr/activemq-data
       - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
-      - ./classes/cdr-config-Master.properties:/root/test.properties
     restart: unless-stopped
   postgresdb:
     container_name: postgres_cdr
