@@ -2,9 +2,7 @@ version: "3.7"
 services:
   smilecdr:
     container_name: smilecdr
-    build:
-      context: .
-    image: smilecdr_pg
+    image: smilecdr
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -18,6 +16,7 @@ services:
       - smilecdr_log:/home/smile/smilecdr/log
       - smilecdr_mq:/home/smile/smilecdr/activemq-data
       - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
+      - ./classes/cdr-config-Master.properties:/root/test.properties
     restart: unless-stopped
   postgresdb:
     container_name: postgres_cdr

@@ -15,7 +15,7 @@ if [[ ! -f $DOCKER_IMAGE ]]; then
     echo "Aborting! Cannot find docker image $DOCKER_IMAGE"
 fi
 
-if docker images | grep -wq "smilecdr"
+if docker images | grep -w "smilecdr"
 then
     echo "Using docker image $DOCKER_IMAGE"
 else
@@ -29,7 +29,7 @@ docker-compose down
 if [[ ! -f '.env' ]]; then
     cp 'dev.env' '.env'
 fi
-docker-compose up -d
+docker-compose up -d --build
 
 echo "Waiting for smilecdr docker stack to finish deploying (may take a few minutes) ..."
 until docker-compose logs | grep -q "up and running"
