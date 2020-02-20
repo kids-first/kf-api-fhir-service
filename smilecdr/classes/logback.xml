@@ -1,0 +1,113 @@
+<!--
+Smile CDR uses the Logback framework for logging. For details on configuring this
+file, see:
+https://smilecdr.com/docs/getting_started/system_logging.html
+-->
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<!--
+	LOG: CONSOLE
+	We write INFO-level events to the console. This is not generally
+	visible during normal operation, unless the application is run using
+	"bin/smilecdr run".
+	-->
+	<appender name="STDOUT_SYNC" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n${log.stackfilter.pattern}</pattern>
+		</encoder>
+	</appender>
+	<appender name="STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+		<includeCallerData>false</includeCallerData>
+		<appender-ref ref="STDOUT_SYNC" />
+	</appender>
+
+	<!--
+	LOG: smile-startup.log
+	This file contains log entries written when the application is starting up
+	and shutting down. No other data is written to this file.
+	-->
+	<appender name="STARTUP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<file>${smile.basedir}/log/smile-startup.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${smile.basedir}/log/smile-startup.log.%i.gz</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>9</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>5MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n${log.stackfilter.pattern}</pattern>
+		</encoder>
+	</appender>
+
+	<!--
+	LOG: smile.log
+	We create a file called smile.log that will have (by default) all INFO level
+	messages. This file is written asynchronously using a blocking queue for better
+	performance.
+	-->
+	<appender name="RUNTIME_SYNC" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<file>${smile.basedir}/log/smile.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${smile.basedir}/log/smile.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n${log.stackfilter.pattern}</pattern>
+		</encoder>
+	</appender>
+	<appender name="RUNTIME" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<includeCallerData>false</includeCallerData>
+		<appender-ref ref="RUNTIME_SYNC" />
+	</appender>
+
+	<!--
+	LOG: smile-error.log
+	This file contains only errors generated during normal operation.
+	-->
+	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<file>${smile.basedir}/log/smile-error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${smile.basedir}/log/smile-error.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!--
+	The startup log only gets messages from ca.cdr.app.App, which
+	logs startup and shutdown events
+	-->
+	<logger name="ca.cdr.app.App" additivity="false">
+		<appender-ref ref="STARTUP"/>
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="RUNTIME" />
+		<appender-ref ref="ERROR" />
+	</logger>
+
+	<!--
+	Send all remaining logs to a few places
+	-->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="RUNTIME" />
+		<appender-ref ref="ERROR" />
+	</root>
+
+</configuration>
