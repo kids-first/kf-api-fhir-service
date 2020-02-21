@@ -1,20 +1,10 @@
 import argparse
 import os
 import json
-from pprint import pprint
 
-import requests
-from requests.auth import HTTPBasicAuth
-from dotenv import load_dotenv
+from utils import BASE_URL, send_request
 
-ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
-ENV_FILE = os.path.join(ROOT_DIR, 'smilecdr', '.env')
-load_dotenv(dotenv_path=ENV_FILE)
-
-BASE_URL = os.environ.get('FHIR_BASE_URL')
-ENDPOINT = os.path.join(os.environ.get('FHIR_BASE_URL'), 'user-management')
-ADMIN_USER = os.getenv('DB_CDR_USERID')
-ADMIN_PW = os.getenv('DB_CDR_PASSWORD')
+ENDPOINT = os.path.join(BASE_URL, 'user-management')
 
 
 def create_or_update(user_file, update=False):
@@ -26,9 +16,7 @@ def create_or_update(user_file, update=False):
         users = json.load(user_json)['users']
 
     method_name = 'put' if update else 'post'
-    auth = HTTPBasicAuth(ADMIN_USER, ADMIN_PW)
     for user in users:
-        request_method = getattr(requests, method_name)
         url = f'{ENDPOINT}/{user["nodeId"]}/{user["moduleId"]}'
 
         if method_name == 'put':
@@ -36,21 +24,10 @@ def create_or_update(user_file, update=False):
         else:
             user.pop('id', None)
 
-        print(f'{method_name.upper()} {url}')
-        response = request_method(url, auth=auth, json=user)
+        response = send_request(method_name, url, json=user)
 
-        try:
-            resp_content = response.json()
-        except json.decoder.JSONDecodeError:
-            resp_content = response.text
-
-        pprint(resp_content)
-
-        if response.status_code in [200, 201]:
-            print(f'✅ Request succeeded, status: {response.status_code}')
-            user['pid'] = resp_content.get('pid')
-        else:
-            print(f'❌ Request failed, status: {response.status_code}')
+        if response.status_code in {200, 201}:
+            user['pid'] = response.json()['pid']
 
     with open(user_file, 'w') as user_json:
         json.dump({'users': users}, user_json, **{'indent': 4})

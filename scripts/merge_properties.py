@@ -2,6 +2,8 @@ import argparse
 from pprint import pprint
 import os
 
+from utils import properties_to_dict, dict_to_properties
+
 
 def main(old, new):
     """
@@ -25,16 +27,10 @@ def main(old, new):
             # print(f'{f} must be a .properties file. Exiting!')
             exit(1)
         print(f)
-        with open(f) as prop_file:
-            contents[i] = {
-                'filepath': f,
-                'properties': {}
-            }
-            for line in prop_file.readlines():
-                line = line.strip()
-                if line and (not line.startswith('#')):
-                    k, v = line.split('=')
-                    contents[i]['properties'][k.strip()] = v.strip()
+        contents[i] = {
+            'filepath': f,
+            'properties': properties_to_dict(f)
+        }
     print()
 
     old_props = set(contents[0]['properties'].keys())
@@ -67,12 +63,7 @@ def main(old, new):
         '-updated.properties'
     )
     print(f'Writing merged properties file to: {out_file}')
-    prop_strings = [
-        f'{k}={v}'
-        for k, v in contents[1]['properties'].items()
-    ]
-    with open(out_file, 'w') as prop_file:
-        prop_file.write('\n'.join(prop_strings))
+    dict_to_properties(contents[1]['properties'], out_file)
 
 
 if __name__ == '__main__':
