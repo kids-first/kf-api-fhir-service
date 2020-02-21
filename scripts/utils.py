@@ -41,7 +41,9 @@ def send_request(method_name, url, **request_kwargs):
 
 def properties_to_dict(filepath):
     """
-    Convert java .properties file to a dict
+    Convert Java .properties file to a dict
+
+    Only include non-commented lines
     """
     out = {}
     with open(filepath) as prop_file:
@@ -55,7 +57,7 @@ def properties_to_dict(filepath):
 
 def dict_to_properties(data, filepath, delim='='):
     """
-    Convert a dict to a java .properties file
+    Convert a dict to a Java .properties file
     """
     prop_strings = [
         f'{k}={v}'

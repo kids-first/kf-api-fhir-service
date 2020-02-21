@@ -1,3 +1,7 @@
+"""
+User migration script to load users from one smilecdr deployment into another
+"""
+
 import argparse
 import os
 import json
@@ -10,6 +14,9 @@ ENDPOINT = os.path.join(BASE_URL, 'user-management')
 def create_or_update(user_file, update=False):
     """
     Create or update the smilecdr user payloads in the JSON file, `user_file`
+
+    If update=True, then replace current users using PUT. Otherwise create
+    new users using POST
     """
     print(f'Processing user file: {user_file} ...')
     with open(user_file, 'r') as user_json:

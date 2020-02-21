@@ -1,3 +1,10 @@
+"""
+Merge two smilecdr Java .properties files into 1.
+
+This is used when we upgrade to a new version of the server and need migrate
+our old server settings to the new server
+"""
+
 import argparse
 from pprint import pprint
 import os
@@ -5,7 +12,7 @@ import os
 from utils import properties_to_dict, dict_to_properties
 
 
-def main(old, new):
+def merge(old, new):
     """
     Merge two .properties files into 1
 
@@ -66,10 +73,10 @@ def main(old, new):
     dict_to_properties(contents[1]['properties'], out_file)
 
 
-if __name__ == '__main__':
+if __name__ == '__merge__':
     parser = argparse.ArgumentParser()
     parser.add_argument('old_file', help='Path to old properties file')
     parser.add_argument('new_file', help='Path to new properties file')
     args = parser.parse_args()
 
-    main(args.old_file, args.new_file)
+    merge(args.old_file, args.new_file)
