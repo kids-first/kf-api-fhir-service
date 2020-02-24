@@ -9,7 +9,8 @@ set -eo pipefail
 
 echo "✔ Begin deploying ..."
 
-DOCKER_IMAGE="smilecdr-2019.11.R01-docker.tar.gz"
+#DOCKER_IMAGE="smilecdr-2019.11.R01-docker.tar.gz"
+DOCKER_IMAGE="smilecdr-2020.02.R01-docker.tar.gz"
 
 if [[ ! -f $DOCKER_IMAGE ]]; then
     echo "Aborting! Cannot find docker image $DOCKER_IMAGE"

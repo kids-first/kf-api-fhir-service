@@ -85,3 +85,20 @@ the server.
 ```bash
 ./scripts/load_kidsfirst.sh --refresh
 ```
+### Server Settings
+
+Server settings are controlled by modifying the
+`smilecdr/classes/cdr-config-Master.properties`Java properties file and
+running the `scripts/load_settings.py` Python script.
+
+The property strings in the property file represent a hierarchical structure of
+config modules in the Smile CDR. Each module pertains to a logical set of
+functionality (e.g. persistence) in the server. Read more about the config modules
+[here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html)
+
+The Python script reads in the properties file, parses the properties
+into Smile CDR `module-config` JSON payloads, and sends them to the
+`/module-config` endpoint (part of the Admin JSON API) to update the settings
+on the server.
+
+Run `./scripts/load_settings.py -h` for more details.
