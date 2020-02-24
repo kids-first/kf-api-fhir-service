@@ -32,7 +32,7 @@ MODULE_IDS = {
 def load(properties_file, module_ids=None, restart_modules=False):
     """
     Update the smilecdr server settings with the settings in the
-    smilecdr Java .property file `properties_file`.
+    smilecdr Java .properties file `properties_file`.
 
     Only update module-configs whose ids are in `module-ids`
     Skip properties that start with any of the DEFAULT_SKIP_PREFIXES
