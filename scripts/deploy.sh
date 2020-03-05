@@ -11,15 +11,17 @@ echo "✔ Begin deploying ..."
 
 #DOCKER_IMAGE="smilecdr-2019.11.R01-docker.tar.gz"
 DOCKER_IMAGE="smilecdr-2020.02.R01-docker.tar.gz"
+DOCKER_IMAGE_TAG="smilecdr:2020.02.R01" 
 
-if [[ ! -f $DOCKER_IMAGE ]]; then
-    echo "Aborting! Cannot find docker image $DOCKER_IMAGE"
-fi
-
-if docker images | grep -w "smilecdr"
+if [ $(docker image ls $DOCKER_IMAGE_TAG | wc -l) -eq 2 ]
 then
     echo "Using docker image $DOCKER_IMAGE"
 else
+    if [[ ! -f $DOCKER_IMAGE ]]; then
+        echo "Aborting! Cannot find docker image $DOCKER_IMAGE"
+        exit 1
+    fi
+
     echo "Loading docker image from $DOCKER_IMAGE"
     docker image load --input=$DOCKER_IMAGE
 fi
