@@ -65,8 +65,8 @@ cd kf-api-fhir-service
 
 # Rename smilecdr/dev.env to smilecdr/.env so docker-compose
 # can pick up the environment variables at runtime
-cd smilecdr
-mv dev.env .env
+
+cp smilecdr/dev.env smilecdr/.env
 ```
 
 4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir)
