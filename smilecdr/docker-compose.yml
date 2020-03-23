@@ -15,6 +15,7 @@ services:
     volumes:
       - ./classes/cdr-config-Master.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
       - ./classes/logback.xml:/home/smile/smilecdr/classes/logback.xml
+      - ./bin/setenv:/home/smile/smilecdr/bin/setenv
       - smilecdr_log:/home/smile/smilecdr/log
       - smilecdr_mq:/home/smile/smilecdr/activemq-data
       - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
