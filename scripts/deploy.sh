@@ -11,7 +11,7 @@ echo "✔ Begin deploying ..."
 
 #DOCKER_IMAGE="smilecdr-2019.11.R01-docker.tar.gz"
 DOCKER_IMAGE="smilecdr-2020.02.R01-docker.tar.gz"
-DOCKER_IMAGE_TAG="smilecdr:2020.02.R01" 
+DOCKER_IMAGE_TAG="smilecdr:2020.02.R01"
 
 if [ $(docker image ls $DOCKER_IMAGE_TAG | wc -l) -eq 2 ]
 then
@@ -24,6 +24,7 @@ else
 
     echo "Loading docker image from $DOCKER_IMAGE"
     docker image load --input=$DOCKER_IMAGE
+    docker tag "smilecdr:latest" "$DOCKER_IMAGE_TAG"
 fi
 
 cd smilecdr
