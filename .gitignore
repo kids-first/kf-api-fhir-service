@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # Smile CDR
-smilecdr/bin/
 *.gz
 
 # Kids First model
