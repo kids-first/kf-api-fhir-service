@@ -2,14 +2,7 @@ version: "3.7"
 services:
   smilecdr:
     container_name: smilecdr
-    image: smilecdr
-    ports:
-      - "8000:8000"
-      - "9000:9000"
-      - "9100:9100"
-      - "8001:8001"
-      - "9200:9200"
-      - "9201:9201"
+    image: smilecdr:2020.02.R01
     depends_on:
       - postgresdb
     volumes:
@@ -36,6 +29,30 @@ services:
     volumes:
       - smilecdr_db:/var/lib/postgresql/data
     restart: unless-stopped
+  nginx:
+    depends_on:
+      - smilecdr
+    container_name: nginx
+    build:
+      context: ./nginx
+    expose:
+      - 80
+      - 443
+      - 8000
+      - 8001
+      - 9000
+      - 9100
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8000:8000"
+      - "8001:8001"
+      - "9000:9000"
+      - "9100:9100"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy.conf:/etc/nginx/proxy.conf
+      - ./nginx/ssl.conf:/etc/nginx/ssl.conf
 volumes:
   smilecdr_db:
   smilecdr_mq:
