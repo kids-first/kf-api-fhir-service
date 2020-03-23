@@ -1,0 +1,19 @@
+[ req ]
+distinguished_name  = req_distinguished_name
+x509_extensions     = root_ca
+
+[ req_distinguished_name ]
+countryName             = US
+countryName_min         = 2
+countryName_max         = 2
+stateOrProvinceName     = PA
+localityName            = Philadelphia
+0.organizationName      = CHOP
+organizationalUnitName  = D3b
+commonName              = localhost
+commonName_max          = 64
+emailAddress            = singhn4@email.chop.edu
+emailAddress_max        = 64
+
+[ root_ca ]
+basicConstraints            = critical, CA:true
