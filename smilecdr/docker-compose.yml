@@ -2,7 +2,7 @@ version: "3.7"
 services:
   smilecdr:
     container_name: smilecdr
-    image: smilecdr
+    image: kidsfirstdrc/smilecdr:2020.02.R01
     ports:
       - "8000:8000"
       - "9000:9000"
