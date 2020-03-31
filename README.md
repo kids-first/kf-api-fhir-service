@@ -4,9 +4,19 @@ FHIR Data Service for Kids First uses the [Smile CDR FHIR server](https://smilec
 
 ## Quickstart
 
-A Smile CDR (Clinical Data Repository) has been deployed in the Kids First AWS
-Dev environment at `http://10.10.1.191`. We will use the CDR
-for prototyping new data pipelines and FHIR applications for Kids First.
+Two Smile CDR (Clinical Data Repository) FHIR servers have been deployed in the
+Kids First AWS Dev environment:
+
+1. Server at `http://10.10.1.191` is loaded with Phenopackets on FHIR model
+
+    **NOTE:** This server has been loaded with 2 datasets and is currently used
+    for demo purposes. As such, all user permissions have been changed to
+    read-only
+
+2. Server at `http://10.10.1.141` is loaded with the Kids First FHIR model
+
+   We will use this for prototyping new data pipelines and FHIR applications
+   for Kids First.
 
 ### Setup Tunnel to Dev Env
 Create a tunnel to the dev environment so that you can access the Smile CDR
@@ -23,22 +33,22 @@ Smile CDR consists of several services and apps:
 ### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
 
 - The main endpoint developers will use to CRUD FHIR resources
-- http://10.10.1.191:8000
+- http://10.10.1.141:8000
 
 ### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
 
 - A web application used to CRUD FHIR resources for those who do not want to write code
-- http://10.10.1.191:8001
+- http://10.10.1.141:8001
 
 ### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
 
 - The administration endpoint used to change CDR configuration, user settings, etc.
-- http://10.10.1.191:9000
+- http://10.10.1.141:9000
 
 ### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
 
 - The administration dashboard which is essentially a frontend to the admin API
-- http://10.10.1.191:9100
+- http://10.10.1.141:9100
 
 ## Development
 
