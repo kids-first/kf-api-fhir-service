@@ -83,18 +83,28 @@ cp smilecdr/dev.env smilecdr/.env
    into server
 
 ```bash
+# Deploy server
 ./scripts/deploy.sh
+
+# Load model into server
+./scripts/load_kidsfirst.sh
 ```
 
 ### Reload Kids First FHIR Model
 Run the loader script to reload (DELETE and POST) the Kids First FHIR
-conformance resources. The `--refresh` flag will do a git pull from
-`kf-model-fhir` to get the latest resources before loading anything into
-the server.
+conformance resources.
+
+The conformance resources are sourced from the `kf-model-fhir` git repository.
+The default branch that is used for loading is `master`, but you can supply a
+different branch if you want.
+
+The `--refresh` flag will do a git fetch and hard reset on the branch to get
+the latest resources before loading anything into the server.
 
 ```bash
-./scripts/load_kidsfirst.sh --refresh
+./scripts/load_kidsfirst.sh some-other-branch --refresh
 ```
+
 ### Server Settings
 
 Server settings are controlled by modifying the
@@ -106,9 +116,9 @@ config modules in the Smile CDR. Each module pertains to a logical set of
 functionality (e.g. persistence) in the server. Read more about the config modules
 [here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html)
 
-The Python script reads in the properties file, parses the properties
-into Smile CDR `module-config` JSON payloads, and sends them to the
-`/module-config` endpoint (part of the Admin JSON API) to update the settings
-on the server.
+The `scripts/load_settings.py` Python script reads in the properties file,
+parses the properties into Smile CDR `module-config` JSON payloads, and sends
+them to the `/module-config` endpoint (part of the Admin JSON API) to update
+the settings on the server.
 
 Run `./scripts/load_settings.py -h` for more details.
