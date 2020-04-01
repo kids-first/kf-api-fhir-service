@@ -1,29 +1,29 @@
 #! /bin/bash
 
-# Usage ./scripts/deploy.sh [ --refresh ]
-
-# See scripts/load_kidsfirst.sh for environment variable and argument
-# descriptions
+# Usage ./scripts/deploy.sh [ /path/to/docker-img-tarball docker-img-tag ]
 
 set -eo pipefail
 
 echo "✔ Begin deploying ..."
 
-#DOCKER_IMAGE="smilecdr-2019.11.R01-docker.tar.gz"
-DOCKER_IMAGE="smilecdr-2020.02.R01-docker.tar.gz"
-DOCKER_IMAGE_TAG="smilecdr:2020.02.R01" 
+DOCKER_TARBALL=${1:-"smilecdr-2020.02.R01-docker.tar.gz"}
+DOCKER_REPO="kidsfirstdrc/smilecdr"
+DOCKER_IMAGE_TAG=${DOCKER_TARBALL#"smilecdr-"}
+DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG%"-docker.tar.gz"}
+DOCKER_IMAGE=${2:-"$DOCKER_REPO:$DOCKER_IMAGE_TAG"}
 
-if [ $(docker image ls $DOCKER_IMAGE_TAG | wc -l) -eq 2 ]
+if [ $(docker image ls $DOCKER_IMAGE | wc -l) -eq 2 ]
 then
     echo "Using docker image $DOCKER_IMAGE"
 else
-    if [[ ! -f $DOCKER_IMAGE ]]; then
-        echo "Aborting! Cannot find docker image $DOCKER_IMAGE"
+    if [[ ! -f $DOCKER_TARBALL ]]; then
+        echo "Aborting! Cannot find docker image tarball $DOCKER_TARBALL"
         exit 1
     fi
 
-    echo "Loading docker image from $DOCKER_IMAGE"
-    docker image load --input=$DOCKER_IMAGE
+    echo "Loading docker image from tarball: $DOCKER_TARBALL"
+    docker image load --input=$DOCKER_TARBALL
+    docker tag smilecdr:latest $DOCKER_IMAGE
 fi
 
 cd smilecdr
@@ -41,7 +41,4 @@ do
     sleep 2
 done
 
-cd ..
-echo "Loading Kids First FHIR model into server ..."
-./scripts/load_kidsfirst.sh "$@"
 echo "✅ Finished deploying!"
