@@ -6,7 +6,7 @@ set -eo pipefail
 
 echo "✔ Begin deploying ..."
 
-DOCKER_TARBALL=${1:-"smilecdr-2020.02.R01-docker.tar.gz"}
+DOCKER_TARBALL=${1:-"smilecdr-2020.05.PRE-14-docker.tar.gz"}
 DOCKER_REPO="kidsfirstdrc/smilecdr"
 DOCKER_IMAGE_TAG=${DOCKER_TARBALL#"smilecdr-"}
 DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG%"-docker.tar.gz"}
