@@ -27,12 +27,18 @@ $ ./dev-env-tunnel.sh dev
 ```
 Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel)
 
-### Endpoints
-Smile CDR consists of several services and apps:
+## Endpoints
+
+### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
+
+A data browser app intended to give users a quick overview of the data in the
+FHIR server along with the ability to filter FHIR resources and drill down to
+view specific resources.
+- http://10.10.1.141
 
 ### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
 
-- The main endpoint developers will use to CRUD FHIR resources
+- The main endpoint ingest developers will use to CRUD FHIR resources
 - http://10.10.1.141:8000
 
 ### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
@@ -42,7 +48,7 @@ Smile CDR consists of several services and apps:
 
 ### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
 
-- The administration endpoint used to change CDR configuration, user settings, etc.
+- The administration endpoint used to change server configuration, user settings, etc.
 - http://10.10.1.141:9000
 
 ### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)

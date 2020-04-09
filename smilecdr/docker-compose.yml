@@ -20,6 +20,7 @@ services:
       - smilecdr_mq:/home/smile/smilecdr/activemq-data
       - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
     restart: unless-stopped
+
   postgresdb:
     container_name: postgres_cdr
     build:
@@ -36,6 +37,14 @@ services:
     volumes:
       - smilecdr_db:/var/lib/postgresql/data
     restart: unless-stopped
+
+  dashboard:
+      depends_on:
+        - smilecdr
+      container_name: dashboard
+      image: kidsfirstdrc/kf-ui-fhir-data-dashboard:dev
+      ports:
+        - "3000:80"
 volumes:
   smilecdr_db:
   smilecdr_mq:
