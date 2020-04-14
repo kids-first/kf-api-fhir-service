@@ -2,9 +2,11 @@
 
 # Usage ./scripts/load_kidsfirst.sh [ my-git-branch --refresh ]
 
-# --refresh flag forces a git pull on the Kids First model before loading
+# --refresh flag forces a git fetch and hard reset on the Kids First model
+# before loading
 
 # -- Environment Variables --
+# Defaults to values in kf-api-fhir-service/.env
 # SMILE_CDR_BASE_URL - url of Smile CDR FHIR server
 # SMILE_CDR_USERNAME - username to authenticate with before loading resources into server
 # SMILE_CDR_PASSWORD - password to authenticate with before loading resources into server
