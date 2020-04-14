@@ -61,7 +61,7 @@ view specific resources.
 If you would like to experiment with a Smile CDR service stack locally then
 follow these instructions
 
-### Spin Up Docker Stack
+### Spin up the Docker Stack
 
 1. Clone this repository
 
@@ -70,23 +70,31 @@ git clone git@github.com:kids-first/kf-api-fhir-service.git
 cd kf-api-fhir-service
 ```
 
-2. Download the Smile CDR docker image - contact repository maintainer @ singhn4@email.chop.edu
+2. Get access to the Smile CDR image
 
-    **Do not distribute or commit this image as it is only for trial use**
+    - Create a [Docker Hub](https://hub.docker.com/) account if you don't have
+      one
+    - Ask singhn4@email.chop.edu for access to the image
+      (hosted in private Docker Hub repo)
+
+    **Do not distribute the Smile CDR image as it is only for trial use by the
+    internal team**
 
 3. Set environment variables
+
+**NOTE:** If using the `scripts/deploy.sh` script you can skip this step
 
 ```bash
 # Change values in smilecdr/dev.env appropriately
 
-# Rename smilecdr/dev.env to smilecdr/.env so docker-compose
-# can pick up the environment variables at runtime
+# Must rename smilecdr/dev.env to smilecdr/.env so docker-compose
+# can automatically pick up the default values for environment variables
+# at runtime
 
 cp smilecdr/dev.env smilecdr/.env
 ```
 
-4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir)
-   into server
+4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir) into server
 
 ```bash
 # Deploy server
@@ -94,6 +102,31 @@ cp smilecdr/dev.env smilecdr/.env
 
 # Load model into server
 ./scripts/load_kidsfirst.sh
+```
+
+You could also run the steps in `deploy.sh` manually. It does some setup and
+then runs `docker-compose up -d`.
+
+### Start/Stop Services
+
+```bash
+cd smilecdr
+
+# Stop all services
+docker compose stop
+
+# Start all services
+docker compose start
+```
+
+### View Service Logs
+
+Once the services are running you can view logs from all services:
+
+```bash
+cd smilecdr
+
+docker-compose logs -f
 ```
 
 ### Reload Kids First FHIR Model
