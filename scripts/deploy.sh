@@ -12,30 +12,45 @@ DOCKER_IMAGE_TAG=${DOCKER_TARBALL#"smilecdr-"}
 DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG%"-docker.tar.gz"}
 DOCKER_IMAGE=${2:-"$DOCKER_REPO:$DOCKER_IMAGE_TAG"}
 
-if [ $(docker image ls $DOCKER_IMAGE | wc -l) -eq 2 ]
+# Set env file
+if [[ ! -f 'smilecdr/.env' ]]; then
+    cp 'smilecdr/dev.env' 'smilecdr/.env'
+fi
+
+# Try using a local Smile CDR image if it exists
+if [ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" != "" ]
 then
     echo "Using docker image $DOCKER_IMAGE"
 else
-    if [[ ! -f $DOCKER_TARBALL ]]; then
-        echo "Aborting! Cannot find docker image tarball $DOCKER_TARBALL"
-        exit 1
-    fi
+    # Try pulling the image from Docker Hub if it exists
+    echo "Smile CDR docker image $DOCKER_IMAGE not found, try pulling from $DOCKER_REPO ..."
+    source smilecdr/.env
+    echo "Logging into Docker Hub ..."
+    echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+    docker pull $DOCKER_IMAGE
 
-    echo "Loading docker image from tarball: $DOCKER_TARBALL"
-    docker image load --input=$DOCKER_TARBALL
-    docker tag smilecdr:latest $DOCKER_IMAGE
+    # Try creating the image from a local tarball
+    if [[ -f $DOCKER_TARBALL ]]; then
+        echo "Loading docker image from tarball: $DOCKER_TARBALL"
+        docker image load --input=$DOCKER_TARBALL
+        docker tag smilecdr:latest $DOCKER_IMAGE
+    fi
+fi
+# Could not fetch or find image - fail
+if [ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]; then
+    echo "Aborting! Could not find or fetch the Smile CDR docker image."
+    exit 1
 fi
 
+# Destroy existing docker containers
 cd smilecdr
 docker-compose down
 
-if [[ ! -f '.env' ]]; then
-    cp 'dev.env' '.env'
-fi
+# Create and start all services (FHIR server, Postgres, Data Dashboard)
 docker-compose up -d --build
 
 echo "Waiting for smilecdr docker stack to finish deploying (may take a few minutes) ..."
-until docker-compose logs | grep -q "up and running"
+until docker-compose logs | grep "up and running"
 do
     echo "."
     sleep 2
