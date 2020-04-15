@@ -137,11 +137,14 @@ The conformance resources are sourced from the `kf-model-fhir` git repository.
 The default branch that is used for loading is `master`, but you can supply a
 different branch if you want.
 
-The `--refresh` flag will do a git fetch and hard reset on the branch to get
-the latest resources before loading anything into the server.
+This script will always do a `git pull` to update the branch before loading
+the resources. This might result in merge errors if you have made changes
+to the local branch which you will need to resolve (or do a complete wipe out
+`git reset --hard origin/<branch>`) 
+
 
 ```bash
-./scripts/load_kidsfirst.sh some-other-branch --refresh
+./scripts/load_kidsfirst.sh some-other-branch
 ```
 
 ### Server Settings
