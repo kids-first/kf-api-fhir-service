@@ -113,10 +113,10 @@ then runs `docker-compose up -d`.
 cd smilecdr
 
 # Stop all services
-docker compose stop
+docker-compose stop
 
 # Start all services
-docker compose start
+docker-compose start
 ```
 
 ### View Service Logs
