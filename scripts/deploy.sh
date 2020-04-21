@@ -7,6 +7,8 @@ set -eo pipefail
 echo "✔ Begin deploying ..."
 
 DOCKER_TARBALL=${1:-"smilecdr-2020.05.PRE-14-docker.tar.gz"}
+DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}
+DOCKER_HUB_PW=${DOCKER_HUB_PW}
 DOCKER_REPO="kidsfirstdrc/smilecdr"
 DOCKER_IMAGE_TAG=${DOCKER_TARBALL#"smilecdr-"}
 DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG%"-docker.tar.gz"}
@@ -24,7 +26,10 @@ then
 else
     # Try pulling the image from Docker Hub if it exists
     echo "Smile CDR docker image $DOCKER_IMAGE not found, try pulling from $DOCKER_REPO ..."
-    source smilecdr/.env
+    if [[ -z $DOCKER_HUB_USERNAME ]] || [[ -z $DOCKER_HUB_PW ]]
+    then
+        source smilecdr/.env
+    fi
     echo "Logging into Docker Hub ..."
     echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
     docker pull $DOCKER_IMAGE

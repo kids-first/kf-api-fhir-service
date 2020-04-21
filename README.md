@@ -59,7 +59,7 @@ view specific resources.
 ## Development
 
 If you would like to experiment with a Smile CDR service stack locally then
-follow these instructions
+please follow these instructions:
 
 ### Spin up the Docker Stack
 
@@ -80,19 +80,14 @@ cd kf-api-fhir-service
     **Do not distribute the Smile CDR image as it is only for trial use by the
     internal team**
 
-3. Set environment variables
+3. Set environment variables in a `smilecdr/.env` file (See `smilecdr/dev.env`
+   for example)
 
-**NOTE:** If using the `scripts/deploy.sh` script you can skip this step
+**Note:**
 
-```bash
-# Change values in smilecdr/dev.env appropriately
-
-# Must rename smilecdr/dev.env to smilecdr/.env so docker-compose
-# can automatically pick up the default values for environment variables
-# at runtime
-
-cp smilecdr/dev.env smilecdr/.env
-```
+The `deploy.sh` script requires Docker Hub credentials. First it will look for
+the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
+these are not set then it will try to source them from the `smilecdr/.env` file.
 
 4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir) into server
 
@@ -104,8 +99,8 @@ cp smilecdr/dev.env smilecdr/.env
 ./scripts/load_kidsfirst.sh
 ```
 
-You could also run the steps in `deploy.sh` manually. It does some setup and
-then runs `docker-compose up -d`.
+You could also run the steps in `deploy.sh` manually. It is just a convenience
+script which does some setup and then runs `docker-compose up -d`.
 
 ### Start/Stop Services
 
@@ -140,7 +135,7 @@ different branch if you want.
 This script will always do a `git pull` to update the branch before loading
 the resources. This might result in merge errors if you have made changes
 to the local branch which you will need to resolve (or do a complete wipe out
-`git reset --hard origin/<branch>`) 
+`git reset --hard origin/<branch>`)
 
 
 ```bash

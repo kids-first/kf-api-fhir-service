@@ -3,7 +3,7 @@
 # Usage ./scripts/load_kidsfirst.sh [ my-git-branch ]
 
 # -- Environment Variables --
-# Defaults to values in kf-api-fhir-service/.env
+# Defaults to values in kf-api-fhir-service/smilecdr/.env
 # SMILE_CDR_BASE_URL - url of Smile CDR FHIR server
 # SMILE_CDR_USERNAME - username to authenticate with before loading resources into server
 # SMILE_CDR_PASSWORD - password to authenticate with before loading resources into server
