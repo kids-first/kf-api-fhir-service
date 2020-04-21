@@ -59,9 +59,9 @@ view specific resources.
 ## Development
 
 If you would like to experiment with a Smile CDR service stack locally then
-follow these instructions
+please follow these instructions:
 
-### Spin Up Docker Stack
+### Spin up the Docker Stack
 
 1. Clone this repository
 
@@ -70,23 +70,26 @@ git clone git@github.com:kids-first/kf-api-fhir-service.git
 cd kf-api-fhir-service
 ```
 
-2. Download the Smile CDR docker image - contact repository maintainer @ singhn4@email.chop.edu
+2. Get access to the Smile CDR image
 
-    **Do not distribute or commit this image as it is only for trial use**
+    - Create a [Docker Hub](https://hub.docker.com/) account if you don't have
+      one
+    - Ask singhn4@email.chop.edu for access to the image
+      (hosted in private Docker Hub repo)
 
-3. Set environment variables
+    **Do not distribute the Smile CDR image as it is only for trial use by the
+    internal team**
 
-```bash
-# Change values in smilecdr/dev.env appropriately
+3. Set environment variables in a `smilecdr/.env` file (See `smilecdr/dev.env`
+   for example)
 
-# Rename smilecdr/dev.env to smilecdr/.env so docker-compose
-# can pick up the environment variables at runtime
+**Note:**
 
-cp smilecdr/dev.env smilecdr/.env
-```
+The `deploy.sh` script requires Docker Hub credentials. First it will look for
+the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
+these are not set then it will try to source them from the `smilecdr/.env` file.
 
-4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir)
-   into server
+4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir) into server
 
 ```bash
 # Deploy server
@@ -94,6 +97,31 @@ cp smilecdr/dev.env smilecdr/.env
 
 # Load model into server
 ./scripts/load_kidsfirst.sh
+```
+
+You could also run the steps in `deploy.sh` manually. It is just a convenience
+script which does some setup and then runs `docker-compose up -d`.
+
+### Start/Stop Services
+
+```bash
+cd smilecdr
+
+# Stop all services
+docker-compose stop
+
+# Start all services
+docker-compose start
+```
+
+### View Service Logs
+
+Once the services are running you can view logs from all services:
+
+```bash
+cd smilecdr
+
+docker-compose logs -f
 ```
 
 ### Reload Kids First FHIR Model
@@ -104,11 +132,14 @@ The conformance resources are sourced from the `kf-model-fhir` git repository.
 The default branch that is used for loading is `master`, but you can supply a
 different branch if you want.
 
-The `--refresh` flag will do a git fetch and hard reset on the branch to get
-the latest resources before loading anything into the server.
+This script will always do a `git pull` to update the branch before loading
+the resources. This might result in merge errors if you have made changes
+to the local branch which you will need to resolve (or do a complete wipe out
+`git reset --hard origin/<branch>`)
+
 
 ```bash
-./scripts/load_kidsfirst.sh some-other-branch --refresh
+./scripts/load_kidsfirst.sh some-other-branch
 ```
 
 ### Server Settings

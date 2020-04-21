@@ -1,10 +1,9 @@
 #! /bin/bash
 
-# Usage ./scripts/load_kidsfirst.sh [ my-git-branch --refresh ]
-
-# --refresh flag forces a git pull on the Kids First model before loading
+# Usage ./scripts/load_kidsfirst.sh [ my-git-branch ]
 
 # -- Environment Variables --
+# Defaults to values in kf-api-fhir-service/smilecdr/.env
 # SMILE_CDR_BASE_URL - url of Smile CDR FHIR server
 # SMILE_CDR_USERNAME - username to authenticate with before loading resources into server
 # SMILE_CDR_PASSWORD - password to authenticate with before loading resources into server
@@ -13,7 +12,6 @@ set -eo pipefail
 
 # Args
 GIT_REPO_BRANCH=${1:-master}
-REFRESH="$2"
 
 # Vars
 source smilecdr/.env
@@ -38,13 +36,7 @@ else
 fi
 
 git checkout "$GIT_REPO_BRANCH"
-
-# Refresh the Kids First FHIR model repo
-if [[ $REFRESH = '--refresh' ]]; then
-    echo "Refreshing $GIT_REPO:$GIT_REPO_BRANCH ..."
-    git fetch
-    git reset --hard origin/$GIT_REPO_BRANCH
-fi
+git pull
 
 # Publish model to server
 fhirmodel publish site_root/input/resources/terminology \
