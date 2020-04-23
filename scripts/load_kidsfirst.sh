@@ -3,7 +3,7 @@
 # Usage ./scripts/load_kidsfirst.sh [ my-git-branch ]
 
 # -- Environment Variables --
-# Defaults to values in kf-api-fhir-service/smilecdr/.env
+# Defaults to values in kf-api-fhir-service/.env
 # SMILE_CDR_BASE_URL - url of Smile CDR FHIR server
 # SMILE_CDR_USERNAME - username to authenticate with before loading resources into server
 # SMILE_CDR_PASSWORD - password to authenticate with before loading resources into server
@@ -14,7 +14,7 @@ set -eo pipefail
 GIT_REPO_BRANCH=${1:-master}
 
 # Vars
-source smilecdr/.env
+source .env
 BASE_URL=${SMILE_CDR_BASE_URL:-http://localhost:8000}
 SERVER_UNAME=${SMILE_CDR_USERNAME:-$DB_CDR_USERID}
 SERVER_PW=${SMILE_CDR_PASSWORD:-$DB_CDR_PASSWORD}
