@@ -80,14 +80,13 @@ cd kf-api-fhir-service
     **Do not distribute the Smile CDR image as it is only for trial use by the
     internal team**
 
-3. Set environment variables in a `smilecdr/.env` file (See `smilecdr/dev.env`
-   for example)
+3. Set environment variables in a `.env` file (See `dev.env` for example)
 
 **Note:**
 
 The `deploy.sh` script requires Docker Hub credentials. First it will look for
 the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
-these are not set then it will try to source them from the `smilecdr/.env` file.
+these are not set then it will try to source them from the `.env` file.
 
 4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir) into server
 
@@ -145,7 +144,7 @@ to the local branch which you will need to resolve (or do a complete wipe out
 ### Server Settings
 
 Server settings are controlled by modifying the
-`smilecdr/classes/cdr-config-Master.properties`Java properties file and
+`server/settings/master.properties`Java properties file and
 running the `scripts/load_settings.py` Python script.
 
 The property strings in the property file represent a hierarchical structure of
