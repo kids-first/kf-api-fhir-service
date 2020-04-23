@@ -15,8 +15,8 @@ DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG%"-docker.tar.gz"}
 DOCKER_IMAGE=${2:-"$DOCKER_REPO:$DOCKER_IMAGE_TAG"}
 
 # Set env file
-if [[ ! -f 'smilecdr/.env' ]]; then
-    cp 'smilecdr/dev.env' 'smilecdr/.env'
+if [[ ! -f '.env' ]]; then
+    cp 'dev.env' '.env'
 fi
 
 # Try using a local Smile CDR image if it exists
@@ -28,7 +28,7 @@ else
     echo "Smile CDR docker image $DOCKER_IMAGE not found, try pulling from $DOCKER_REPO ..."
     if [[ -z $DOCKER_HUB_USERNAME ]] || [[ -z $DOCKER_HUB_PW ]]
     then
-        source smilecdr/.env
+        source .env
     fi
     echo "Logging into Docker Hub ..."
     echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
@@ -48,7 +48,6 @@ if [ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]; then
 fi
 
 # Destroy existing docker containers
-cd smilecdr
 docker-compose down
 
 # Create and start all services (FHIR server, Postgres, Data Dashboard)
