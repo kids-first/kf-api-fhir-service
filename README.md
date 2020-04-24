@@ -153,9 +153,10 @@ config modules in the Smile CDR. Each module pertains to a logical set of
 functionality (e.g. persistence) in the server. Read more about the config modules
 [here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html)
 
-The `scripts/load_settings.py` Python script reads in the properties file,
-parses the properties into Smile CDR `module-config` JSON payloads, and sends
-them to the `/module-config` endpoint (part of the Admin JSON API) to update
-the settings on the server.
+**NOTE**
 
-Run `./scripts/load_settings.py -h` for more details.
+Any settings changed and saved via the Smile CDR Admin Dashboard or the
+Smile CDR Admin API will be discarded every time the server is re-deployed.
+This is because the source of truth for the settings is the properties file
+and NOT the database. However, this behavior can be changed with the
+[node.propertysource property](https://smilecdr.com/docs/installation/installing_smile_cdr.html#module-property-source).
