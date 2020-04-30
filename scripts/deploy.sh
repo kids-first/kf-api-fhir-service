@@ -51,6 +51,7 @@ fi
 docker-compose down
 
 # Create and start all services (FHIR server, Postgres, Data Dashboard)
+docker-compose pull --ignore-pull-failures
 docker-compose up -d --build
 
 echo "Waiting for smilecdr docker stack to finish deploying (may take a few minutes) ..."
