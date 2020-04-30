@@ -84,7 +84,7 @@ cd kf-api-fhir-service
 
 **Note:**
 
-The `deploy.sh` script requires Docker Hub credentials. First it will look for
+The `run_local_server.sh` script requires Docker Hub credentials. First it will look for
 the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
 these are not set then it will try to source them from the `.env` file.
 
@@ -92,13 +92,13 @@ these are not set then it will try to source them from the `.env` file.
 
 ```bash
 # Deploy server
-./scripts/deploy.sh
+./scripts/run_local_server.sh
 
 # Load model into server
 ./scripts/load_kidsfirst.sh
 ```
 
-You could also run the steps in `deploy.sh` manually. It is just a convenience
+You could also run the steps in `run_local_server.sh` manually. It is just a convenience
 script which does some setup and then runs `docker-compose up -d`.
 
 ### Start/Stop Services
