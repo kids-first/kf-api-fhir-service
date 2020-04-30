@@ -14,6 +14,9 @@ set -eo pipefail
 GIT_REPO_BRANCH=${1:-master}
 
 # Vars
+if [[ ! -f '.env' ]]; then
+    cp 'server/settings/dev.env' '.env'
+fi
 source .env
 BASE_URL=${SMILE_CDR_BASE_URL:-http://localhost:8000}
 SERVER_UNAME=${SMILE_CDR_USERNAME:-$DB_CDR_USERID}

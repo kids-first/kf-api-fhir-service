@@ -12,6 +12,8 @@ services:
       - "9201:9201"
     depends_on:
       - postgres_cdr
+    env_file:
+        - .env
     volumes:
       - ./server/settings/master.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
       - ./server/settings/logback.xml:/home/smile/smilecdr/classes/logback.xml

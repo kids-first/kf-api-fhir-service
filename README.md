@@ -143,14 +143,21 @@ to the local branch which you will need to resolve (or do a complete wipe out
 
 ### Server Settings
 
-Server settings are controlled by modifying the
-`server/settings/master.properties`Java properties file and
-running the `scripts/load_settings.py` Python script.
+**Properties File**
 
-The property strings in the property file represent a hierarchical structure of
+Server settings are controlled by modifying the
+`server/settings/master.properties` Java properties file.
+
+The property strings in the file represent a hierarchical structure of
 config modules in the Smile CDR. Each module pertains to a logical set of
 functionality (e.g. persistence) in the server. Read more about the config modules
 [here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html)
+
+**Environment Variable Substitution**
+
+Property values in the properties file may also be passed in from the
+environment using the [environment variable
+substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution). This is useful for passing in secrets like DB credentials.
 
 **NOTE**
 

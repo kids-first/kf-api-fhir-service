@@ -16,7 +16,7 @@ DOCKER_IMAGE=${2:-"$DOCKER_REPO:$DOCKER_IMAGE_TAG"}
 
 # Set env file
 if [[ ! -f '.env' ]]; then
-    cp 'dev.env' '.env'
+    cp 'server/settings/dev.env' '.env'
 fi
 
 # Try using a local Smile CDR image if it exists
@@ -51,6 +51,7 @@ fi
 docker-compose down
 
 # Create and start all services (FHIR server, Postgres, Data Dashboard)
+docker-compose pull --ignore-pull-failures
 docker-compose up -d --build
 
 echo "Waiting for smilecdr docker stack to finish deploying (may take a few minutes) ..."
