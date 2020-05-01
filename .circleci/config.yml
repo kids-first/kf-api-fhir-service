@@ -22,7 +22,7 @@ jobs:
 
           - run:
               name: Deploy server
-              command: ./scripts/deploy.sh
+              command: ./scripts/run_local_server.sh
           - run:
               name: Deploy model
               command: ./scripts/load_kidsfirst.sh

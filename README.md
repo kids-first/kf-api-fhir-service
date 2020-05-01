@@ -80,26 +80,25 @@ cd kf-api-fhir-service
     **Do not distribute the Smile CDR image as it is only for trial use by the
     internal team**
 
-3. Set environment variables in a `smilecdr/.env` file (See `smilecdr/dev.env`
-   for example)
+3. Set environment variables in a `.env` file (See `dev.env` for example)
 
 **Note:**
 
-The `deploy.sh` script requires Docker Hub credentials. First it will look for
+The `run_local_server.sh` script requires Docker Hub credentials. First it will look for
 the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
-these are not set then it will try to source them from the `smilecdr/.env` file.
+these are not set then it will try to source them from the `.env` file.
 
 4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir) into server
 
 ```bash
 # Deploy server
-./scripts/deploy.sh
+./scripts/run_local_server.sh
 
 # Load model into server
 ./scripts/load_kidsfirst.sh
 ```
 
-You could also run the steps in `deploy.sh` manually. It is just a convenience
+You could also run the steps in `run_local_server.sh` manually. It is just a convenience
 script which does some setup and then runs `docker-compose up -d`.
 
 ### Start/Stop Services
@@ -144,14 +143,21 @@ to the local branch which you will need to resolve (or do a complete wipe out
 
 ### Server Settings
 
-Server settings are controlled by modifying the
-`smilecdr/classes/cdr-config-Master.properties`Java properties file and
-running the `scripts/load_settings.py` Python script.
+**Properties File**
 
-The property strings in the property file represent a hierarchical structure of
+Server settings are controlled by modifying the
+`server/settings/master.properties` Java properties file.
+
+The property strings in the file represent a hierarchical structure of
 config modules in the Smile CDR. Each module pertains to a logical set of
 functionality (e.g. persistence) in the server. Read more about the config modules
 [here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html)
+
+**Environment Variable Substitution**
+
+Property values in the properties file may also be passed in from the
+environment using the [environment variable
+substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution). This is useful for passing in secrets like DB credentials.
 
 **NOTE**
 

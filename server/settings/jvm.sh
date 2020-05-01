@@ -15,7 +15,7 @@ if [ -z "$JVMARGS" ]; then
   # means 1024MB and is suitable for normal development server loads.
   # Production servers, servers with heavy loads, or servers that
   # process large amounts of data may need more.
-  JVMARGS="$JVMARGS -Xmx2048m"
+  JVMARGS="$JVMARGS $JVM_MAX_HEAP_SIZE"
 
   # If you are deploying to a cloud host, you might want to override the JVM
   # timezone to match the timezone where the system admins will be located (this

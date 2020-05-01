@@ -2,7 +2,7 @@ version: "3.7"
 services:
   smilecdr:
     container_name: smilecdr
-    image: kidsfirstdrc/smilecdr:2020.05.PRE-14
+    image: kf-api-fhir-service:latest
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -11,20 +11,22 @@ services:
       - "9200:9200"
       - "9201:9201"
     depends_on:
-      - postgresdb
+      - postgres_cdr
+    env_file:
+        - .env
     volumes:
-      - ./classes/cdr-config-Master.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
-      - ./classes/logback.xml:/home/smile/smilecdr/classes/logback.xml
-      - ./bin/setenv:/home/smile/smilecdr/bin/setenv
+      - ./server/settings/master.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      - ./server/settings/logback.xml:/home/smile/smilecdr/classes/logback.xml
+      - ./server/settings/jvm.sh:/home/smile/smilecdr/bin/setenv
       - smilecdr_log:/home/smile/smilecdr/log
       - smilecdr_mq:/home/smile/smilecdr/activemq-data
       - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
     restart: unless-stopped
 
-  postgresdb:
+  postgres_cdr:
     container_name: postgres_cdr
     build:
-      context: ./postgres
+      context: ./server/postgres
     image: postgres_cdr
     ports:
       - "5432:5432"
