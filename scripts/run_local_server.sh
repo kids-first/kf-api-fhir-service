@@ -6,8 +6,21 @@ set -eo pipefail
 
 echo "✔ Begin deploying ..."
 
-# Build service container
-source ./scripts/build.sh
+DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}
+DOCKER_HUB_PW=${DOCKER_HUB_PW}
+
+# Set env file
+if [[ ! -f '.env' ]]; then
+    cp 'server/settings/dev.env' '.env'
+fi
+
+# Login to Dockerhub to fetch private smilecdr image
+if [[ -z $DOCKER_HUB_USERNAME ]] || [[ -z $DOCKER_HUB_PW ]]
+then
+    source .env
+fi
+echo "Logging into Docker Hub ..."
+echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
 
 # Destroy existing docker containers
 docker-compose down
