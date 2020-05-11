@@ -2,7 +2,7 @@ version: "3.7"
 services:
   smilecdr:
     container_name: smilecdr
-    image: kf-api-fhir-service:latest
+    image: kidsfirstdrc/smilecdr:2020.05.PRE-14
     ports:
       - "8000:8000"
       - "9000:9000"
