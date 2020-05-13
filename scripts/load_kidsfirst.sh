@@ -32,6 +32,7 @@ if [[ ! -d $GIT_REPO ]]; then
     cd $GIT_REPO
     python3 -m venv venv
     source venv/bin/activate
+    pip install --upgrade pip
     pip install -e .
 else
     cd $GIT_REPO
