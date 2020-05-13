@@ -32,6 +32,7 @@ if [[ ! -d $GIT_REPO ]]; then
     cd $GIT_REPO
     python3 -m venv venv
     source venv/bin/activate
+    pip install --upgrade pip
     pip install -e .
 else
     cd $GIT_REPO
@@ -42,17 +43,17 @@ git checkout "$GIT_REPO_BRANCH"
 git pull
 
 # Publish model to server
-fhirmodel publish site_root/input/resources/terminology \
+fhirutil publish site_root/input/resources/terminology \
 --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
 
-fhirmodel publish site_root/input/resources/extensions \
+fhirutil publish site_root/input/resources/extensions \
 --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
 
-fhirmodel publish site_root/input/resources/profiles \
+fhirutil publish site_root/input/resources/profiles \
 --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
 
-fhirmodel publish site_root/input/resources/search \
+fhirutil publish site_root/input/resources/search \
 --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
 
-fhirmodel publish site_root/input/resources/examples \
+fhirutil publish site_root/input/resources/examples \
 --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
