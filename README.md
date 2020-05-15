@@ -80,7 +80,7 @@ cd kf-api-fhir-service
     **Do not distribute the Smile CDR image as it is only for trial use by the
     internal team**
 
-3. Set environment variables in a `.env` file (See `dev.env` for example)
+3. Set environment variables in a `.env` file (See `server/settings/dev.env` for example)
 
 **Note:**
 
@@ -156,8 +156,8 @@ functionality (e.g. persistence) in the server. Read more about the config modul
 **Environment Variable Substitution**
 
 Property values in the properties file may also be passed in from the
-environment using the [environment variable
-substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution). This is useful for passing in secrets like DB credentials.
+environment using the [environment variable substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution).
+This is useful for passing in secrets like DB credentials.
 
 **NOTE**
 
