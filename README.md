@@ -19,13 +19,18 @@ Kids First AWS Dev environment:
    for Kids First.
 
 ### Setup Tunnel to Dev Env
-Create a tunnel to the dev environment so that you can access the Smile CDR
-endpoints:
 
-```shell
-$ ./dev-env-tunnel.sh dev
-```
-Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel)
+1. Install the Python [sshuttle](https://pypi.org/project/sshuttle/) tool for
+DNS tunneling.
+
+2. Create a tunnel to the dev environment so that you can
+access the Smile CDR endpoints:
+
+    Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
+
+    ```bash
+    $ ./dev-env-tunnel.sh dev
+    ```
 
 ## Endpoints
 
@@ -66,8 +71,8 @@ please follow these instructions:
 1. Clone this repository
 
 ```bash
-git clone git@github.com:kids-first/kf-api-fhir-service.git
-cd kf-api-fhir-service
+$ git clone git@github.com:kids-first/kf-api-fhir-service.git
+$ cd kf-api-fhir-service
 ```
 
 2. Get access to the Smile CDR image
@@ -92,10 +97,10 @@ these are not set then it will try to source them from the `.env` file.
 
 ```bash
 # Deploy server
-./scripts/run_local_server.sh
+$ ./scripts/run_local_server.sh
 
 # Load model into server
-./scripts/load_kidsfirst.sh
+$ ./scripts/load_kidsfirst.sh
 ```
 
 You could also run the steps in `run_local_server.sh` manually. It is just a convenience
@@ -104,13 +109,11 @@ script which does some setup and then runs `docker-compose up -d`.
 ### Start/Stop Services
 
 ```bash
-cd smilecdr
-
 # Stop all services
-docker-compose stop
+$ docker-compose stop
 
 # Start all services
-docker-compose start
+$ docker-compose start
 ```
 
 ### View Service Logs
@@ -118,9 +121,7 @@ docker-compose start
 Once the services are running you can view logs from all services:
 
 ```bash
-cd smilecdr
-
-docker-compose logs -f
+$ docker-compose logs -f
 ```
 
 ### Reload Kids First FHIR Model
@@ -138,7 +139,7 @@ to the local branch which you will need to resolve (or do a complete wipe out
 
 
 ```bash
-./scripts/load_kidsfirst.sh some-other-branch
+$ ./scripts/load_kidsfirst.sh some-other-branch
 ```
 
 ### Server Settings
