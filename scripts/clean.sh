@@ -7,5 +7,4 @@
 
 set -eo pipefail
 
-cd smilecdr
 docker-compose down -v --rmi all

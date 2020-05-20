@@ -29,7 +29,8 @@ docker-compose down
 docker-compose pull --ignore-pull-failures
 docker-compose up -d --build
 
-echo "Waiting for smilecdr docker stack to finish deploying (may take a few minutes) ..."
+echo "Waiting for smilecdr docker stack to finish deploying (may take up to 10 minutes) ..."
+echo "To view detailed logs run: docker-compose logs -f"
 until docker-compose logs | grep "up and running"
 do
     echo "."
