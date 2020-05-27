@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Update the Smile CDR image on AWS ECR and Dockerhub (Optional)
+# Update the base Smile CDR image on AWS ECR and Dockerhub (Optional)
 # Used when we receive new releases
 
 # ------------ Environment Variables ------------
@@ -39,7 +39,6 @@ docker image load --input="$DOCKER_TARBALL_PATH"
 docker tag smilecdr:latest $DOCKER_IMAGE
 
 # Push image to ECR
-echo "Pushing $DOCKER_IMAGE ..."
 if [[ -n $AWS_PROFILE_NAME ]];
 then
     # Use profile if supplied
@@ -47,17 +46,21 @@ then
 else
     passwd=$(aws ecr get-login --region us-east-1 | awk '{ print $6 }')
 fi
+echo "Pushing $DOCKER_IMAGE ..."
 docker login -u AWS -p $passwd "$DOCKER_REPO"
 docker push "$DOCKER_IMAGE"
 
-# Push image to Dockerhub - if secrets are set in environment
+# Push images to Dockerhub - if secrets are set in environment
 if [[ -n $DOCKER_HUB_USERNAME ]] && [[ -n $DOCKER_HUB_PW ]];
 then
+    echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+
     DOCKER_REPO="kidsfirstdrc/smilecdr"
     DOCKER_IMAGE="$DOCKER_REPO:$DOCKER_IMAGE_TAG"
+
     echo "Pushing $DOCKER_IMAGE ..."
-    echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+    docker tag smilecdr:latest $DOCKER_IMAGE
     docker push "$DOCKER_IMAGE"
 fi
 
-echo "✅ Finished updating Smile CDR image!"
+echo "✅ Finished updating Smile CDR images!"
