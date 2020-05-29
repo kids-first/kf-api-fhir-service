@@ -13,9 +13,9 @@ ecs_service_type_1_standard {
     external_config_repo       = "false"
     dependencies               = "postgres_rds"
     deploy_scripts_version     = "master"
-    vcpu_container             = "4096"
-    memory_container           = "16384"
+    vcpu_container             = "2048"
+    memory_container           = "4096"
     vcpu_task                  = "2048"
-    memory_task                = "16384"
+    memory_task                = "4096"
     additional_container_ports = "9000,9100"
 }
