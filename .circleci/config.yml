@@ -23,9 +23,12 @@ jobs:
           - run:
               name: Deploy server
               command: ./scripts/run_local_server.sh
-          - run:
-              name: Deploy model
-              command: ./scripts/load_kidsfirst.sh
+
+          # TODO - This will fail until we solve the ValueSet pre-expansion
+          # issue https://github.com/kids-first/kf-api-fhir-service/issues/74
+          # - run:
+          #     name: Deploy model
+          #     command: ./scripts/load_kidsfirst.sh
 
           - run:
               name: Test deploy
