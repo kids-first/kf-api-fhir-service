@@ -1,0 +1,59 @@
+# This workflow will load Python, run a script to generate assets, and then
+# bundle a github release
+
+name: Release generator
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  create_release:
+    if: github.base_ref == 'master' && github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Create tag from title and run asset script
+        id: find_tag_and_prepare_assets
+        run: |
+          TAG=$(echo ${{ github.event.pull_request.title }} | sed -E "s/^.*Release (.+\..+\..+)$/\1/g")
+          echo "::set-output name=tag::$TAG"
+          
+          SCRIPT=.github/prepare_assets.sh
+          if [ -f $SCRIPT ]; then 
+            chmod u+x $SCRIPT
+            $SCRIPT $TAG
+          fi
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.find_tag_and_prepare_assets.outputs.tag }}
+          release_name: ${{ github.event.pull_request.title }}
+          body: ${{ github.event.pull_request.body }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Assets
+        run: |
+          upload_url=${{ steps.create_release.outputs.upload_url }}
+          if [ -f .github/release_assets.txt ]; then
+            while IFS="" read -r FILE || [ -n "$FILE" ]
+            do
+              curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Content-Type: $(file -b --mime-type $FILE)" \
+                --data-binary "@$FILE" \
+                "${upload_url%\{*}?name=$(basename $FILE)"
+            done < .github/release_assets.txt
+          fi
