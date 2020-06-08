@@ -19,8 +19,8 @@ if [[ ! -f '.env' ]]; then
 fi
 source .env
 BASE_URL=${SMILE_CDR_BASE_URL:-http://localhost:8000}
-SERVER_UNAME=${SMILE_CDR_USERNAME:-$DB_CDR_USERID}
-SERVER_PW=${SMILE_CDR_PASSWORD:-$DB_CDR_PASSWORD}
+SERVER_UNAME=${SMILE_CDR_USERNAME:-$DB_USERNAME}
+SERVER_PW=${SMILE_CDR_PASSWORD:-$DB_PASSWORD}
 GIT_REPO="kf-model-fhir"
 
 echo "Loading Kids First model $GIT_REPO:$GIT_REPO_BRANCH into server ..."

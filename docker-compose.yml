@@ -33,9 +33,9 @@ services:
     environment:
       - POSTGRES_USER=${DB_SUPER_USER_ID}
       - POSTGRES_PASSWORD=${DB_SUPER_USER_PASSWORD}
-      - CDR_DB_NAME=${DB_CDR_NAME}
-      - CDR_USER=${DB_CDR_USERID}
-      - CDR_PASSWORD=${DB_CDR_PASSWORD}
+      - CDR_DB_NAME=${DB_NAME}
+      - CDR_USER=${DB_USERNAME}
+      - CDR_PASSWORD=${DB_PASSWORD}
     volumes:
       - smilecdr_db:/var/lib/postgresql/data
     restart: unless-stopped
