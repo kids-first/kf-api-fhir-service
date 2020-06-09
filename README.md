@@ -1,11 +1,63 @@
-# 🔥 FHIR Data Service for Kids First
+<p align="center">
+  <img src="docs/images/logo.svg" alt="Kids First FHIR Service" width="660px">
+</p>
+<p align="center">
+  <a href="https://github.com/kids-first/kf-api-fhir-service/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kids-first/kf-api-fhir-service.svg?style=for-the-badge"></a>
+  <a href="https://circleci.com/gh/kids-first/kf-api-fhir-service"><img src="https://img.shields.io/circleci/project/github/kids-first/kf-api-fhir-service.svg?style=for-the-badge"></a>
+</p>
 
-FHIR Data Service for Kids First uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
+# 🔥 Kids First FHIR Service
+
+FHIR data service for Kids First uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
 
 ## Quickstart
 
-Two Smile CDR (Clinical Data Repository) FHIR servers have been deployed in the
-Kids First AWS Dev environment:
+Kids First FHIR services have been deployed into the three standard environments
+within the Kids First AWS account: Dev, QA, Prd.
+
+The FHIR endpoints for these are:
+
+### Production
+https://kf-api-fhir-service.kidsfirstdrc.org
+
+### QA
+https://kf-api-fhir-service-qa.kidsfirstdrc.org
+
+### Dev
+https://kf-api-fhir-service-dev.kidsfirstdrc.org
+
+### Access
+In order to interact with one of these servers, you will need to gain access to
+the environment the server runs in and have a user account on the server
+with the appropriate authorization.
+
+1. Tunnel through bastion hosts to access environments
+
+- Use Dev bastion host for access to Dev/QA environments
+- Use Prd bastion host for access to Prd environment
+
+2. Contact Natasha Singh (singhn4@email.chop.edu) to get a user account
+
+### Setup Tunnel
+
+1. Install the Python [sshuttle](https://pypi.org/project/sshuttle/) tool for
+DNS tunneling.
+
+2. Create a tunnel to the appropriate environment:
+
+    Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
+
+    ```bash
+    $ ./dev-env-tunnel.sh dev
+    ```
+
+## Demo FHIR Servers
+
+Before moving to the standard service deployment architecture, two demo servers
+were deployed into the Dev environment.
+
+These will remain up until we fully transition to using the services in the
+Dev, QA, and Prd environments.
 
 1. Server at `http://10.10.1.191` is loaded with Phenopackets on FHIR model
 
@@ -18,45 +70,31 @@ Kids First AWS Dev environment:
    We will use this for prototyping new data pipelines and FHIR applications
    for Kids First.
 
-### Setup Tunnel to Dev Env
+### Endpoints
 
-1. Install the Python [sshuttle](https://pypi.org/project/sshuttle/) tool for
-DNS tunneling.
-
-2. Create a tunnel to the dev environment so that you can
-access the Smile CDR endpoints:
-
-    Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
-
-    ```bash
-    $ ./dev-env-tunnel.sh dev
-    ```
-
-## Endpoints
-
-### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
+#### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
 
 A data browser app intended to give users a quick overview of the data in the
 FHIR server along with the ability to filter FHIR resources and drill down to
 view specific resources.
 - http://10.10.1.141
 
-### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
+#### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
 
 - The main endpoint ingest developers will use to CRUD FHIR resources
 - http://10.10.1.141:8000
 
-### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+#### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
 
 - A web application used to CRUD FHIR resources for those who do not want to write code
 - http://10.10.1.141:8001
 
-### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+#### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
 
 - The administration endpoint used to change server configuration, user settings, etc.
 - http://10.10.1.141:9000
 
-### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
+#### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
 
 - The administration dashboard which is essentially a frontend to the admin API
 - http://10.10.1.141:9100
@@ -93,7 +131,7 @@ The `run_local_server.sh` script requires Docker Hub credentials. First it will 
 the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
 these are not set then it will try to source them from the `.env` file.
 
-4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-model-fhir) into server
+4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-api-fhir-service) into server
 
 ```bash
 # Deploy server
@@ -128,7 +166,7 @@ $ docker-compose logs -f
 Run the loader script to reload (DELETE and POST) the Kids First FHIR
 conformance resources.
 
-The conformance resources are sourced from the `kf-model-fhir` git repository.
+The conformance resources are sourced from the `kf-api-fhir-service` git repository.
 The default branch that is used for loading is `master`, but you can supply a
 different branch if you want.
 
