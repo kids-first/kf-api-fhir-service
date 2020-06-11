@@ -25,22 +25,19 @@ GIT_REPO="kf-model-fhir"
 
 echo "Loading Kids First model $GIT_REPO:$GIT_REPO_BRANCH into server ..."
 
-if [[ ! -d $GIT_REPO ]]; then
-    # Git clone kf-model-fhir
-    git clone git@github.com:kids-first/kf-model-fhir.git
-    # Setup venv
-    cd $GIT_REPO
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install --upgrade pip
-    pip install -e .
-else
-    cd $GIT_REPO
-    source venv/bin/activate
-fi
-
+# Git clone kf-model-fhir
+rm -rf "$GIT_REPO"
+git clone git@github.com:kids-first/kf-model-fhir.git
+cd $GIT_REPO
 git checkout "$GIT_REPO_BRANCH"
-git pull
+
+# Setup venv
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install .
+source venv/bin/activate
 
 # Publish model to server
 fhirutil publish site_root/input/resources/terminology \
@@ -55,5 +52,5 @@ fhirutil publish site_root/input/resources/profiles \
 fhirutil publish site_root/input/resources/search \
 --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
 
-fhirutil publish site_root/input/resources/examples \
---base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
+# fhirutil publish site_root/input/resources/examples \
+# --base_url="$BASE_URL" --username="$SERVER_UNAME" --password="$SERVER_PW"
