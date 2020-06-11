@@ -73,7 +73,7 @@ def merge(old, new):
     dict_to_properties(contents[1]['properties'], out_file)
 
 
-if __name__ == '__merge__':
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('old_file', help='Path to old properties file')
     parser.add_argument('new_file', help='Path to new properties file')

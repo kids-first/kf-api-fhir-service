@@ -50,7 +50,7 @@ def properties_to_dict(filepath):
         for line in prop_file.readlines():
             line = line.strip()
             if line and (not line.startswith('#')):
-                k, v = line.split('=')
+                k, v = line.split('=', 1)
                 out[k.strip()] = v.strip()
     return out
 
