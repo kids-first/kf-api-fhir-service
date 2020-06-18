@@ -11,7 +11,7 @@ ecs_service_type_1_standard {
     container_port             = "8000"
     health_check_path          = "/endpoint-health"
     external_config_repo       = "false"
-    dependencies               = "postgres_rds"
+    dependencies               = "ecr,postgres_rds"
     deploy_scripts_version     = "master"
     vcpu_container             = "2048"
     memory_container           = "4096"
