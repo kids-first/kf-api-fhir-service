@@ -14,7 +14,6 @@ ecs_service_type_1_standard {
     health_check_path          = "/endpoint-health"
     external_config_repo       = "false"
     dependencies               = "ecr,postgres_rds"
-    deploy_scripts_version     = "master"
     vcpu_container             = "2048"
     memory_container           = "4096"
     vcpu_task                  = "2048"
