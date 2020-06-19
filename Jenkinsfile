@@ -1,8 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_type_1_standard {
     projectName                = "ncpi-api-fhir-service"
-    ecs_service_type_1_version = "feature/add-auth"
-    deploy_scripts_version     = "feature/add-auth"
     orgFullName                = "kids-first"
     account                    = "chopd3b"
     environments               = "dev,qa"
