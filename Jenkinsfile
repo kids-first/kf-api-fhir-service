@@ -18,5 +18,6 @@ ecs_service_type_1_standard {
     memory_container           = "4096"
     vcpu_task                  = "2048"
     memory_task                = "4096"
+    internal_app               = "false"
     additional_container_ports = "9000,9100"
 }
