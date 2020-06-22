@@ -4,7 +4,6 @@ ecs_service_type_1_standard {
     orgFullName                = "kids-first"
     account                    = "chopd3b"
     environments               = "dev,qa"
-    destroy_dev                = "true"
     docker_image_type          = "debian"
     create_default_iam_role    = "1"
     entrypoint_command         = "/home/smile/smilecdr/bin/smilecdr run"
