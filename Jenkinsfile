@@ -18,4 +18,6 @@ ecs_service_type_1_standard {
     memory_task                = "4096"
     internal_app               = "false"
     additional_container_ports = "9000,9100"
+    dev_cidr                   = "0.0.0.0/0"
+    qa_cidr                    = "0.0.0.0/0"
 }
