@@ -1,116 +1,109 @@
+# 🔥 NCPI FHIR Service
+
 <p align="center">
-  <img src="docs/images/logo.svg" alt="Kids First FHIR Service" width="660px">
-</p>
-<p align="center">
-  <a href="https://github.com/kids-first/kf-api-fhir-service/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kids-first/kf-api-fhir-service.svg?style=for-the-badge"></a>
-  <a href="https://circleci.com/gh/kids-first/kf-api-fhir-service"><img src="https://img.shields.io/circleci/project/github/kids-first/kf-api-fhir-service.svg?style=for-the-badge"></a>
+  <a href="https://circleci.com/gh/ncpi-fhir/ncpi-api-fhir-service"><img src="https://img.shields.io/circleci/project/github/ncpi-fhir/ncpi-api-fhir-service.svg?style=for-the-badge"></a>
 </p>
 
-# 🔥 Kids First FHIR Service
-
-FHIR data service for Kids First uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
+FHIR data service for NCPI uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
 
 ## Quickstart
 
-Kids First FHIR services have been deployed into the three standard environments
-within the Kids First AWS account: Dev, QA, Prd.
+NCPI FHIR services have been deployed into the three standard environments
+within the NCPI AWS account: Dev, QA, Prd.
 
 The FHIR endpoints for these are:
 
 ### Production
-https://kf-api-fhir-service.kidsfirstdrc.org
+https://ncpi-api-fhir-service.kidsfirstdrc.org
 
 ### QA
-https://kf-api-fhir-service-qa.kidsfirstdrc.org
+https://ncpi-api-fhir-service-qa.kidsfirstdrc.org
 
 ### Dev
-https://kf-api-fhir-service-dev.kidsfirstdrc.org
+https://ncpi-api-fhir-service-dev.kidsfirstdrc.org
 
-### Access
-In order to interact with one of these servers, you will need to gain access to
-the environment the server runs in and have a user account on the server
-with the appropriate authorization.
+## 🚧 Server Access 🚧
 
-1. Tunnel through bastion hosts to access environments
+**NOTE: We recognize that the process for accessing the deployed servers is not
+very user/developer friendly. This is temporary as we are still working on the
+NCPI infrastructure and server authentication. Please bear with us!**
 
-- Use Dev bastion host for access to Dev/QA environments
-- Use Prd bastion host for access to Prd environment
+### Two Layer Authentication
+In order to interact with the FHIR servers in any of the environments, you
+will need to go through two levels of authentication:
 
-2. Contact Natasha Singh (singhn4@email.chop.edu) to get a user account
+1. Authenticate to gain access to the server's environment
+2. Authenticate with the server to gain access to the server's data
 
-### Setup Tunnel
+### Access Instructions
 
-1. Install the Python [sshuttle](https://pypi.org/project/sshuttle/) tool for
-DNS tunneling.
+#### Request Access
 
-2. Create a tunnel to the appropriate environment:
+You will do these steps only one time.
 
-    Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
+1. In a browser, go to the server URL
 
-    ```bash
-    $ ./dev-env-tunnel.sh dev
-    ```
+    Make sure you are signed out of any Google accounts
 
-## Demo FHIR Servers
+    Example: `https://ncpi-api-fhir-service-dev.kidsfirstdrc.org`
 
-Before moving to the standard service deployment architecture, two demo servers
-were deployed into the Dev environment.
+2. Click `Login with Google` and try to sign in with a Google account
 
-These will remain up until we fully transition to using the services in the
-Dev, QA, and Prd environments.
+3. You will get a page with a `401 Not Authorized`
 
-1. Server at `http://10.10.1.191` is loaded with Phenopackets on FHIR model
+4. Send an email to [Alex Lubneuski](mailto:LUBNEUSKIA@EMAIL.CHOP.EDU)
+and [Natasha Singh](mailto:singhn4@email.chop.edu) or a
+Slack message in the NCPI `#fhir-wg` channel with the Google account you used before.
 
-    **NOTE:** This server has been loaded with 2 datasets and is currently used
-    for demo purposes. As such, all user permissions have been changed to
-    read-only
+5. You will receive an email with confirmation of the access
 
-2. Server at `http://10.10.1.141` is loaded with the Kids First FHIR model
+#### Authenticate to Access Server Environment
 
-   We will use this for prototyping new data pipelines and FHIR applications
-   for Kids First.
+You will do this every time Cookie expires (~1 week)
 
-### Endpoints
+1. Repeat steps 1-2 above
+2. If successful, you will see a page from the server that says:
 
-#### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
+ `This is the base URL of FHIR server.` under the `Response Body` section.
 
-A data browser app intended to give users a quick overview of the data in the
-FHIR server along with the ability to filter FHIR resources and drill down to
-view specific resources.
-- http://10.10.1.141
+3. Save the cookie from the response
 
-#### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
+   The cookie can be found in the response's `Cookie` header.
 
-- The main endpoint ingest developers will use to CRUD FHIR resources
-- http://10.10.1.141:8000
+#### Authenticate with Server
 
-#### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+You will do this every time you want to send HTTP requests to any of the
+NCPI FHIR servers.
 
-- A web application used to CRUD FHIR resources for those who do not want to write code
-- http://10.10.1.141:8001
+The NCPI FHIR server currently uses basic authentication on almost every
+endpoint (except `/endpoint-health`). When you make a request to the server,
+you will need to:
 
-#### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+- Include your basic authentication credentials in the `Authorization` header
+- Include your cookie in the `Cookie` header
 
-- The administration endpoint used to change server configuration, user settings, etc.
-- http://10.10.1.141:9000
+Example:
 
-#### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
-
-- The administration dashboard which is essentially a frontend to the admin API
-- http://10.10.1.141:9100
+```
+curl -u username:password --cookie <the cookie> https://ncpi-api-fhir-service-dev.kidsfirstdrc.org/Patient
+```
 
 ## Development
 
-If you would like to experiment with a Smile CDR service stack locally then
-please follow these instructions:
+You can experiment locally with the FHIR Docker Compose stack. The services/apps
+included in this are:
+
+- Smile CDR FHIR services (See [Endpoints](#Endpoints) below)
+- PostgresSQL database for the server
+- FHIR Data Dashboard web app
 
 ### Spin up the Docker Stack
 
 1. Clone this repository
 
 ```bash
-$ git clone git@github.com:kids-first/kf-api-fhir-service.git
-$ cd kf-api-fhir-service
+git clone git@github.com:kids-first/ncpi-api-fhir-service.git
+cd ncpi-api-fhir-service
 ```
 
 2. Get access to the Smile CDR image
@@ -131,27 +124,51 @@ The `run_local_server.sh` script requires Docker Hub credentials. First it will 
 the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
 these are not set then it will try to source them from the `.env` file.
 
-4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-api-fhir-service) into server
+4. Deploy server and load [NCPI FHIR model](https://github.com/kids-first/ncpi-api-fhir-service) into server
 
 ```bash
 # Deploy server
-$ ./scripts/run_local_server.sh
+./scripts/run_local_server.sh
 
 # Load model into server
-$ ./scripts/load_kidsfirst.sh
+./scripts/load_model.sh
 ```
 
 You could also run the steps in `run_local_server.sh` manually. It is just a convenience
 script which does some setup and then runs `docker-compose up -d`.
 
-### Start/Stop Services
+### Endpoints
+
+#### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
+
+A data browser app intended to give users a quick overview of the data in the
+FHIR server along with the ability to filter FHIR resources and drill down to
+view specific resources.
+- http://localhost:3000
+
+#### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
+
+- The main endpoint ingest developers will use to CRUD FHIR resources
+- http://localhost:8000
+
+#### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+
+- The administration endpoint used to change server configuration, user settings, etc.
+- http://localhost:9000
+
+#### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
+
+- The administration dashboard which is essentially a frontend to the admin API
+- http://localhost:9100
+
+### Start/Stop the Stack
 
 ```bash
 # Stop all services
-$ docker-compose stop
+docker-compose stop
 
 # Start all services
-$ docker-compose start
+docker-compose start
 ```
 
 ### View Service Logs
@@ -159,14 +176,14 @@ $ docker-compose start
 Once the services are running you can view logs from all services:
 
 ```bash
-$ docker-compose logs -f
+docker-compose logs -f
 ```
 
-### Reload Kids First FHIR Model
-Run the loader script to reload (DELETE and POST) the Kids First FHIR
+### Reload NCPI FHIR Model
+Run the loader script to reload (DELETE and POST) the NCPI FHIR
 conformance resources.
 
-The conformance resources are sourced from the `kf-api-fhir-service` git repository.
+The conformance resources are sourced from the `ncpi-api-fhir-service` git repository.
 The default branch that is used for loading is `master`, but you can supply a
 different branch if you want.
 
@@ -177,7 +194,7 @@ to the local branch which you will need to resolve (or do a complete wipe out
 
 
 ```bash
-$ ./scripts/load_kidsfirst.sh some-other-branch
+./scripts/load_model.sh some-other-branch
 ```
 
 ### Server Settings
