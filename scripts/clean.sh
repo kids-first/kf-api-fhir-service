@@ -7,4 +7,4 @@
 
 set -eo pipefail
 
-docker-compose down -v --rmi all
+docker-compose down --remove-orphans -v --rmi all

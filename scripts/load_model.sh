@@ -11,37 +11,41 @@
 set -eo pipefail
 
 # Args
-GIT_REPO_BRANCH=${1:-master}
+GIT_REPO_PATH=${1:-ncpi-fhir/ncpi-api-fhir-service}
+GIT_REPO_BRANCH=${2:-master}
 
 # Vars
 if [[ ! -f '.env' ]]; then
     cp 'server/settings/dev.env' '.env'
 fi
 source .env
+
+GIT_REPO=${GIT_REPO_PATH##*/}
+
+echo "$GIT_REPO"
 BASE_URL=${SMILE_CDR_BASE_URL:-http://localhost:8000}
 SERVER_UNAME=${SMILE_CDR_USERNAME:-$DB_USERNAME}
 SERVER_PW=${SMILE_CDR_PASSWORD:-$DB_PASSWORD}
-GIT_ORG="ncpi-fhir"
-GIT_REPO="ncpi-api-fhir-service"
 
-echo "Loading NCPI model $GIT_REPO:$GIT_REPO_BRANCH into server ..."
 
-if [[ ! -d $GIT_REPO ]]; then
-    # Git clone the model
-    git clone "git@github.com:$GIT_ORG/$GIT_REPO.git"
-    # Setup venv
-    cd $GIT_REPO
+echo "Loading NCPI model $GIT_REPO_PATH into server ..."
+
+# Delete existing model
+rm -rf $GIT_REPO
+
+# Git clone the model
+git clone "git@github.com:$GIT_REPO_PATH.git"
+cd $GIT_REPO
+git checkout "$GIT_REPO_BRANCH"
+
+# Setup venv
+if [[ ! -d "$(pwd)/$GIT_REPO/venv" ]]; then
     python3 -m venv venv
     source venv/bin/activate
     pip install --upgrade pip
     pip install -e .
-else
-    cd $GIT_REPO
-    source venv/bin/activate
 fi
-
-git checkout "$GIT_REPO_BRANCH"
-git pull
+source venv/bin/activate
 
 # Publish model to server
 fhirutil publish site_root/input/resources/terminology \
