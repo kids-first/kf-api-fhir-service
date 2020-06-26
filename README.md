@@ -73,7 +73,7 @@ You will do this every time Cookie expires (~1 week)
 #### Authenticate with Server
 
 You will do this every time you want to send HTTP requests to any of the
-NCPI FHIR servers.
+NCPI FHIR servers.  
 
 The NCPI FHIR server currently uses basic authentication on almost every
 endpoint (except `/endpoint-health`). When you make a request to the server,
