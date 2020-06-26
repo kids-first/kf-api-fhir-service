@@ -28,7 +28,7 @@ jobs:
           # issue https://github.com/kids-first/kf-api-fhir-service/issues/74
           # - run:
           #     name: Deploy model
-          #     command: ./scripts/load_kidsfirst.sh
+          #     command: ./scripts/load_model.sh
 
           - run:
               name: Test deploy
