@@ -45,6 +45,10 @@ services:
         - smilecdr
       container_name: dashboard
       image: kidsfirstdrc/kf-ui-fhir-data-dashboard:dev
+      environment:
+          - REACT_APP_FHIR_API_NAME=Localhost
+          - REACT_APP_FHIR_API_AUTH_TYPE=BASIC_AUTH
+          - REACT_APP_FHIR_API=http://localhost:8000
       ports:
         - "3000:80"
 volumes:
