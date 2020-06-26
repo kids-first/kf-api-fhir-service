@@ -11,7 +11,7 @@
 set -eo pipefail
 
 # Args
-GIT_REPO_PATH=${1:-ncpi-fhir/ncpi-api-fhir-service}
+GIT_REPO_PATH=${1:-ncpi-fhir/ncpi-model-forge}
 GIT_REPO_BRANCH=${2:-master}
 
 # Vars
