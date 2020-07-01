@@ -34,5 +34,6 @@ ENV FHIR_PRETTY_PRINT false
 ENV RESPECT_FWD_HEADERS true
 # Use external Postgres database
 ENV DB_DRIVER POSTGRES_9_4
+ENV DB_CONN_URL jdbc:postgresql://localhost:5432/postgres
 # NOTE - The following get overwritten by values in S3 secrets file
 # DB_CONN_URL, DB_USERNAME, DB_PASSWORD
