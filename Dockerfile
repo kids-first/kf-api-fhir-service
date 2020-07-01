@@ -17,6 +17,8 @@ ENV PERSIST_TRANSACTION_BODIES false
 ENV RESPECT_FWD_HEADERS false
 # Load the full base FHIR model during server init
 ENV SEED_CONF_RESOURCES true
+# Validate resources against FHIR spec AND base profiles
+ENV REQUEST_VALIDATION true
 # Use in memory database
 ENV DB_DRIVER H2_EMBEDDED
 ENV DB_CONN_URL jdbc:h2:file:./database/cdr
