@@ -17,6 +17,8 @@ ENV PERSIST_TRANSACTION_BODIES false
 ENV RESPECT_FWD_HEADERS false
 # Load the full base FHIR model during server init
 ENV SEED_CONF_RESOURCES true
+# Validate resources against FHIR spec AND base profiles
+ENV REQUEST_VALIDATION true
 # Use in memory database
 ENV DB_DRIVER H2_EMBEDDED
 ENV DB_CONN_URL jdbc:h2:file:./database/cdr
@@ -34,5 +36,6 @@ ENV FHIR_PRETTY_PRINT false
 ENV RESPECT_FWD_HEADERS true
 # Use external Postgres database
 ENV DB_DRIVER POSTGRES_9_4
+ENV DB_CONN_URL jdbc:postgresql://localhost:5432/postgres
 # NOTE - The following get overwritten by values in S3 secrets file
 # DB_CONN_URL, DB_USERNAME, DB_PASSWORD
