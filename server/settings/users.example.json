@@ -1,0 +1,21 @@
+[
+  {
+    "accountDisabled": false,
+    "accountLocked": false,
+    "authorities": [
+      {
+        "permission": "ROLE_FHIR_CLIENT_SUPERUSER"
+      }
+    ],
+    "defaultLaunchContexts": [],
+    "external": false,
+    "familyName": "Doe",
+    "givenName": "Jane",
+    "moduleId": "local_security",
+    "nodeId": "Master",
+    "serviceAccount": false,
+    "systemUser": false,
+    "twoFactorAuthStatus": "NO_KEY_DEFINED",
+    "username": "jdoe"
+  }
+]
