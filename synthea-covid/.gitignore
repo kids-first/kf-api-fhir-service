@@ -1,0 +1,6 @@
+.DS_Store
+synthetic-data
+synthea-with-dependencies.jar
+*.ipynb
+*.db
+terminology

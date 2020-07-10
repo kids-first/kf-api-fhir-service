@@ -1,0 +1,52 @@
+State	"Reported hospitalized MAX(current, cumulative)  (some states do not report cumulative hospitalization numbers, only current)"	2% of reported ( https://www.cdc.gov/mmwr/volumes/69/wr/mm6914e4.htm )	State population	"Extrapolated 11/100,000 general population ( https://www.cdc.gov/coronavirus/2019-ncov/covid-data/covidview/index.html#hospitalizations )"
+Alaska	14	0	731545	80
+Alabama	2521	50	4903185	539
+Arkansas	1188	23	3017825	331
+Arizona	4250	85	7278717	800
+California	5065	101	39512223	4346
+Colorado	5343	106	5758736	633
+Connecticut	10099	201	3565287	392
+District of Columbia	171	3	705749	77
+Delaware	91	1	973764	107
+Florida	13614	272	21477737	2362
+Georgia	10123	202	10617423	1167
+Hawaii	99	1	1415872	155
+Iowa	163	3	3155070	347
+Idaho	293	5	1787065	196
+Illinois	1648	32	12671821	1393
+Indiana	6853	137	6732219	740
+Kansas	1056	21	2913314	320
+Kentucky	2556	51	4467673	491
+Louisiana	646	12	4648794	511
+Massachusetts	11157	223	6949503	764
+Maryland	10611	212	6045680	665
+Maine	339	6	1344212	147
+Michigan	557	11	9986857	1098
+Minnesota	3860	77	5639632	620
+Missouri	595	11	6137428	675
+Mississippi	2915	58	2976149	327
+Montana	91	1	1068778	117
+North Carolina	915	18	10488084	1153
+North Dakota	218	4	762062	83
+Nebraska	1234	24	1934408	212
+New Hampshire	558	11	1359711	149
+New Jersey	19512	390	8882190	977
+New Mexico	1754	35	2096829	230
+Nevada	389	7	3080156	338
+New York	89995	1799	19453561	2139
+Ohio	7379	147	11689100	1285
+Oklahoma	1288	25	3956971	435
+Oregon	983	19	4217737	463
+Pennsylvania	738	14	12801989	1408
+Rhode Island	1958	39	1059361	116
+South Carolina	2377	47	5148714	566
+South Dakota	624	12	884659	97
+Tennessee	2336	46	6833174	751
+Texas	4092	81	28995881	3189
+Utah	1226	24	3205958	352
+Virginia	8572	171	8535519	938
+Vermont	19	0	623989	68
+Washington	4062	81	7614893	837
+Wisconsin	3268	65	5822434	640
+West Virginia	21	0	1792147	197
+Wyoming	109	2	578759	63
