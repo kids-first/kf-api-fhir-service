@@ -1,5 +1,18 @@
 # Kids First FHIR Service Change History
 
+## Release 0.2.0
+
+### Summary
+
+- Emojis: ♻️ x1, ? x1
+- Categories: Other Changes x2
+
+### New features and changes
+
+- [#88](https://github.com/kids-first/kf-api-fhir-service/pull/88) -  S3 Script + Configurable Request Validation - [f5fc9c49](https://github.com/kids-first/kf-api-fhir-service/commit/f5fc9c49483e0f2a56765c9b4c2d9a01ff43940f) by [znatty22](https://github.com/znatty22)
+- [#83](https://github.com/kids-first/kf-api-fhir-service/pull/83) - ♻️ Update user mgmt scripts - [04a661d7](https://github.com/kids-first/kf-api-fhir-service/commit/04a661d7204f88f71d20dbfe587af3b04cf7a9f6) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 0.1.0
 
 ### Summary
