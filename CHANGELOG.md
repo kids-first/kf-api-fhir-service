@@ -1,5 +1,17 @@
 # Kids First FHIR Service Change History
 
+## Release 0.3.0
+
+### Summary
+
+- Emojis: ✨ x1
+- Categories: Additions x1
+
+### New features and changes
+
+- [#90](https://github.com/kids-first/kf-api-fhir-service/pull/90) - ✨ Grant anonymous user FHIR client superuser role - [16004177](https://github.com/kids-first/kf-api-fhir-service/commit/16004177a074ffff60ce362186c86a34ab0286b9) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 0.2.0
 
 ### Summary
