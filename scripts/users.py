@@ -69,7 +69,10 @@ def upsert(user_file, base_url, username=None, password=None, headers=None):
         resp_content = response_content(response)
 
         # User exists, send PUT request
-        if response.status_code == 400 and 'already exists' in response.text:
+        if response.status_code == 400 and (
+            'already exists' in response.text or
+            'manually create system users' in response.text
+        ):
             print(
                 f'User {user["username"]} already exists, '
                 'try updating user ...'

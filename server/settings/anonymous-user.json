@@ -1,0 +1,27 @@
+[
+  {
+    "accountDisabled": false,
+    "accountLocked": false,
+    "authorities": [
+      {
+        "permission": "ROLE_ANONYMOUS"
+      },
+      {
+        "permission": "ROLE_FHIR_CLIENT_SUPERUSER"
+      }
+    ],
+    "defaultLaunchContexts": [],
+    "external": false,
+    "familyName": "Anonymous",
+    "givenName": "Anonymous",
+    "lastActive": "2020-07-20T19:09:24.226+00:00",
+    "moduleId": "local_security",
+    "nodeId": "Master",
+    "password": null,
+    "pid": 1,
+    "serviceAccount": false,
+    "systemUser": true,
+    "twoFactorAuthStatus": "NO_KEY_DEFINED",
+    "username": "ANONYMOUS"
+  }
+]
