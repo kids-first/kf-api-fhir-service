@@ -28,15 +28,17 @@ https://kf-api-fhir-service-dev.kidsfirstdrc.org
 
 ### Access
 In order to interact with one of these servers, you will need to gain access to
-the environment the server runs in and have a user account on the server
-with the appropriate authorization.
+the environment/VPC the server runs in.
 
-1. Tunnel through bastion hosts to access environments
+You will do this by tunneling through a bastion host to access the environment:
 
-- Use Dev bastion host for access to Dev/QA environments
-- Use Prd bastion host for access to Prd environment
+- Use Dev bastion host for access to dev/QA VPCs
+- Use Prd bastion host for access to production VPC
 
-2. Contact Natasha Singh (singhn4@email.chop.edu) to get a user account
+Most users will not need to have an account on the server since the
+permissions for anonymous HTTP requests allows one to perform any standard FHIR
+client operation on the server. This means you can create, read, update, delete,
+and search for FHIR resources on the server.
 
 ### Setup Tunnel
 
