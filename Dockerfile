@@ -1,5 +1,5 @@
 # ------ Integration Test Server Image ------
-FROM 538745987955.dkr.ecr.us-east-1.amazonaws.com/kf-smile-cdr:2020.05.PRE-14 as test
+FROM 538745987955.dkr.ecr.us-east-1.amazonaws.com/kf-smile-cdr:2020.08.PRE-25 as test
 
 WORKDIR /home/smile/smilecdr
 
