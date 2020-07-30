@@ -42,9 +42,13 @@ docker tag smilecdr:latest $DOCKER_IMAGE
 if [[ -n $AWS_PROFILE_NAME ]];
 then
     # Use profile if supplied
-    passwd=$(aws --profile="$AWS_PROFILE_NAME" ecr get-login --region us-east-1 | awk '{ print $6 }')
+    passwd=$(aws --profile="$AWS_PROFILE_NAME" --region us-east-1 ecr get-login-password)
+    # For AWS CLI v1, may use below instead:
+    # passwd=$(aws --profile="$AWS_PROFILE_NAME" ecr get-login --region us-east-1 | awk '{ print $6 }')
 else
-    passwd=$(aws ecr get-login --region us-east-1 | awk '{ print $6 }')
+    passwd=$(aws --region us-east-1 ecr get-login-password)
+    # For AWS CLI v1, may use below instead:
+    # passwd=$(aws ecr get-login --region us-east-1 | awk '{ print $6 }')
 fi
 echo "Pushing $DOCKER_IMAGE ..."
 docker login -u AWS -p $passwd "$DOCKER_REPO"
