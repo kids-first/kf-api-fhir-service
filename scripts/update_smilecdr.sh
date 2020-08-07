@@ -23,7 +23,7 @@ fi
 # Use supplied image tag or make one from the tarball
 DOCKER_TARBALL_PATH=$1
 DOCKER_TARBALL=$(basename $1)
-DOCKER_REPO="538745987955.dkr.ecr.us-east-1.amazonaws.com/kf-smile-cdr"
+DOCKER_REPO="232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr"
 if [[ -z $2 ]];
 then
     DOCKER_IMAGE_TAG=${DOCKER_TARBALL#"smilecdr-"}
