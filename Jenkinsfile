@@ -1,6 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_type_1_standard {
-    projectName                = "kf-strides-api-fhir-service"
+    projectName                = "kf-api-fhir-service"
     orgFullName                = "kids-first"
     account                    = "kf-strides"
     environments               = "dev,qa,prd"
