@@ -18,4 +18,5 @@ ecs_service_type_1_standard {
     vcpu_task                  = "2048"
     memory_task                = "4096"
     additional_container_ports = "9000,9100"
+    pre_build_command          = "curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs"
 }
