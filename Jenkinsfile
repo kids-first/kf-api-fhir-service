@@ -2,7 +2,6 @@
 ecs_service_type_1_standard {
     projectName                = "kf-api-fhir-service"
     orgFullName                = "kids-first"
-    account                    = "kf-strides"
     environments               = "dev,qa,prd"
     docker_image_type          = "debian"
     create_default_iam_role    = "1"
