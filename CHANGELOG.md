@@ -1,5 +1,18 @@
 # Kids First FHIR Service Change History
 
+## Release 0.3.1
+
+### Summary
+
+- Emojis: 👷 x1, 🐛 x1
+- Categories: Ops x1, Fixes x1
+
+### New features and changes
+
+- [#97](https://github.com/kids-first/kf-api-fhir-service/pull/97) - 👷 Migrate to kf-strides account - [de1edbcb](https://github.com/kids-first/kf-api-fhir-service/commit/de1edbcb60b55786a4e00f7f738989e4812be303) by [blackdenc](https://github.com/blackdenc)
+- [#94](https://github.com/kids-first/kf-api-fhir-service/pull/94) - 🐛 Add missing dashboard init env vars - [19cc73b1](https://github.com/kids-first/kf-api-fhir-service/commit/19cc73b1bee1a719da3a6dde29a1f1e574d9ef9a) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 0.3.0
 
 ### Summary
