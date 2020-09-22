@@ -18,7 +18,7 @@ DEPLOY_ENV="$1"
 S3_REL_PATH="$2"
 ENV_FILE="$3"
 OPERATION=${4:-"--fetch"}
-S3_BUCKET="s3://kf-538745987955-us-east-1-$DEPLOY_ENV-secrets"
+S3_BUCKET="s3://kf-strides-232196027141-us-east-1-$DEPLOY_ENV-secrets"
 S3_OBJ_PATH="$S3_BUCKET/$S3_REL_PATH"
 
 if [[ -z $DEPLOY_ENV ]] || [[ -z $S3_REL_PATH ]]; then
