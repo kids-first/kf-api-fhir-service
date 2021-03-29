@@ -15,6 +15,7 @@ ecs_service_type_1_standard {
     vcpu_container             = "2048"
     memory_container           = "4096"
     vcpu_task                  = "2048"
+    internal_app               = "false"
     memory_task                = "4096"
     additional_container_ports = "9000,9100"
     snapshot_identifier_prd    = "kf-api-fhir-service-prd-migration-kms-rds"
