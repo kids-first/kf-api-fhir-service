@@ -45,12 +45,20 @@ and search for FHIR resources on the server.
 1. Install the Python [sshuttle](https://pypi.org/project/sshuttle/) tool for
 DNS tunneling.
 
-2. Create a tunnel to the appropriate environment:
+2. Install AWS Systems Manager tools:
 
-    Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
+    Get [install_ssm.ssh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/install_ssm.ssh) shell script
 
     ```bash
-    $ ./dev-env-tunnel.sh dev
+    $ ./install_ssm.ssh
+    ```
+
+3. Create a tunnel to the appropriate environment:
+
+    Get [dev-env-tunnel](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
+
+    ```bash
+    $ ./dev-env-tunnel dev
     ```
 
 ## Demo FHIR Servers
