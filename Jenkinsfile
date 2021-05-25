@@ -19,5 +19,4 @@ ecs_service_type_1_standard {
     memory_task                = "4096"
     additional_container_ports = "9000,9100"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
-    snapshot_identifier_prd    = "kf-api-fhir-service-prd-migration-kms-rds"
 }
