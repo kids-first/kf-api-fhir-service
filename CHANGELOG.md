@@ -1,5 +1,22 @@
 # Kids First FHIR Service Change History
 
+## Release 0.4.0
+
+### Summary
+
+- Emojis: ? x2, ⬆️ x1, 🎉 x1, 🔧 x1, 👷 x1
+- Categories: Additions x1, Ops x2, Other Changes x3
+
+### New features and changes
+
+- [#106](https://github.com/kids-first/kf-api-fhir-service/pull/106) -  Feature/add caring - [b7c7580a](https://github.com/kids-first/kf-api-fhir-service/commit/b7c7580a24873cf9d3f2d669814c8b6a21cd6868) by [alubneuski](https://github.com/alubneuski)
+- [#105](https://github.com/kids-first/kf-api-fhir-service/pull/105) - ⬆️ Upgrade to 2021.02.R05 - [c17097cf](https://github.com/kids-first/kf-api-fhir-service/commit/c17097cf48013982124b38e6584d83f384080a01) by [liberaliscomputing](https://github.com/liberaliscomputing)
+- [#104](https://github.com/kids-first/kf-api-fhir-service/pull/104) - 🎉 Added Jenkinsfile for CARING - [4f87169a](https://github.com/kids-first/kf-api-fhir-service/commit/4f87169a42849fea59294c6fa0a0bf1fae24e90c) by [alubneuski](https://github.com/alubneuski)
+- [#103](https://github.com/kids-first/kf-api-fhir-service/pull/103) -  Removing postgres_rds from deploy - [b0da9c0c](https://github.com/kids-first/kf-api-fhir-service/commit/b0da9c0cd4325a4a45b033e45d78caac2f901592) by [blackdenc](https://github.com/blackdenc)
+- [#101](https://github.com/kids-first/kf-api-fhir-service/pull/101) - 🔧 Update scripts for kf-strides acct - [b58e4fc6](https://github.com/kids-first/kf-api-fhir-service/commit/b58e4fc602cbf757c3b939e167c923ca11e978a5) by [znatty22](https://github.com/znatty22)
+- [#99](https://github.com/kids-first/kf-api-fhir-service/pull/99) - 👷 Tag latest during release - [638eb195](https://github.com/kids-first/kf-api-fhir-service/commit/638eb195b61247e256e7e639d76aa520cf901428) by [fiendish](https://github.com/fiendish)
+
+
 ## Release 0.3.1
 
 ### Summary
