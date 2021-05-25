@@ -18,5 +18,6 @@ ecs_service_type_1_standard {
     vcpu_task                  = "2048"
     memory_task                = "4096"
     additional_container_ports = "9000,9100"
+    dev_cidr                   = "0.0.0.0/0"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
 }
