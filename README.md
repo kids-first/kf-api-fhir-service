@@ -10,101 +10,88 @@
 
 FHIR data service for Kids First uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
 
+## Version
+
+Smile CDR 2021.02.R05 (Odyssey) (See [changelogs](https://smilecdr.com/docs/introduction/changelog.html))
+
 ## Quickstart
 
-Kids First FHIR services have been deployed into the three standard environments
-within the Kids First AWS account: Dev, QA, Prd.
+Kids First FHIR services have been deployed into the three standard environments within the Kids First Strides AWS account: development (DEV), QA, and production (PRD). The FHIR endpoints for each of these environments are:
 
-The FHIR endpoints for these are:
+- Development: https://kf-api-fhir-service-dev.kidsfirstdrc.org
+- QA: https://kf-api-fhir-service-qa.kidsfirstdrc.org
+- Production: https://kf-api-fhir-service.kidsfirstdrc.org
 
-### Production
-https://kf-api-fhir-service.kidsfirstdrc.org
+## 🚧 Server Access
 
-### QA
-https://kf-api-fhir-service-qa.kidsfirstdrc.org
+**Note: We recognize that the process for accessing the deployed servers is not very user/developer friendly. This is temporary as we are still working on the NCPI infrastructure and server authentication. Please bear with us!**
 
-### Dev
-https://kf-api-fhir-service-dev.kidsfirstdrc.org
+In order to interact with these servers, please follow the instrunctions below.
 
-### Access
-In order to interact with one of these servers, you will need to gain access to
-the environment/VPC the server runs in.
+Most users will not need to have an account on the server since the permissions for anonymous HTTP requests allow one to perform any standard FHIR client operation on the server. This means you can create, read, update, delete, and search for FHIR resources on the server.
 
-You will do this by tunneling through a bastion host to access the environment:
+### DEV/QA
 
-- Use Dev bastion host for access to dev/QA VPCs
-- Use Prd bastion host for access to production VPC
+You will need to gain access to the environment/VPC the server runs in. You will do this by tunneling through a bastion host to access the environment:
 
-Most users will not need to have an account on the server since the
-permissions for anonymous HTTP requests allows one to perform any standard FHIR
-client operation on the server. This means you can create, read, update, delete,
-and search for FHIR resources on the server.
+- Use DEV bastion host for access to development VPC
+- Use QA bastion host for access to QA VPC
 
-### Setup Tunnel
+#### Setup Tunnel
 
-1. Install the Python [sshuttle](https://pypi.org/project/sshuttle/) tool for
-DNS tunneling.
+In order to tunnel into the bastion hosts, please follow the instructions [here](https://www.notion.so/d3b/Accessing-kf-strides-569e6a853d5c47c69a3ac00ccd7a89e0).
 
-2. Create a tunnel to the appropriate environment:
+### PRD
 
-    Get [dev-env-tunnel.sh](https://github.com/kids-first/aws-infra-toolbox/blob/master/scripts/developer_scripts/dev-env-tunnel) shell script
+#### Request Access
 
-    ```bash
-    $ ./dev-env-tunnel.sh dev
-    ```
+You will do these steps only one time.
+
+1.  In a browser, go to the production server URL (https://kf-api-fhir-service.kidsfirstdrc.org). Make sure you are signed out of any Google accounts
+
+2.  Click `Login with Google` and try to sign in with a Google account:
+
+<img src="docs/images/auth0-signin.png" alt="Auth0 Sign-in" height="400" style="box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)" />
+
+3. You will get a page with a `401 Authorization Required` message:
+
+<img src="docs/images/401-not-auth.png" alt="401 Not Auth" width="400" style="box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)" />
+
+4. Send an email to either [Allison Heath](mailto:heathap@chop.edu), [Alex Lubneuski](mailto:lubneuskia@chop.edu), [Natasha Singh](mailto:singhn4@chop.edu) or [Meen Chul Kim](mailto:kimm11@chop.edu) with the Google account you used before and request access for the server URL you wish to access
+
+5. You will receive an email with confirmation of the access
+
+#### Authenticate to Access Server Environment
+
+You will do this every time your Cookie expires (~1 week).
+
+1. In a browser, go to `https://kf-api-fhir-service.kidsfirstdrc.org/metadata`
+
+2. If successful, you will see a page from the server that shows the server's `CapabilityStatement`:
+
+<img src="docs/images/smile-cdr-success.png" alt="Success" style="box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)" />
+
+3. Save the cookie from the response/ The cookie can be found in the response's `Set-Cookie` directive for `AWSELBAuthSessionCookie-0`
+
+#### Send Requests to Server
+
+Although you don't need an account on the server to authenticate with it, you will still need to do something to tell the server you have been granted access to it. When you send HTTP requests to the server make sure to include your `AWSELBAuthSessionCookie-0=yadayada` cookie text in a `Cookie` header as follows:
+
+```bash
+curl -X GET https://kf-api-fhir-service.kidsfirstdrc.org/Patient -L --cookie <the cookie>
+```
 
 ## Demo FHIR Servers
 
-Before moving to the standard service deployment architecture, two demo servers
-were deployed into the Dev environment.
-
-These will remain up until we fully transition to using the services in the
-Dev, QA, and Prd environments.
-
-1. Server at `http://10.10.1.191` is loaded with Phenopackets on FHIR model
-
-    **NOTE:** This server has been loaded with 2 datasets and is currently used
-    for demo purposes. As such, all user permissions have been changed to
-    read-only
-
-2. Server at `http://10.10.1.141` is loaded with the Kids First FHIR model
-
-   We will use this for prototyping new data pipelines and FHIR applications
-   for Kids First.
-
-### Endpoints
-
-#### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
-
-A data browser app intended to give users a quick overview of the data in the
-FHIR server along with the ability to filter FHIR resources and drill down to
-view specific resources.
-- http://10.10.1.141
-
-#### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
-
-- The main endpoint ingest developers will use to CRUD FHIR resources
-- http://10.10.1.141:8000
-
-#### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
-
-- A web application used to CRUD FHIR resources for those who do not want to write code
-- http://10.10.1.141:8001
-
-#### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
-
-- The administration endpoint used to change server configuration, user settings, etc.
-- http://10.10.1.141:9000
-
-#### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
-
-- The administration dashboard which is essentially a frontend to the admin API
-- http://10.10.1.141:9100
+Before moving to the standard service deployment architecture, demo servers are available. For the detailed instructions, please visit [NCPI API FHIR Service](https://github.com/ncpi-fhir/ncpi-api-fhir-service) (restrictions may apply).
 
 ## Development
 
-If you would like to experiment with a Smile CDR service stack locally then
-please follow these instructions:
+You can experiment locally with the FHIR Docker Compose stack. The services/apps included in this are:
+
+- Smile CDR FHIR services (See [Endpoints](#Endpoints) below)
+- PostgresSQL database for the server
+- FHIR Data Dashboard web app
 
 ### Spin up the Docker Stack
 
@@ -117,34 +104,55 @@ $ cd kf-api-fhir-service
 
 2. Get access to the Smile CDR image
 
-    - Create a [Docker Hub](https://hub.docker.com/) account if you don't have
-      one
-    - Ask singhn4@email.chop.edu for access to the image
-      (hosted in private Docker Hub repo)
+   - Create a [Docker Hub](https://hub.docker.com/) account if you don't have one
+   - Ask [Natasha Singh](mailto:singhn4@chop.edu) or [Meen Chul Kim](mailto:kimm11@chop.edu) for access to the image (hosted in private Docker Hub repo)
 
-    **Do not distribute the Smile CDR image as it is only for trial use by the
-    internal team**
+   **🚨 DO NOT distribute the Smile CDR image as it is only for trial use by the internal team!**
 
 3. Set environment variables in a `.env` file (See `server/settings/dev.env` for example)
 
 **Note:**
 
-The `run_local_server.sh` script requires Docker Hub credentials. First it will look for
-the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of
-these are not set then it will try to source them from the `.env` file.
+The `run_local_server.sh` script requires Docker Hub credentials. First it will look for the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of these are not set then it will try to source them from the `.env` file.
 
-4. Deploy server and load [Kids First FHIR model](https://github.com/kids-first/kf-api-fhir-service) into server
+4. Deploy server and load the [Kids First FHIR Data model](https://github.com/kids-first/kf-model-fhir) (deprecated) into server
 
 ```bash
 # Deploy server
 $ ./scripts/run_local_server.sh
 
-# Load model into server
+# Load model into server (deprecated)
 $ ./scripts/load_kidsfirst.sh
 ```
 
-You could also run the steps in `run_local_server.sh` manually. It is just a convenience
-script which does some setup and then runs `docker-compose up -d`.
+You could also run the steps in `run_local_server.sh` manually. It is just a convenience script which does some setup and then runs `docker-compose up -d`.
+
+### Endpoints
+
+#### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
+
+- A data browser app intended to give users a quick overview of the data in the FHIR server along with the ability to filter FHIR resources and drill down to view specific resources
+- {ROOT_URL}:3000
+
+#### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
+
+- The main endpoint ingest developers will use to CRUD FHIR resources
+- {ROOT_URL}:8000
+
+#### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+
+- A web application used to CRUD FHIR resources for those who do not want to write code
+- {ROOT_URL}:8001
+
+#### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
+
+- The administration endpoint used to change server configuration, user settings, etc.
+- {ROOT_URL}:9000
+
+#### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
+
+- The administration dashboard which is essentially a frontend to the admin API
+- {ROOT_URL}:9100
 
 ### Start/Stop Services
 
@@ -164,19 +172,13 @@ Once the services are running you can view logs from all services:
 $ docker-compose logs -f
 ```
 
-### Reload Kids First FHIR Model
-Run the loader script to reload (DELETE and POST) the Kids First FHIR
-conformance resources.
+### Reload Kids First FHIR Model (Deprecated)
 
-The conformance resources are sourced from the `kf-api-fhir-service` git repository.
-The default branch that is used for loading is `master`, but you can supply a
-different branch if you want.
+Run the loader script to reload (DELETE and POST) the Kids First FHIR conformance resources.
 
-This script will always do a `git pull` to update the branch before loading
-the resources. This might result in merge errors if you have made changes
-to the local branch which you will need to resolve (or do a complete wipe out
-`git reset --hard origin/<branch>`)
+The conformance resources are sourced from the `kf-model-fhir` git repository. The default branch that is used for loading is `master`, but you can supply a different branch if you want.
 
+This script will always do a `git pull` to update the branch before loading the resources. This might result in merge errors if you have made changes to the local branch which you will need to resolve (or do a complete wipe out `git reset --hard origin/<branch>`).
 
 ```bash
 $ ./scripts/load_kidsfirst.sh some-other-branch
@@ -184,26 +186,15 @@ $ ./scripts/load_kidsfirst.sh some-other-branch
 
 ### Server Settings
 
-**Properties File**
+#### Properties File
 
-Server settings are controlled by modifying the
-`server/settings/master.properties` Java properties file.
+Server settings are controlled by modifying the `server/settings/master.properties` Java properties file. The property strings in the file represent a hierarchical structure of config modules in the Smile CDR. Each module pertains to a logical set of functionality (e.g. persistence) in the server. Read more about the config modules
+[here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html).
 
-The property strings in the file represent a hierarchical structure of
-config modules in the Smile CDR. Each module pertains to a logical set of
-functionality (e.g. persistence) in the server. Read more about the config modules
-[here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html)
+#### Environment Variable Substitution
 
-**Environment Variable Substitution**
+Property values in the properties file may also be passed in from the environment using the [environment variable substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution). This is useful for passing in secrets like DB credentials.
 
-Property values in the properties file may also be passed in from the
-environment using the [environment variable substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution).
-This is useful for passing in secrets like DB credentials.
+**Note:**
 
-**NOTE**
-
-Any settings changed and saved via the Smile CDR Admin Dashboard or the
-Smile CDR Admin API will be discarded every time the server is re-deployed.
-This is because the source of truth for the settings is the properties file
-and NOT the database. However, this behavior can be changed with the
-[node.propertysource property](https://smilecdr.com/docs/installation/installing_smile_cdr.html#module-property-source).
+Any settings changed and saved via the Smile CDR Admin Dashboard or the Smile CDR Admin API will be discarded every time the server is re-deployed. This is because the source of truth for the settings is the properties file and NOT the database. However, this behavior can be changed with the [node.propertysource property](https://smilecdr.com/docs/installation/installing_smile_cdr.html#module-property-source).
