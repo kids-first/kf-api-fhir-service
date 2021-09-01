@@ -1,7 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_type_1_standard {
     projectName                = "kf-api-fhir-service"
-    branch		       = "feature/fixing-map-function"
     orgFullName                = "kids-first"
     environments               = "dev"
     docker_image_type          = "debian"
