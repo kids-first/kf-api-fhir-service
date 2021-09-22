@@ -1,5 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_type_1_standard {
+    jenkinsfile_name           = "Jenkinsfile_NCI"
     projectName                = "nci-api-fhir-service"
     orgFullName                = "kids-first"
     environments               = "dev"
