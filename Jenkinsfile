@@ -2,7 +2,7 @@
 ecs_service_type_1_standard {
     projectName                = "kf-api-fhir-service"
     orgFullName                = "kids-first"
-    environments               = "dev,qa,prd"
+    environments               = "qa,prd"
     docker_image_type          = "debian"
     create_default_iam_role    = "1"
     entrypoint_command         = "/home/smile/smilecdr/bin/smilecdr run"
