@@ -1,0 +1,22 @@
+@Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
+ecs_service_type_1_standard {
+    projectName                = "clovoc-api-fhir-service"
+    orgFullName                = "kids-first"
+    environments               = "dev"
+    docker_image_type          = "debian"
+    create_default_iam_role    = "1"
+    entrypoint_command         = "/home/smile/smilecdr/bin/smilecdr run"
+    quick_deploy               = "true"
+    external_config_repo       = "false"
+    dependencies               = "ecr"
+    deploy_scripts_version     = "master"
+    internal_app               = "false"
+    vcpu_container             = "2048"
+    memory_container           = "4096"
+    vcpu_task                  = "2048"
+    memory_task                = "4096"
+    additional_container_ports = "9000,9100"
+    dev_cidr                   = "0.0.0.0/0"
+    additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
+    external_domain = "kidsfirstdrc.org"
+}
