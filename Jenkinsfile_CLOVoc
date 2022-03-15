@@ -1,6 +1,7 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_type_1_standard {
     projectName                = "clovoc-api-fhir-service"
+    jenkinsfile_name  	       = "Jenkinsfile_CLOVoc" 
     orgFullName                = "kids-first"
     environments               = "dev"
     docker_image_type          = "debian"
