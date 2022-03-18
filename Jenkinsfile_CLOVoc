@@ -21,4 +21,5 @@ ecs_service_type_1_standard {
     dev_cidr                   = "0.0.0.0/0"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
     external_domain = "kidsfirstdrc.org"
+    health_check_path          = "/endpoint-health"
 }
