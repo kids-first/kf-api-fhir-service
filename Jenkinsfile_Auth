@@ -1,6 +1,7 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 ecs_service_type_1_standard {
     projectName                = "kf-api-fhir-service-auth"
+    jenkinsfile_name  	       = "Jenkinsfile_Auth" 
     orgFullName                = "kids-first"
     environments               = "qa,prd"
     docker_image_type          = "debian"
