@@ -12,7 +12,7 @@ ecs_service_type_1_standard {
     external_config_repo       = "false"
     dependencies               = "ecr"
     deploy_scripts_version     = "master"
-    vcpu_container             = "2048"
+    vcpu_container             = "4096"
     memory_container           = "4096"
     internal_app               = "false"
     vcpu_task                  = "2048"
