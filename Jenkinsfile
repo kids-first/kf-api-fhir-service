@@ -15,7 +15,7 @@ ecs_service_type_1_standard {
     vcpu_container             = "4096"
     memory_container           = "4096"
     internal_app               = "false"
-    vcpu_task                  = "2048"
+    vcpu_task                  = "4096"
     memory_task                = "4096"
     create_service_discovery   = "1"
     app_sg_name                = "ElasticMapReduce-Slave-Private-qa-20210122222002663600000001"
