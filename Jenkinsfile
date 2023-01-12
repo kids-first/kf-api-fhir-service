@@ -18,7 +18,6 @@ ecs_service_type_1_standard {
     vcpu_task                  = "4096"
     memory_task                = "8192"
     create_service_discovery   = "1"
-    app_sg_name                = "ElasticMapReduce-Master-Private-qa-20210122222002664300000002"
     additional_container_ports = "9000,9100"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
     external_domain = "kidsfirstdrc.org"
