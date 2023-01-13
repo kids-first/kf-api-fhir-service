@@ -21,4 +21,6 @@ ecs_service_type_1_standard {
     additional_container_ports = "9000,9100"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
     external_domain = "kidsfirstdrc.org"
+    service_timeout = "50"
+    service_interval = "100"
 }
