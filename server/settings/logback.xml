@@ -31,7 +31,7 @@ https://smilecdr.com/docs/getting_started/system_logging.html
 	-->
 	<appender name="STARTUP" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>DEBUG</level>
 		</filter>
 		<file>${smile.basedir}/log/smile-startup.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -55,7 +55,7 @@ https://smilecdr.com/docs/getting_started/system_logging.html
 	-->
 	<appender name="RUNTIME_SYNC" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>DEBUG</level>
 		</filter>
 		<file>${smile.basedir}/log/smile.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -78,7 +78,7 @@ https://smilecdr.com/docs/getting_started/system_logging.html
 	-->
 	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>ERROR</level>
+			<level>DEBUG</level>
 		</filter>
 		<file>${smile.basedir}/log/smile-error.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
