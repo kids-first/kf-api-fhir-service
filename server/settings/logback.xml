@@ -13,7 +13,7 @@ https://smilecdr.com/docs/getting_started/system_logging.html
 	-->
 	<appender name="STDOUT_SYNC" class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>DEBUG</level>
 		</filter>
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n${log.stackfilter.pattern}</pattern>
