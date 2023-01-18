@@ -26,7 +26,7 @@ if [ -z "$JVMARGS" ]; then
   JVMARGS="$JVMARGS -Dsun.net.inetaddr.ttl=60"
   JVMARGS="$JVMARGS -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled"
   JVMARGS="$JVMARGS -Djava.security.egd=file:/dev/./urandom"
-  JVMARGS="$JVMARGS -Xmx8g"
+  JVMARGS="$JVMARGS -Xmx16g"
 
 fi
 
