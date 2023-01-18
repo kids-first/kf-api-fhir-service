@@ -23,6 +23,4 @@ ecs_service_type_1_standard {
     external_domain = "kidsfirstdrc.org"
     service_timeout = "50"
     service_interval = "100"
-    main_branch = "bugfix/al/DEVOPS-1065-sg-change"
-    app_sg_name                = "ElasticMapReduce-Master-Private-qa-20210122222002664300000002"
 }
