@@ -78,7 +78,7 @@ https://smilecdr.com/docs/getting_started/system_logging.html
 	-->
 	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>ERROR</level>
+			<level>INFO</level>
 		</filter>
 		<file>${smile.basedir}/log/smile-error.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
