@@ -4,10 +4,10 @@ version: "3.8"
 services:
   smilecdr:
     container_name: smilecdr
-    # image: kidsfirstdrc/smilecdr:2023.02.R02
-    build:
-      context: .
-      target: test
+    image: kidsfirstdrc/smilecdr:2023.02.R02
+    # build:
+    #   context: .
+      # target: test
     env_file:
       - .env
     ports:
