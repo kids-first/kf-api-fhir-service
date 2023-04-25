@@ -10,6 +10,10 @@ services:
       # target: test
     env_file:
       - .env
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
     ports:
       - "8000:8000"
       - "9000:9000"
