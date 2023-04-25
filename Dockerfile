@@ -15,6 +15,9 @@
 # Whether server should respect forwarded headers 
 # RESPECT_FWD_HEADERS
 
+# FHIR base url 
+# FHIR_ENDPOINT
+
 # Postgres configuration
 # FHIR_DB_HOST
 # FHIR_DB_USERNAME
@@ -39,6 +42,13 @@ ENV JVM_MAX_HEAP_SIZE -Xmx4g
 ENV SEED_CONF_RESOURCES false
 ENV REQUEST_VALIDATION false
 ENV RESPECT_FWD_HEADERS false
+ENV FHIR_ENDPOINT http://localhost:8000 
+ENV FHIR_DB_HOST localhost
+ENV FHIR_DB_PORT 5432
+ENV FHIR_DB_NAME cdr
+ENV FHIR_AUDIT_DB_NAME audit
+ENV FHIR_DB_USERNAME admin
+ENV FHIR_DB_PASSWORD password
 
 # ------ Production Server Image ------
 FROM test as production
@@ -52,10 +62,4 @@ ENV JVM_MAX_HEAP_SIZE -Xmx8g
 ENV SEED_CONF_RESOURCES true
 ENV REQUEST_VALIDATION true
 ENV RESPECT_FWD_HEADERS true
-ENV FHIR_DB_HOST localhost
-ENV FHIR_DB_PORT 5432
-ENV FHIR_DB_NAME cdr
-ENV FHIR_AUDIT_DB_NAME audit
-ENV FHIR_DB_USERNAME admin
-ENV FHIR_DB_PASSWORD password
 
