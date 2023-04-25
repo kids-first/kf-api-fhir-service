@@ -29,14 +29,10 @@ FROM kidsfirstdrc/smilecdr:2023.02.R02 as test
 
 WORKDIR /home/smile/smilecdr
 
-# Use quickstart dev server settings
-COPY smilecdr/settings/server-quickstart.properties classes/cdr-config-Master.properties
+# Server settings
+COPY smilecdr/settings/server-postgres.properties classes/cdr-config-Master.properties
 COPY smilecdr/settings/jvm.sh bin/setenv
 COPY smilecdr/settings/system-users.json classes/config_seeding/users.json
-
-# NOTE: 
-# Test image uses in memory H2 database. 
-# DB config is hardcoded in server-quickstart.properties
 
 ENV JVM_MAX_HEAP_SIZE -Xmx4g
 ENV SEED_CONF_RESOURCES false
@@ -54,12 +50,9 @@ ENV FHIR_DB_PASSWORD password
 FROM test as production
 RUN apt update
 
-# Use production server settings
-COPY smilecdr/settings/server-postgres.properties classes/cdr-config-Master.properties
-
 # JVM max memory - 8GB
 ENV JVM_MAX_HEAP_SIZE -Xmx8g
 ENV SEED_CONF_RESOURCES true
-ENV REQUEST_VALIDATION true
+ENV REQUEST_VALIDATION false
 ENV RESPECT_FWD_HEADERS true
 
