@@ -1,0 +1,44 @@
+
+version: "3.8"
+
+services:
+  smilecdr:
+    container_name: smilecdr
+    # image: kidsfirstdrc/smilecdr:2023.02.R02
+    build:
+      context: .
+      target: test
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+      - "9100:9100"
+      - "8001:8001"
+      - "9200:9200"
+      - "9201:9201"
+    volumes:
+      # Server with Postgres DB
+      # - ./smilecdr/settings/server-postgres.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      # Server with embedded H2 DB
+      - ./smilecdr/settings/server-quickstart.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      - ./smilecdr/settings/jvm.sh:/home/smile/smilecdr/bin/setenv
+      - ./smilecdr/settings/system-users.json:/home/smile/smilecdr/classes/config_seeding/users.json
+    restart: "unless-stopped"
+    depends_on:
+      - smilecdr_postgres
+
+  smilecdr_postgres:
+    container_name: smilecdr_postgres
+    build:
+      context: ./smilecdr/postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - smilecdr_db:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  smilecdr_db:
