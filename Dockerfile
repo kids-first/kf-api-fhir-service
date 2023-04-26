@@ -24,8 +24,7 @@
 # FHIR_DB_PASSWORD
 
 # ------ Integration Test Server Image ------
-# FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2021.02.R05 as test
-FROM kidsfirstdrc/smilecdr:2023.02.R02 as test
+FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2023.02.R02 as test
 
 WORKDIR /home/smile/smilecdr
 
