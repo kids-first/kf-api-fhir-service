@@ -47,7 +47,6 @@ ENV FHIR_DB_PASSWORD password
 
 # ------ Production Server Image ------
 FROM test as production
-RUN apt update
 
 # JVM max memory - 8GB
 ENV JVM_MAX_HEAP_SIZE -Xmx8g
