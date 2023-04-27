@@ -1,5 +1,7 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
-ecs_service_type_1_standard {
+deploy {
+    architecture_type          = "aws-ecs-service-type-1"
+	jenkinsfile_name           = "Jenkinsfile_upgrade" 
     projectName                = "kf-api-fhir-service-upgrade"
     orgFullName                = "kids-first"
     environments               = "dev,qa,prd"
