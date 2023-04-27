@@ -10,10 +10,6 @@ services:
       # target: test
     env_file:
       - .env
-    environment:
-      POSTGRES_DB: "postgres"
-      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -23,9 +19,9 @@ services:
       - "9201:9201"
     volumes:
       # Server with Postgres DB
-      # - ./smilecdr/settings/server-postgres.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      - ./smilecdr/settings/server-postgres.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
       # Server with embedded H2 DB
-      - ./smilecdr/settings/server-quickstart.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      # - ./smilecdr/settings/server-quickstart.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
       - ./smilecdr/settings/jvm.sh:/home/smile/smilecdr/bin/setenv
       - ./smilecdr/settings/system-users.json:/home/smile/smilecdr/classes/config_seeding/users.json
     restart: "unless-stopped"
@@ -34,13 +30,19 @@ services:
 
   smilecdr_postgres:
     container_name: smilecdr_postgres
-    build:
-      context: ./smilecdr/postgres
+    image: postgres:11.4-alpine
+    # build:
+    #   context: ./smilecdr/postgres
     ports:
       - "5432:5432"
     env_file:
       - .env
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
     volumes:
+      - ./smilecdr/postgres/init_postgresdb.sh:/docker-entrypoint-initdb.d/init_postgresdb.sh
       - smilecdr_db:/var/lib/postgresql/data
     restart: unless-stopped
 

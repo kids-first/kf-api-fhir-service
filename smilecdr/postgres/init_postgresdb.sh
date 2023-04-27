@@ -1,4 +1,6 @@
-#!/bin/bash set -e
+#!/bin/bash 
+
+set -e
 
 #POSTGRES_USER, POSTGRES_DB and POSTGRES_PASSWORD are environment variables defined by the parent postgres image.
 #POSTGRES_USER is the DB superuser, POSTGRES_PASSWORD is superuser's password and POSTGRES_DB is the default DB.
