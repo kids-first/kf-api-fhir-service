@@ -42,7 +42,7 @@ jobs:
           source venv/bin/activate
           pip install -e .
 
-      - name: ✅ Test
+      - name: ✅ Test Core
         run: |
           source .env
           source venv/bin/activate
@@ -54,5 +54,11 @@ jobs:
           
           echo "🔼 Seed Smile CDR users ..."
           ./src/bin/seed_users.py admin password smilecdr/settings/users.json
+
+      - name: ✅ Test Other 
+        run: ./test/test.sh
+
+
+
 
 
