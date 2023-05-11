@@ -1,0 +1,6 @@
+Flask
+gunicorn
+requests
+python-dotenv
+pyjwt
+autopep8
