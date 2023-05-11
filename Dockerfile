@@ -23,6 +23,9 @@
 # FHIR_DB_USERNAME
 # FHIR_DB_PASSWORD
 
+# OIDC Configuration
+# KEYCLOAK_ISSUER
+
 # ------ Integration Test Server Image ------
 FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2023.02.R02 as test
 
@@ -32,6 +35,8 @@ WORKDIR /home/smile/smilecdr
 COPY smilecdr/settings/server-postgres.properties classes/cdr-config-Master.properties
 COPY smilecdr/settings/jvm.sh bin/setenv
 COPY smilecdr/settings/system-users.json classes/config_seeding/users.json
+COPY smilecdr/settings/oidc-servers.json classes/config_seeding/oidc-servers.json
+COPY smilecdr/settings/auth.js classes/config_seeding/auth.js
 
 ENV JVM_MAX_HEAP_SIZE -Xmx4g
 ENV SEED_CONF_RESOURCES false
@@ -44,6 +49,7 @@ ENV FHIR_DB_NAME cdr
 ENV FHIR_AUDIT_DB_NAME audit
 ENV FHIR_DB_USERNAME admin
 ENV FHIR_DB_PASSWORD password
+ENV KEYCLOAK_ISSUER http://keycloak:8080/realms/fhir-dev
 
 # ------ Production Server Image ------
 FROM test as production
