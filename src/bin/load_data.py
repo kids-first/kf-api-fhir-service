@@ -15,6 +15,11 @@ from src.config import (
 )
 from src.misc import elapsed_time_hms
 
+RESOURCE_LOAD_ORDER = [
+    "Patient",
+    "Specimen"
+]
+
 
 def load_data(client_id, client_secret):
     """
@@ -24,8 +29,12 @@ def load_data(client_id, client_secret):
         "Content-Type": "application/json",
     }
     start_time = time.time()
-    for filename in os.listdir(DATA_DIR):
+    for resource_type in RESOURCE_LOAD_ORDER:
+        filename = f"{resource_type}.json"
         filepath = os.path.join(DATA_DIR, filename)
+        if not os.path.exists(filepath):
+            print(f"Skipping {filepath}, does not exist")
+            continue
         with open(filepath, "r") as json_file:
             data = json.load(json_file)
         endpoint = filename.split(".")[0]

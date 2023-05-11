@@ -1,0 +1,64 @@
+
+name: ✅ Test 
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize, closed] 
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    steps:
+      - name: 👩‍💻 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐳 Start docker-compose
+        run: |
+          cp env.sample .env
+          source .env
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker-compose pull --ignore-pull-failures
+          docker-compose up -d
+
+      - name: 🚑 Healthcheck 
+        run: |
+          source .env
+          ./src/bin/health-check.sh
+          
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: 📦 Install deps
+        run: |
+          pip install --upgrade virtualenv
+          virtualenv -p python3 venv
+          source venv/bin/activate
+          pip install -e .
+
+      - name: ✅ Test Core
+        run: |
+          source .env
+          source venv/bin/activate
+          echo "🏭 Generating sample data ..."
+          ./src/bin/generate_data.py 2 5
+          
+          echo "🔼 Load sample data ..."
+          ./src/bin/load_data.py admin password 
+          
+          echo "🔼 Seed Smile CDR users ..."
+          ./src/bin/seed_users.py admin password smilecdr/settings/users.json
+
+      - name: ✅ Test Other 
+        run: ./test/test.sh
+
+
+
+
+

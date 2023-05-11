@@ -5,7 +5,7 @@
 set -e
 
 START_TIME=$SECONDS
-FHIR_ENDPOINT=http://localhost:8000
+FHIR_ENDPOINT=${FHIR_ENDPOINT:-http://localhost:8000}
 
 echo "🔥 Waiting for fhir server to finish deploying (may take up to 10 minutes) ..."
 until $(curl --output /dev/null --head --silent --fail $FHIR_ENDPOINT/endpoint-health)
