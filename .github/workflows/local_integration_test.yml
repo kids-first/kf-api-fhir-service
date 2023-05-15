@@ -40,9 +40,10 @@ jobs:
           pip install --upgrade virtualenv
           virtualenv -p python3 venv
           source venv/bin/activate
+          pip install -r dev-requirements.txt
           pip install -e .
 
-      - name: ✅ Test Core
+      - name: 🌱 Seed server with users and data
         run: |
           source .env
           source venv/bin/activate
@@ -55,8 +56,10 @@ jobs:
           echo "🔼 Seed Smile CDR users ..."
           ./src/bin/seed_users.py admin password smilecdr/settings/users.json
 
-      - name: ✅ Test Other 
-        run: ./test/test.sh
+      - name: ✅ Tests
+        run: |
+          source venv/bin/activate
+          pytest tests
 
 
 
