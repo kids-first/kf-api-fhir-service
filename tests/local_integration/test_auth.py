@@ -5,7 +5,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from src.config import (
-    FHIR_URL, KEYCLOAK_CLIENT_ID, KEYCLOAK_CLIENT_SECRET, KEYCLOAK_TOKEN_URL
+    FHIR_URL, KEYCLOAK_CLIENT_ID, KEYCLOAK_CLIENT_SECRET, KEYCLOAK_ISSUER,
+    KEYCLOAK_PROXY_URL
 )
 
 # Todo
@@ -17,16 +18,22 @@ from src.config import (
 
 def get_token(
     client_id=KEYCLOAK_CLIENT_ID, client_secret=KEYCLOAK_CLIENT_SECRET,
-    token_url=KEYCLOAK_TOKEN_URL
 ):
-    kwargs = {
-        "json":
-        {
-            "client_id": client_id,
-            "client_secret": client_secret,
-        }
+    payload = {
+        "kwargs": {
+            "data":
+            {
+                "grant_type": "client_credentials",
+                "client_id": client_id,
+                "client_secret": client_secret,
+            },
+        },
+        "http_operation": "post",
+        "endpoint": f"{KEYCLOAK_ISSUER}/protocol/openid-connect/token"
     }
-    return send_request("post", token_url, **kwargs).json()["access_token"]
+    return send_request(
+        "post", KEYCLOAK_PROXY_URL, json=payload
+    ).json()["access_token"]
 
 
 def send_request(method, *args, **kwargs):
