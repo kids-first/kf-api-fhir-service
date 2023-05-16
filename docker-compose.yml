@@ -5,9 +5,6 @@ services:
   smilecdr:
     container_name: smilecdr
     image: kidsfirstdrc/smilecdr:2023.02.R02
-    # build:
-    #   context: .
-      # target: test
     env_file:
       - .env
     ports:
@@ -24,15 +21,16 @@ services:
       # - ./smilecdr/settings/server-quickstart.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
       - ./smilecdr/settings/jvm.sh:/home/smile/smilecdr/bin/setenv
       - ./smilecdr/settings/system-users.json:/home/smile/smilecdr/classes/config_seeding/users.json
+      - ./smilecdr/settings/oidc-servers.json:/home/smile/smilecdr/classes/config_seeding/oidc-servers.json
+      - ./smilecdr/settings/auth.js:/home/smile/smilecdr/classes/config_seeding/auth.js
     restart: "unless-stopped"
     depends_on:
       - smilecdr_postgres
+      - keycloak
 
   smilecdr_postgres:
     container_name: smilecdr_postgres
     image: postgres:11.4-alpine
-    # build:
-    #   context: ./smilecdr/postgres
     ports:
       - "5432:5432"
     env_file:
@@ -46,5 +44,30 @@ services:
       - smilecdr_db:/var/lib/postgresql/data
     restart: unless-stopped
 
+  keycloak:
+    container_name: 'keycloak'
+    image: quay.io/keycloak/keycloak:21.0.2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    ports:
+      - "8080:8080"
+    command: start-dev --hostname-strict-backchannel=true --import-realm
+    volumes:
+      - ./keycloak/settings:/opt/keycloak/data/import
+
+  web:
+    container_name: web_app
+    build:
+      context: web_app
+    depends_on:
+      - keycloak
+    env_file:
+      .env
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./web_app/:/home/app
+      - /home/app/venv
 volumes:
   smilecdr_db:
