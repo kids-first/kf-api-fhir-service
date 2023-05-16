@@ -31,6 +31,8 @@ FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2023.02.R
 
 WORKDIR /home/smile/smilecdr
 
+RUN ulimit -n 5000
+
 # Server settings
 COPY smilecdr/settings/server-postgres.properties classes/cdr-config-Master.properties
 COPY smilecdr/settings/jvm.sh bin/setenv
