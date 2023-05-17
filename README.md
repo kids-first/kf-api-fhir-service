@@ -10,191 +10,295 @@
 
 FHIR data service for Kids First uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
 
-## Version
+## 🔢 Version
 
-Smile CDR 2021.02.R05 (Odyssey) (See [changelogs](https://smilecdr.com/docs/introduction/changelog.html))
+Smile CDR 2023.02.R02 (Wizard). See [changelogs](https://smilecdr.com/docs/introduction/changelog.html)
+for details
 
-## Quickstart
+## ✨ Deployments
 
-Kids First FHIR services have been deployed into the three standard environments within the Kids First Strides AWS account: development (DEV), QA, and production (PRD). The FHIR endpoints for each of these environments are:
+Kids First FHIR services have been deployed into the three standard environments
+within the Kids First Strides AWS account: development, QA, and production.
+The FHIR endpoints for each of these environments are:
 
-- Development: https://kf-api-fhir-service-dev.kidsfirstdrc.org
-- QA: https://kf-api-fhir-service-qa.kidsfirstdrc.org
-- Production: https://kf-api-fhir-service.kidsfirstdrc.org
+- Development: https://kf-api-fhir-service-upgrade-dev.kf-strides.org
+- QA: https://kf-api-fhir-service-upgrade-qa.kf-strides.org
+- Production: https://kf-api-fhir-service-upgrade.kf-strides.org
 
-## 🚧 Server Access
+## 🧑‍💻 Quickstart
 
-**Note: We recognize that the process for accessing the deployed servers is not very user/developer friendly. This is temporary as we are still working on the NCPI infrastructure and server authentication. Please bear with us!**
+### Register to Access
 
-In order to interact with these servers, please follow the instrunctions below.
+The Kids First FHIR service currently supports OIDC based authentication using
+the [OAuth2 Client Credentials Flow](https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow)
+We use the open source OIDC provider [Keycloak](https://www.keycloak.org/).
 
-Most users will not need to have an account on the server since the permissions for anonymous HTTP requests allow one to perform any standard FHIR client operation on the server. This means you can create, read, update, delete, and search for FHIR resources on the server.
+In order to begin interacting with the server you will need to register a new client.
+Please reach out to one of the Keycloak admins:
 
-### DEV/QA
+1. Alex Lubneuski (lubneuskia@chop.edu)
+2. Natasha Singh (singhn4@chop.edu)
 
-You will need to gain access to the environment/VPC the server runs in. You will do this by tunneling through a bastion host to access the environment:
+Please include:
+1. Preferred client_id value
+2. Which environment you wish to access (dev, qa, prd)
+3. Whether you need read/write/both access
 
-- Use DEV bastion host for access to development VPC
-- Use QA bastion host for access to QA VPC
-
-#### Setup Tunnel
-
-In order to tunnel into the bastion hosts, please follow the instructions [here](https://www.notion.so/d3b/Accessing-kf-strides-569e6a853d5c47c69a3ac00ccd7a89e0).
-
-### PRD
-
-#### Request Access
-
-You will do these steps only one time.
-
-1.  In a browser, go to the production server URL (https://kf-api-fhir-service.kidsfirstdrc.org). Make sure you are signed out of any Google accounts
-
-2.  Click `Login with Google` and try to sign in with a Google account:
-
-<img src="docs/images/auth0-signin.png" alt="Auth0 Sign-in" height="400" style="box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)" />
-
-3. You will get a page with a `401 Authorization Required` message:
-
-<img src="docs/images/401-not-auth.png" alt="401 Not Auth" width="400" style="box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)" />
-
-4. Send an email to either [Allison Heath](mailto:heathap@chop.edu), [Alex Lubneuski](mailto:lubneuskia@chop.edu), [Natasha Singh](mailto:singhn4@chop.edu) or [Meen Chul Kim](mailto:kimm11@chop.edu) with the Google account you used before and request access for the server URL you wish to access
-
-5. You will receive an email with confirmation of the access
-
-#### Authenticate to Access Server Environment
-
-You will do this every time your Cookie expires (~1 week).
-
-1. In a browser, go to `https://kf-api-fhir-service.kidsfirstdrc.org/metadata`
-
-2. If successful, you will see a page from the server that shows the server's `CapabilityStatement`:
-
-<img src="docs/images/smile-cdr-success.png" alt="Success" style="box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)" />
-
-3. Save the cookie from the response/ The cookie can be found in the response's `Set-Cookie` directive for `AWSELBAuthSessionCookie-0`
-
-#### Send Requests to Server
-
-Although you don't need an account on the server to authenticate with it, you will still need to do something to tell the server you have been granted access to it. When you send HTTP requests to the server make sure to include your `AWSELBAuthSessionCookie-0=yadayada` cookie text in a `Cookie` header as follows:
-
-```bash
-curl -X GET https://kf-api-fhir-service.kidsfirstdrc.org/Patient -L --cookie <the cookie>
+Once you've registered you will receive:
+```
+token_url: url to get tokens from
+client_id: your client id
+client_secret: your client secret
 ```
 
-## Demo FHIR Servers
+Please keep the client secret securely and privately stored!
 
-Before moving to the standard service deployment architecture, demo servers are available. For the detailed instructions, please visit [NCPI API FHIR Service](https://github.com/ncpi-fhir/ncpi-api-fhir-service) (restrictions may apply).
+### Server Access 
 
-## Development
+Any machine wanting to access the FHIR service must authenticate by providing
+a valid OAuth2 access token issued by the OIDC provider. Here we will walk 
+through an example of how any request to the server will be made.
 
-You can experiment locally with the FHIR Docker Compose stack. The services/apps included in this are:
+### Get the Access Token
+Let's pretend we have registered a client in the QA environment with the following 
+credentials and then use these to get the access token from Keycloak:
 
-- Smile CDR FHIR services (See [Endpoints](#Endpoints) below)
-- PostgresSQL database for the server
-- FHIR Data Dashboard web app
-
-### Spin up the Docker Stack
-
-1. Clone this repository
-
-```bash
-$ git clone git@github.com:kids-first/kf-api-fhir-service.git
-$ cd kf-api-fhir-service
+```shell
+client_id: myclient
+client_secret: mysecret
+token_url: https://kf-keycloak-qa.kf-strides.org/auth/realms/FHIR-TEST/protocol/openid-connect/token
 ```
 
-2. Get access to the Smile CDR image
-
-   - Create a [Docker Hub](https://hub.docker.com/) account if you don't have one
-   - Ask [Natasha Singh](mailto:singhn4@chop.edu) or [Meen Chul Kim](mailto:kimm11@chop.edu) for access to the image (hosted in private Docker Hub repo)
-
-   **🚨 DO NOT distribute the Smile CDR image as it is only for trial use by the internal team!**
-
-3. Set environment variables in a `.env` file (See `server/settings/dev.env` for example)
-
-**Note:**
-
-The `run_local_server.sh` script requires Docker Hub credentials. First it will look for the environment variables `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PW`. If either of these are not set then it will try to source them from the `.env` file.
-
-4. Deploy server and load the [Kids First FHIR Data model](https://github.com/kids-first/kf-model-fhir) (deprecated) into server
-
-```bash
-# Deploy server
-$ ./scripts/run_local_server.sh
-
-# Load model into server (deprecated)
-$ ./scripts/load_kidsfirst.sh
+```shell
+curl -X POST -d "client_id=myclient&client_secret=mysecret&grant_type=client_credentials" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    https://kf-keycloak-qa.kf-strides.org/auth/realms/FHIR-TEST/protocol/openid-connect/token
 ```
 
-You could also run the steps in `run_local_server.sh` manually. It is just a convenience script which does some setup and then runs `docker-compose up -d`.
+You will get something that looks like this:
 
-### Endpoints
-
-#### [FHIR Data Dashboard](https://github.com/kids-first/kf-ui-fhir-data-dashboard)
-
-- A data browser app intended to give users a quick overview of the data in the FHIR server along with the ability to filter FHIR resources and drill down to view specific resources
-- {ROOT_URL}:3000
-
-#### [FHIR API](https://smilecdr.com/docs/tutorial_and_tour/fhir_crud_operations.html)
-
-- The main endpoint ingest developers will use to CRUD FHIR resources
-- {ROOT_URL}:8000
-
-#### [FHIR Client Web App](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
-
-- A web application used to CRUD FHIR resources for those who do not want to write code
-- {ROOT_URL}:8001
-
-#### [Smile CDR Admin API](https://smilecdr.com/docs/fhir_repository/fhirweb_console.html)
-
-- The administration endpoint used to change server configuration, user settings, etc.
-- {ROOT_URL}:9000
-
-#### [Smile CDR Admin Dashboard](https://smilecdr.com/docs/modules/web_admin_console.html)
-
-- The administration dashboard which is essentially a frontend to the admin API
-- {ROOT_URL}:9100
-
-### Start/Stop Services
-
-```bash
-# Stop all services
-$ docker-compose stop
-
-# Start all services
-$ docker-compose start
+```json
+{
+  "access_token": <long base64 encoded string removed for brevity>,
+  "expires_in": 3600,
+  "refresh_expires_in": 0,
+  "token_type": "Bearer",
+  "not-before-policy": 0,
+  "scope": "email profile fhir"
+}
 ```
 
-### View Service Logs
+### Use Token to Make Requests 
 
-Once the services are running you can view logs from all services:
+Now you can use this token to authenticate with the server and make requests.
 
-```bash
-$ docker-compose logs -f
+```shell
+curl -X GET -H 'Content-Type: application/json' \
+-H 'Authorization: Bearer <put access token here>'\ 
+https://kf-api-fhir-service-upgrade-qa.kf-strides.org/Patient
 ```
 
-### Reload Kids First FHIR Model (Deprecated)
+**Note** that your code will need to include logic that requests a new token 
+after the current token expires.
 
-Run the loader script to reload (DELETE and POST) the Kids First FHIR conformance resources.
+## 👩‍💻  Developer Quickstart
 
-The conformance resources are sourced from the `kf-model-fhir` git repository. The default branch that is used for loading is `master`, but you can supply a different branch if you want.
+The quickstart script bootstraps the development environment, seeds the FHIR server
+with data, and sets up Keycloak with clients that have been assigned FHIR 
+permissions. Run this script if you want to get up and running quickly and see
+how everything works.
 
-This script will always do a `git pull` to update the branch before loading the resources. This might result in merge errors if you have made changes to the local branch which you will need to resolve (or do a complete wipe out `git reset --hard origin/<branch>`).
-
-```bash
-$ ./scripts/load_kidsfirst.sh some-other-branch
+### Setup
+```shell
+./bin/quickstart.sh --delete-volumes
 ```
 
-### Server Settings
+If everything ran correctly, you should see this in your shell:
 
-#### Properties File
+```shell
+✅ --- Quickstart setup complete! ---
+```
 
-Server settings are controlled by modifying the `server/settings/master.properties` Java properties file. The property strings in the file represent a hierarchical structure of config modules in the Smile CDR. Each module pertains to a logical set of functionality (e.g. persistence) in the server. Read more about the config modules
-[here](https://smilecdr.com/docs/json_admin_endpoints/module_config_endpoint.html).
+### Get Access Token 
+Let's try getting an access token from Keycloak for the `ingest-study-client`
+client. 
 
-#### Environment Variable Substitution
+```shell
+curl -X POST -H 'Content-Type: application/json' \
+-d '{"client_id": "ingest-study-client","client_secret": "lkhZRex5E58JCjcnIKkLcT4t1Q9dw5OW"}' \
+http://localhost:8081/keycloak-proxy/token
+```
 
-Property values in the properties file may also be passed in from the environment using the [environment variable substitution expressions](https://smilecdr.com/docs/installation/installing_smile_cdr.html#variable-substitution). This is useful for passing in secrets like DB credentials.
+### 💡 Important Note About Keycloak
+You may notice the instructions to get the access token are different here 
+in the Developer section than the Quickstart secion.
 
-**Note:**
+Unfortunately we cannot send requests directly to Keycloak to get access tokens
+since Keycloak will then use "localhost" in the access token's issuer field 
+(ex. `http://localhost:8080/realms/fhir-dev/protocol/openid-connect/token`).
 
-Any settings changed and saved via the Smile CDR Admin Dashboard or the Smile CDR Admin API will be discarded every time the server is re-deployed. This is because the source of truth for the settings is the properties file and NOT the database. However, this behavior can be changed with the [node.propertysource property](https://smilecdr.com/docs/installation/installing_smile_cdr.html#module-property-source).
+Then when this access token is sent to Smile CDR inside the docker stack, it 
+will fail since Smile CDR inside the docker network does not know what 
+`http://localhost:8080` is. 
+
+To mitigate this we simply send requests to the proxy service which then 
+forwards the request to the Keycloack docker service. 
+
+### Inspect Token
+You should get back a response that looks like this (access token removed 
+for brevity):
+```json
+{
+  "access_token": <access_token>,
+  "decoded_token": {
+    "acr": "1",
+    "allowed-origins": [
+      "/*"
+    ],
+    "azp": "ingest-study-client",
+    "clientAddress": "192.168.176.4",
+    "clientHost": "192.168.176.4",
+    "clientId": "ingest-study-client",
+    "email_verified": false,
+    "exp": 1681241247,
+    "fhir_roles": [
+      "fhir-role-fhir-client-superuser"
+    ],
+    "iat": 1681237647,
+    "iss": "http://keycloak:8080/realms/fhir-dev",
+    "jti": "40b44b13-9b07-45c1-9432-ee1c17ebdab2",
+    "preferred_username": "service-account-ingest-study-client",
+    "scope": "fhir profile email",
+    "sub": "7a25c1e2-5403-476b-ab13-00acc1693a75",
+    "typ": "Bearer"
+  },
+  "expires_in": 3600,
+  "not-before-policy": 0,
+  "refresh_expires_in": 0,
+  "scope": "fhir profile email",
+  "token_type": "Bearer"
+}
+
+```
+The actual base64 encoded access token needed to send requests to the 
+FHIR server will be in `access_token` but you can see the decoded version of 
+it in `decoded_token`. In the decoded version you can see the FHIR permissions 
+this client has.
+
+### View Data
+Let's use the access token to view the FHIR data we are now authorized to see:
+
+```shell
+curl -X GET -H 'Content-Type: application/json' \
+-H 'Authorization: Bearer <put access token here>'\ 
+http://localhost:8000/Patient
+```
+
+You should get back the Patients that were added by the quickstart script.
+
+## 💻 Codebase
+
+## Smile CDR
+All server settings are located in `smilecdr/settings`
+
+```
+smilecdr
+`-- settings
+    |-- auth.js
+    |-- master.properties
+    |-- oidc-servers.json
+    |-- jvmargs.sh
+    |-- system-users.json
+    `-- users.json
+```
+
+### auth.js
+
+- The post authentication callback function that Smile CDR calls once the user 
+has been authenticated. This function is responsible for extracting FHIR 
+roles and permissions from the access token (in the case of OIDC) or
+user object (in the case of basic auth) and adding it to the user session.
+
+- See https://smilecdr.com/docs/security/callback_scripts.html#method-onauthenticatesuccess
+
+### master.properties 
+
+- This is the main configuration file for the server.
+
+- See https://smilecdr.com/docs/configuration_categories for details on each 
+property.
+
+### oidc-servers.json 
+
+- A list of configuration objects for each OIDC server that you want Smile CDR
+to be aware of. Local Keycloak configuration is included.
+
+- See https://smilecdr.com/docs/configuration_categories for details on each 
+property.
+
+### jvmargs.sh
+
+- Sets the JVM args for Smile CDR
+
+### system-users.json 
+
+- Defines the admin and anonymous basic auth users that are seeded into the
+server at deploy time.
+
+### seed-users.json 
+
+- Additional Smile CDR basic auth users that can be loaded into the server 
+at runtime with the bin/load_data.py script
+
+## Keycloak
+
+```
+keycloak
+`-- settings
+    |-- fhir-dev-realm.json
+    |-- fhir-dev-users-0.json
+```
+### fhir-dev-realm.json
+
+- Keycloak settings for the tenant "fhir-dev". These get loaded in at deploy 
+time (on docker-compose up)
+
+### fhir-dev-users-0.json
+
+- Keycloak clients that have been configured with different FHIR roles and 
+consent grants. These get loaded in at deploy time (on docker-compose up)
+
+## Web App
+- A simple Keycloak proxy that makes it easy to get an access token from 
+Keycloak whether Keycloak is running in the Docker network or in an external
+resolvable network.
+
+## Utility Scripts
+```
+bin
+|-- generate_data.py
+|-- health-check.sh
+|-- load_data.py
+|-- quickstart.sh
+|-- seed_users.py
+`-- setup_dev_env.sh
+```
+ 
+### generate_data.py
+- Generates sample FHIR data for experimentation
+
+### load_data.py
+- Loads sample FHIR data, generated by generate_data.py 
+
+### seed_users.py
+- Loads loads Smile CDR basic auth users 
+
+### quickstart.sh
+- One stop script to get the entire dev environment up with all sample data and users 
+loaded into Smile CDR
+
+- Calls setup_dev_env.sh 
+
+### health-check.sh
+- Pings SmileCDR health check endpoint until it is operational
+
