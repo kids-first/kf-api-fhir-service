@@ -196,6 +196,20 @@ http://localhost:8000/Patient
 
 You should get back the Patients that were added by the quickstart script.
 
+## 🐛 Smile CDR Tickets
+If you find issues with Smile CDR itself, talk to a repo admin and/or ask for 
+credentials to the Smile CDR support website. The engineers there are very 
+responsive and helpful.
+
+https://support.smilecdr.com/
+
+## 🐳 New Docker Images 
+Smile CDR periodically releases new versions in the form of tarballs or docker 
+images. Talk to a repo admin and/or ask for the CHOP credentials to access the
+releases website to download new images:
+
+https://releases.smilecdr.com/
+
 ## 💻 Codebase
 
 ## Smile CDR
