@@ -5,7 +5,12 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from src.config import (
-    FHIR_URL, KEYCLOAK_CLIENT_ID, KEYCLOAK_CLIENT_SECRET, KEYCLOAK_ISSUER,
+    FHIR_URL,
+    KEYCLOAK_CLIENT_ID,
+    KEYCLOAK_CLIENT_SECRET,
+    KEYCLOAK_READ_CLIENT_ID,
+    KEYCLOAK_READ_CLIENT_SECRET,
+    KEYCLOAK_ISSUER,
     KEYCLOAK_PROXY_URL
 )
 
@@ -161,3 +166,47 @@ def test_crud_with_oidc_auth():
     with pytest.raises(requests.exceptions.HTTPError):
         resp = send_request("get", f"{url}/{pid}", **kwargs)
         assert resp.status_code == 404
+
+
+def test_read_only_oidc_client():
+    """
+    Test that a client with a read only role may view but not mutate
+    any resources on the FHIR server
+    """
+    access_token = get_token(
+        client_id=KEYCLOAK_READ_CLIENT_ID,
+        client_secret=KEYCLOAK_READ_CLIENT_SECRET
+    )
+    kwargs = {
+        "headers": {
+            "Authorization": f"Bearer {access_token}"
+        }
+    }
+    url = f"{FHIR_URL}/Patient"
+
+    # Post - Fail
+    patient = {
+        "resourceType": "Patient",
+        "gender": "male"
+    }
+    kwargs.update({"json": patient})
+    with pytest.raises(requests.exceptions.HTTPError):
+        resp = send_request("post", url, **kwargs)
+        assert resp.status_code == 403
+
+    # Put - Fail
+    pid = "PT-1-1"
+    patient["gender"] = "female"
+    patient["id"] = pid
+    with pytest.raises(requests.exceptions.HTTPError):
+        resp = send_request("put", f"{url}/{pid}", **kwargs)
+        assert resp.status_code == 403
+
+    # Get - Success
+    resp = send_request("get", f"{url}/{pid}", **kwargs)
+    assert resp.json()
+
+    # Delete - Fail
+    with pytest.raises(requests.exceptions.HTTPError):
+        resp = send_request("delete", f"{url}/{pid}", **kwargs)
+        assert resp.status_code == 403
