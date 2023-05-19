@@ -24,7 +24,7 @@ function extractFhirClaims(theContext) {
 
     // For backwards compatibility with older Keycloak versions (14)
   } else {
-    fhirClaims = theContext.getClaim("fhir");
+    fhirClaims = theContext.getClaim("fhir") || [];
 
     fhirRoleClaims = fhirClaims.filter((claim) =>
       claim.startsWith(FHIR_ROLE_CLAIM_PREFIX)
