@@ -1,5 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 deploy {
+    main_branch                = "major-upgrade-2023"
     architecture_type          = "aws-ecs-service-type-1"
   	jenkinsfile_name           = "Jenkinsfile_upgrade" 
     projectName                = "kf-api-fhir-service-upgrade"
