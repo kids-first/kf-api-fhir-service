@@ -15,7 +15,7 @@ FHIR data service for Kids First uses the [Smile CDR FHIR server](https://smilec
 Smile CDR 2023.02.R02 (Wizard). See [changelogs](https://smilecdr.com/docs/introduction/changelog.html)
 for details
 
-## ✨ Deployments
+## 🚀 Deployments
 
 Kids First FHIR services have been deployed into the three standard environments
 within the Kids First Strides AWS account: development, QA, and production.
@@ -25,16 +25,16 @@ The FHIR endpoints for each of these environments are:
 - QA: https://kf-api-fhir-service-upgrade-qa.kf-strides.org
 - Production: https://kf-api-fhir-service-upgrade.kf-strides.org
 
-## 🧑‍💻 Quickstart
+## 🧑‍💻 Quickstart - API Users
 
-### Register to Access
+### Register for Access
 
 The Kids First FHIR service currently supports OIDC based authentication using
-the [OAuth2 Client Credentials Flow](https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow)
+the [OAuth2 Client Credentials Flow](https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow).
 We use the open source OIDC provider [Keycloak](https://www.keycloak.org/).
 
 In order to begin interacting with the server you will need to register a new client.
-Please reach out to one of the Keycloak admins:
+Please email or slack one of the Keycloak admins:
 
 1. Alex Lubneuski (lubneuskia@chop.edu)
 2. Natasha Singh (singhn4@chop.edu)
@@ -101,16 +101,20 @@ https://kf-api-fhir-service-upgrade-qa.kf-strides.org/Patient
 **Note** that your code will need to include logic that requests a new token 
 after the current token expires.
 
-## 👩‍💻  Developer Quickstart
+## 👩‍💻  Quickstart - API Developers
 
 The quickstart script bootstraps the development environment, seeds the FHIR server
 with data, and sets up Keycloak with clients that have been assigned FHIR 
 permissions. Run this script if you want to get up and running quickly and see
 how everything works.
 
+### Precursor
+Please make sure you have [Docker](https://docs.docker.com/desktop/) 
+installed on your system and it is running. 
+
 ### Setup
 ```shell
-./bin/quickstart.sh --delete-volumes
+./src/bin/quickstart.sh --delete-volumes
 ```
 
 If everything ran correctly, you should see this in your shell:
