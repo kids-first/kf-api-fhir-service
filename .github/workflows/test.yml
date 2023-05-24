@@ -9,8 +9,32 @@ concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  DOCKER_HUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_HUB_PW: ${{ secrets.DOCKERHUB_PASSWORD }}
+
 jobs:
-  test:
+  quickstart:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - name: 👩‍💻 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: 📦 Install deps
+        run: |
+          pip install --upgrade virtualenv
+
+      - name: ✅ Test quickstart 
+        run: |
+          ./src/bin/quickstart.sh --delete-volumes
+
+  local_integration:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
@@ -21,7 +45,7 @@ jobs:
         run: |
           cp env.sample .env
           source .env
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker login -u ${{ env.DOCKER_HUB_USERNAME }} -p ${{ env.DOCKER_HUB_PW }}
           docker-compose pull --ignore-pull-failures
           docker-compose up -d
 
@@ -43,25 +67,9 @@ jobs:
           pip install -r dev-requirements.txt
           pip install -e .
 
-      - name: 🌱 Seed server with users and data
-        run: |
-          source .env
-          source venv/bin/activate
-          echo "🏭 Generating sample data ..."
-          ./src/bin/generate_data.py 2 5
-          
-          echo "🔼 Load sample data ..."
-          ./src/bin/load_data.py admin password 
-          
-          echo "🔼 Seed Smile CDR users ..."
-          ./src/bin/seed_users.py admin password smilecdr/settings/users.json
-
-      - name: ✅ Tests
+      - name: ✅ Local Integration Test
         run: |
           source venv/bin/activate
           pytest tests
-
-
-
 
 
