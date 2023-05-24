@@ -1,4 +1,3 @@
-from pprint import pprint
 
 import pytest
 import requests
@@ -6,54 +5,10 @@ from requests.auth import HTTPBasicAuth
 
 from src.config import (
     FHIR_URL,
-    KEYCLOAK_CLIENT_ID,
-    KEYCLOAK_CLIENT_SECRET,
     KEYCLOAK_READ_CLIENT_ID,
     KEYCLOAK_READ_CLIENT_SECRET,
-    KEYCLOAK_ISSUER,
-    KEYCLOAK_PROXY_URL
 )
-
-# Todo
-# Move send_request to a tests/utils.py
-# Create fixture for data
-# Create fixture for smile cdr user
-# Create helpers to load these into FHIR
-
-
-def get_token(
-    client_id=KEYCLOAK_CLIENT_ID, client_secret=KEYCLOAK_CLIENT_SECRET,
-):
-    payload = {
-        "kwargs": {
-            "data":
-            {
-                "grant_type": "client_credentials",
-                "client_id": client_id,
-                "client_secret": client_secret,
-            },
-        },
-        "http_operation": "post",
-        "endpoint": f"{KEYCLOAK_ISSUER}/protocol/openid-connect/token"
-    }
-    return send_request(
-        "post", KEYCLOAK_PROXY_URL, json=payload
-    ).json()["access_token"]
-
-
-def send_request(method, *args, **kwargs):
-    try:
-        requests_op = getattr(requests, method.lower())
-        resp = requests_op(*args, **kwargs)
-        resp.raise_for_status()
-    except requests.exceptions.HTTPError as e:
-        print("Problem sending request to endpoint. Args, Kwargs:")
-        print(args)
-        pprint(kwargs)
-        print(resp.text)
-        raise e
-
-    return resp
+from tests.utils import send_request, get_token
 
 
 @pytest.mark.parametrize(
@@ -92,13 +47,15 @@ def test_anonymous_invalid_actions(action, endpoint):
         assert resp.status_code == 403
 
 
-def test_crud_with_basic_auth():
+def test_crud_with_basic_auth(fhir_superuser):
     """
     Test that basic auth user can CRUD FHIR resources
     since it has ROLE_FHIR_CLIENT_SUPERUSER
     """
+    username = fhir_superuser["username"]
+    password = fhir_superuser["password"]
     url = f"{FHIR_URL}/Patient"
-    kwargs = {"auth": HTTPBasicAuth("ingest_client", "iamSmile123")}
+    kwargs = {"auth": HTTPBasicAuth(username, password)}
 
     # Post
     patient = {
@@ -168,7 +125,7 @@ def test_crud_with_oidc_auth():
         assert resp.status_code == 404
 
 
-def test_read_only_oidc_client():
+def test_read_only_oidc_client(patients):
     """
     Test that a client with a read only role may view but not mutate
     any resources on the FHIR server
@@ -195,9 +152,9 @@ def test_read_only_oidc_client():
         assert resp.status_code == 403
 
     # Put - Fail
-    pid = "PT-1-1"
+    patient = patients[0]
+    pid = patient["id"]
     patient["gender"] = "female"
-    patient["id"] = pid
     with pytest.raises(requests.exceptions.HTTPError):
         resp = send_request("put", f"{url}/{pid}", **kwargs)
         assert resp.status_code == 403
