@@ -33,8 +33,6 @@ SMILECDR_AUDIENCE = "https://kf-api-fhir-smilecdr-dev.org"
 
 def send_request(method, *args, **kwargs):
     print("\n***** Sending request ******")
-    print(args)
-    pprint(kwargs)
     try:
         requests_op = getattr(requests, method)
         resp = requests_op(*args, **kwargs)
@@ -64,6 +62,7 @@ def get_access_token(
     )
     resp = send_request("get", openid_config_endpoint, headers=headers)
     openid_config = resp.json()
+
     pprint(openid_config)
 
     # Authorize to get access token
@@ -81,12 +80,14 @@ def get_access_token(
     resp = send_request("post", token_endpoint, data=payload, params=params)
     token_payload = resp.json()
     access_token = token_payload["access_token"]
+
     pprint(token_payload)
 
     print("\n****** Introspect Token *************")
     decoded_token = jwt.decode(
         access_token, options={"verify_signature": False}
     )
+
     pprint(decoded_token)
 
     token_payload.update({

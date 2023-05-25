@@ -59,28 +59,26 @@ def create_user(client_id, client_secret, endpoint, user):
     return result
 
 
-def seed_users(client_id, client_secret, seed_users_filepath):
+def upsert_users(client_id, client_secret, endpoint, users):
     """
     Create or update Smile CDR users
     """
-    with open(seed_users_filepath, "r") as json_file:
-        data = json.load(json_file)
 
     headers = {
         "Content-Type": "application/json",
     }
-    created_users = []
-    for user in data:
+    upserted_users = []
+    for user in users:
         node_id = user.pop("nodeId")
         module_id = user.pop("moduleId")
         username = user['username']
-        endpoint = f"{USER_MGMNT_ENDPOINT}/{node_id}/{module_id}"
+        module_endpoint = f"{endpoint}/{node_id}/{module_id}"
 
         # Get user by username
         result = None
         try:
             resp = requests.get(
-                f"{USER_MGMNT_ENDPOINT}/{node_id}/{module_id}?searchTerm={username}",
+                f"{module_endpoint}?searchTerm={username}",
                 headers=headers,
                 auth=HTTPBasicAuth(client_id, client_secret),
             )
@@ -105,7 +103,7 @@ def seed_users(client_id, client_secret, seed_users_filepath):
             pid = result["pid"]
             try:
                 resp = requests.put(
-                    f"{USER_MGMNT_ENDPOINT}/{node_id}/{module_id}/{pid}",
+                    f"{module_endpoint}/{pid}",
                     headers=headers,
                     auth=HTTPBasicAuth(client_id, client_secret),
                     json=user
@@ -123,13 +121,29 @@ def seed_users(client_id, client_secret, seed_users_filepath):
                     raise e
         # Create new user
         else:
-            result = create_user(client_id, client_secret, endpoint, user)
+            result = create_user(
+                client_id, client_secret, module_endpoint, user
+            )
 
         user.update(result)
-        created_users.append(user)
+        upserted_users.append(user)
 
-    with open(seed_users_filepath, "w") as json_file:
-        json.dump(created_users, json_file, indent=2)
+    return upserted_users
+
+
+def seed_users_from_file(client_id, client_secret, filepath):
+    """
+    Read users from file, then upsert users in server
+    """
+    with open(filepath, "r") as json_file:
+        users = json.load(json_file)
+
+    upserted_users = upsert_users(
+        client_id, client_secret, USER_MGMNT_ENDPOINT, users
+    )
+
+    with open(filepath, "w") as json_file:
+        json.dump(upserted_users, json_file, indent=2)
 
 
 def cli():
@@ -154,7 +168,9 @@ def cli():
     )
     args = parser.parse_args()
 
-    seed_users(args.client_id, args.client_secret, args.seed_users_filepath)
+    seed_users_from_file(
+        args.client_id, args.client_secret, args.seed_users_filepath
+    )
 
     print("✅ Seed user data complete")
 

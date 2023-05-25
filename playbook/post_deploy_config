@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+echo "
+█▀█ █▀█ █▀ ▀█▀ ▄▄ █▀▄ █▀▀ █▀█ █░░ █▀█ █▄█ ▄▄ █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀
+█▀▀ █▄█ ▄█ ░█░ ░░ █▄▀ ██▄ █▀▀ █▄▄ █▄█ ░█░ ░░ █▄▄ █▄█ █░▀█ █▀░ █ █▄█
+"
+
+export $(aws s3 cp s3://$account_name-${TF_VAR_account_id}-"${region}"-"${TF_VAR_environment}"-secrets/${TF_VAR_projectName}/app.env - | xargs) > /dev/null 2>&1
+export $(aws s3 cp s3://$account_name-${TF_VAR_account_id}-"${region}"-"${TF_VAR_environment}"-secrets/${TF_VAR_projectName}/app.secrets - | xargs) > /dev/null 2>&1
+
+# Setup
+echo "🛠️ Setting up python environment for tests ..."
+python3 -m venv venv
+source venv/bin/activate
+pip install -r dev-requirements.txt
+pip install -e .
+
+# Run tests
+echo "✅ Run integration tests ..."
+pytest tests

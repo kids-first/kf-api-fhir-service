@@ -12,6 +12,9 @@ if DOTENV_PATH:
 
 BASE_URL = os.environ.get("FHIR_ENDPOINT")
 FHIR_URL = BASE_URL
+FHIR_APP_ADMIN = os.environ.get("FHIR_APP_ADMIN")
+FHIR_APP_ADMIN_PW = os.environ.get("FHIR_APP_ADMIN_PW")
+FHIR_TEST_USER_PW = os.environ.get("FHIR_TEST_USER_PW")
 USER_MGMNT_ENDPOINT = os.environ.get("USER_MGMNT_ENDPOINT")
 KEYCLOAK_PROXY_URL = os.environ.get(
     "KEYCLOAK_PROXY_URL", "http://localhost:8081/keycloak-proxy"
