@@ -65,8 +65,6 @@ def send_request(method, *args, **kwargs):
         resp.raise_for_status()
     except requests.exceptions.HTTPError as e:
         print("Problem sending request to endpoint. Args, Kwargs:")
-        print(args)
-        pprint(kwargs)
         print(resp.text)
         raise e
 
