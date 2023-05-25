@@ -6,8 +6,8 @@ from requests.auth import HTTPBasicAuth
 from src.config import (
     FHIR_URL,
     USER_MGMNT_ENDPOINT,
-    FHIR_ADMIN_USER,
-    FHIR_ADMIN_PW,
+    FHIR_APP_ADMIN,
+    FHIR_APP_ADMIN_PW,
     FHIR_TEST_USER_PW
 )
 from src.bin.seed_users import upsert_users
@@ -29,7 +29,7 @@ def upsert_smilecdr_users():
             user["accountLocked"] = False
         upserted.extend(
             upsert_users(
-                FHIR_ADMIN_USER, FHIR_ADMIN_PW, USER_MGMNT_ENDPOINT, users
+                FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW, USER_MGMNT_ENDPOINT, users
             )
         )
         return upserted
@@ -43,7 +43,7 @@ def upsert_smilecdr_users():
         user["accountLocked"] = True
         user["authorities"] = []
         disabled_users = upsert_users(
-            FHIR_ADMIN_USER, FHIR_ADMIN_PW, USER_MGMNT_ENDPOINT, upserted
+            FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW, USER_MGMNT_ENDPOINT, upserted
         )
 
 
@@ -82,7 +82,7 @@ def upsert_fhir_resources():
         """
         Upsert some fhir resources in the server
         """
-        kwargs = {"auth": HTTPBasicAuth(FHIR_ADMIN_USER, FHIR_ADMIN_PW)}
+        kwargs = {"auth": HTTPBasicAuth(FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW)}
         for resource in resources:
             id_ = resource["id"]
             resource_type = resource["resourceType"]
@@ -99,7 +99,7 @@ def upsert_fhir_resources():
     # -- Cleanup after fixture --
 
     # Delete resources
-    kwargs = {"auth": HTTPBasicAuth(FHIR_ADMIN_USER, FHIR_ADMIN_PW)}
+    kwargs = {"auth": HTTPBasicAuth(FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW)}
     for resource in upserted:
         id_ = resource["id"]
         resource_type = resource["resourceType"]
