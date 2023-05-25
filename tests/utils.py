@@ -15,6 +15,32 @@ from src.config import (
 def get_token(
     client_id=KEYCLOAK_CLIENT_ID, client_secret=KEYCLOAK_CLIENT_SECRET,
 ):
+    # If running locally, go through the Keycloak proxy to get token
+    # bc we cannot get the token directly from Keycloak
+    # running in the docker network
+    if KEYCLOAK_ISSUER.startswith("http://localhost"):
+        return get_token_from_proxy(client_id, client_secret)
+
+    # Normal OIDC client credentials flow if running with a publicly
+    # accessible Keycloak
+    token_url = f"{KEYCLOAK_ISSUER}/protocol/openid-connect/token"
+    payload = {
+        "grant_type": "client_credentials",
+        "client_id": client_id,
+        "client_secret": client_secret,
+    }
+    params = {
+        "scope": "fhir"
+    }
+    resp = send_request("post", token_url, data=payload, params=params)
+    token_payload = resp.json()
+
+    return token_payload["access_token"]
+
+
+def get_token_from_proxy(
+    client_id=KEYCLOAK_CLIENT_ID, client_secret=KEYCLOAK_CLIENT_SECRET,
+):
     payload = {
         "kwargs": {
             "data":
