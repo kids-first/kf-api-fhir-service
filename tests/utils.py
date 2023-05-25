@@ -18,7 +18,7 @@ def get_token(
     # If running locally, go through the Keycloak proxy to get token
     # bc we cannot get the token directly from Keycloak
     # running in the docker network
-    if KEYCLOAK_ISSUER.startswith("http://localhost"):
+    if KEYCLOAK_ISSUER.startswith("http://keycloak"):
         return get_token_from_proxy(client_id, client_secret)
 
     # Normal OIDC client credentials flow if running with a publicly
