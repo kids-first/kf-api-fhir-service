@@ -11,7 +11,7 @@ from src.config import (
     FHIR_TEST_USER_PW
 )
 from src.bin.seed_users import upsert_users
-from tests.utils import send_request
+from tests.python.utils import send_request
 
 
 @pytest.fixture(scope="session")

@@ -8,7 +8,7 @@ from src.config import (
     KEYCLOAK_READ_CLIENT_ID,
     KEYCLOAK_READ_CLIENT_SECRET,
 )
-from tests.utils import send_request, get_token
+from tests.python.utils import send_request, get_token
 
 
 @pytest.mark.parametrize(
