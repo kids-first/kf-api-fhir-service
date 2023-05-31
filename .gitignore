@@ -139,3 +139,11 @@ data/
 
 # Vim
 *.swp
+
+# Secrets
+.deployment
+.envs
+*.secrets
+
+# JS files
+node_modules
