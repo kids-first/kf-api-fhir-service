@@ -5,67 +5,68 @@ Log = {
 };
 
 FHIR_CLAIM_PREFIX = "fhir-";
-FHIR_ROLE_CLAIM_PREFIX = "fhir-role-";
+FHIR_PERMISSION_CLAIM_PREFIX = "fhir-permission|";
 
 function extractFhirClaims(theContext) {
   /*
-   * Extract FHIR roles from the access token
+   * Extract FHIR roles or individual FHIR permissions from the access token
+   *
+   * The FHIR "role" can be an actual role representing multiple permissions or
+   * an individual permission
    *
    * Need to account for different versions of Keycloak since the claims
    * are stored differently
    * */
-  fhirRoleClaims = theContext.getClaim("fhir_roles");
+  fhirPermissionClaims = theContext.getClaim("fhir_permissions");
 
   // For current version of Keycloak (21)
-  if (fhirRoleClaims) {
-    fhirRoleClaims = fhirRoleClaims.filter((claim) =>
-      claim.startsWith(FHIR_ROLE_CLAIM_PREFIX)
+  if (fhirPermissionClaims) {
+    fhirPermissionClaims = fhirPermissionClaims.filter((claim) =>
+      claim.startsWith(FHIR_PERMISSION_CLAIM_PREFIX)
     );
 
     // For backwards compatibility with older Keycloak versions (14)
   } else {
     fhirClaims = theContext.getClaim("fhir") || [];
 
-    fhirRoleClaims = fhirClaims.filter((claim) =>
-      claim.startsWith(FHIR_ROLE_CLAIM_PREFIX)
+    fhirPermissionClaims = fhirClaims.filter((claim) =>
+      claim.startsWith(FHIR_PERMISSION_CLAIM_PREFIX)
     );
   }
   return {
-    fhirRoleClaims,
+    fhirPermissionClaims,
   };
 }
 
 function handleOAuth2Request(theOutcome, theOutcomeFactory, theContext) {
   /*
-   * Assign appropriate FHIR role based on the authenticated
-   * user data
+   * Assign appropriate FHIR role or individual permission to user session
    *
    * Extract the fhir claims from the authenticated user's access token
-   * Determine which FHIR role should be assigned
+   * Determine which FHIR role or permission should be assigned
    */
   Log.info("******* Handle OIDC Auth ******* ");
 
   // Extract fhir claims from token
-  ({ fhirRoleClaims } = extractFhirClaims(theContext));
+  ({ fhirPermissionClaims } = extractFhirClaims(theContext));
 
-  // Create Smile CDR role from FHIR role claims
-  // Add to user session
-  roles = fhirRoleClaims.map((role) => {
-    formattedRole = role
-      .replace(FHIR_CLAIM_PREFIX, "")
+  // Create Smile CDR role/permission from FHIR claims
+  permissions = fhirPermissionClaims.map((permission) => {
+    formattedPermission = permission
+      .replace(FHIR_PERMISSION_CLAIM_PREFIX, "")
       .replaceAll("-", "_")
       .toUpperCase();
-    return formattedRole;
+    return formattedPermission;
   });
 
-  // Add roles to user session
-  if (roles.length > 0) {
-    roles.map((role) => {
+  // Add roles/permissions to user session
+  if (permissions.length > 0) {
+    permissions.map((perm) => {
       try {
-        theOutcome.addAuthority(role);
+        theOutcome.addAuthority(perm);
       } catch (e) {
         Log.warn(
-          `Role ${role} is not recognized. Will not be added to user session`
+          `Role/permission ${perm} is not recognized. Will not be added to user session`
         );
       }
     });
@@ -74,16 +75,15 @@ function handleOAuth2Request(theOutcome, theOutcomeFactory, theContext) {
 }
 function onAuthenticateSuccess(theOutcome, theOutcomeFactory, theContext) {
   /*
-   * Assign appropriate FHIR role on the authenticated
-   * user data
+   * Assign appropriate FHIR role or individual permission to the user session
    *
    **** OIDC User/Client ****
    * Extract the fhir claims from the authenticated user's access token
    * Determine which FHIR role should be assigned
 
-   **** Smile CDR User ****
-   * Do nothing - FHIR role should have already been assigned when user was
-   * created
+   **** Smile CDR Basic Auth User ****
+   * Do nothing - FHIR role/permission should have already been assigned
+   * when user was created
    *
    * */
 
@@ -100,7 +100,7 @@ function onAuthenticateSuccess(theOutcome, theOutcomeFactory, theContext) {
     theOutcome = handleOAuth2Request(theOutcome, theOutcomeFactory, theContext);
   }
   Log.info(
-    `Roles in user session: ${JSON.stringify(
+    `Role/permissions in user session: ${JSON.stringify(
       theOutcome.authorities.map((a) => String(a))
     )}`
   );
@@ -108,32 +108,8 @@ function onAuthenticateSuccess(theOutcome, theOutcomeFactory, theContext) {
   return theOutcome;
 }
 
-outcome = {
-  authorities: ["ROLE_FHIR_CLIENT_SUPERUSER"],
-  hasAuthority: function (role) {
-    return this.authorities.includes(role);
-  },
-  addAuthority: function (role) {
-    this.authorities = [role, ...this.authorities];
-  },
-  setUserData: function (userData) {
-    this.userData = userData;
-  },
-};
-context = {
-  userData: "",
-  fhir: [
-    "fhir-role-fhir-client-superuser",
-    "fhir-consent-write-study|SD-0",
-    "fhir-consent-delete-study|SD-0",
-    "fhir-consent-read-study|all",
-  ],
-};
-
-factory = {
-  newFailure: function () {
-    return {};
-  },
-};
-
-onAuthenticateSuccess(outcome, factory, context);
+// module.exports = {
+//   extractFhirClaims,
+//   handleOAuth2Request,
+//   onAuthenticateSuccess,
+// };

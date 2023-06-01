@@ -62,7 +62,7 @@
       },
       {
         "id": "1d1a9823-bb80-4f34-8de3-20243c572503",
-        "name": "fhir-role-fhir-client-superuser-ro",
+        "name": "fhir-permission|role-fhir-client-superuser-ro",
         "description": "Superuser that can do any READ FHIR operation in target FHIR server",
         "composite": false,
         "clientRole": false,
@@ -152,7 +152,7 @@
       },
       {
         "id": "877a2fa4-24a8-407f-a002-b29b855252c5",
-        "name": "fhir-role-fhir-client-superuser",
+        "name": "fhir-permission|role-fhir-client-superuser",
         "description": "Admin level user that can do any FHIR operation in target FHIR server",
         "composite": false,
         "clientRole": false,
@@ -170,7 +170,7 @@
       },
       {
         "id": "4d025aea-f602-40e5-9b8c-b31ab9731b20",
-        "name": "fhir-role-superuser",
+        "name": "fhir-permission|role-superuser",
         "description": "Superuser in the target FHIR server",
         "composite": false,
         "clientRole": false,
@@ -510,8 +510,8 @@
   "groups": [
     {
       "id": "d376381d-4339-445c-bffd-d67618334b09",
-      "name": "fhir-role-fhir-client-superuser",
-      "path": "/fhir-role-fhir-client-superuser",
+      "name": "fhir-permission|role-fhir-client-superuser",
+      "path": "/fhir-permission|role-fhir-client-superuser",
       "attributes": {},
       "realmRoles": [],
       "clientRoles": {},
@@ -519,8 +519,8 @@
     },
     {
       "id": "8f1f9356-cdbe-4980-a8e9-00fa1b5a7f98",
-      "name": "fhir-role-fhir-client-superuser-ro",
-      "path": "/fhir-role-fhir-client-superuser-ro",
+      "name": "fhir-permission|role-fhir-client-superuser-ro",
+      "path": "/fhir-permission|role-fhir-client-superuser-ro",
       "attributes": {},
       "realmRoles": [],
       "clientRoles": {},
@@ -528,8 +528,8 @@
     },
     {
       "id": "4c179c1c-53b5-440a-a604-6b3b2635860a",
-      "name": "fhir-role-superuser",
-      "path": "/fhir-role-superuser",
+      "name": "fhir-permission|role-superuser",
+      "path": "/fhir-permission|role-superuser",
       "attributes": {},
       "realmRoles": [],
       "clientRoles": {},
@@ -1211,7 +1211,7 @@
             "full.path": "false",
             "id.token.claim": "true",
             "access.token.claim": "true",
-            "claim.name": "fhir_roles",
+            "claim.name": "fhir_permissions",
             "userinfo.token.claim": "true"
           }
         },
@@ -2626,4 +2626,3 @@
     "policies": []
   }
 }
-
