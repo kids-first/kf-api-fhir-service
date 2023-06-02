@@ -107,9 +107,3 @@ function onAuthenticateSuccess(theOutcome, theOutcomeFactory, theContext) {
 
   return theOutcome;
 }
-
-// module.exports = {
-//   extractFhirClaims,
-//   handleOAuth2Request,
-//   onAuthenticateSuccess,
-// };
