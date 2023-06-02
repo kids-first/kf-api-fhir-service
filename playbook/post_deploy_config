@@ -19,4 +19,4 @@ pip install -e .
 
 # Run tests
 echo "✅ Run integration tests ..."
-pytest tests
+pytest tests/python

@@ -14,7 +14,7 @@ env:
   DOCKER_HUB_PW: ${{ secrets.DOCKERHUB_PASSWORD }}
 
 jobs:
-  quickstart:
+  test-dev-setup:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
@@ -34,7 +34,7 @@ jobs:
         run: |
           ./src/bin/quickstart.sh --delete-volumes
 
-  local_integration:
+  test-local-integration:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
@@ -72,4 +72,23 @@ jobs:
           source venv/bin/activate
           pytest tests
 
+  test-smilecdr-auth:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - name: 👩‍💻 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
+
+      - name: 📦 Install deps 
+        run: |
+          npm install --prefix ./tests/javascript
+
+      - name: ✅ Test auth module 
+        run: |
+          ./bin/run_js_tests.sh 
 
