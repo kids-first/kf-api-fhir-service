@@ -166,7 +166,7 @@ for brevity):
     "email_verified": false,
     "exp": 1681241247,
     "fhir_roles": [
-      "fhir-role-fhir-client-superuser"
+      "fhir-permission|role-fhir-client-superuser"
     ],
     "iat": 1681237647,
     "iss": "http://keycloak:8080/realms/fhir-dev",
@@ -320,3 +320,44 @@ loaded into Smile CDR
 ### health-check.sh
 - Pings SmileCDR health check endpoint until it is operational
 
+## ✅ Testing
+
+There are two types of tests:
+
+### Integration Tests
+
+Integration tests are run against the full service suite including the FHIR
+server, the database, and the OIDC server. They test all CRUD functionality 
+as well as authentication functionality.
+
+These tests are written in Python and executed via the pytest framework.
+You can run the tests like this:
+
+```shell
+# Do this if you do not already have your services up.  
+./src/bin/quickstart.sh
+
+# Do this once to install test dependencies
+pip install -r dev-requirements.txt
+
+# Run the integration tests
+pytest tests/python
+```
+
+### Unit Tests
+
+Unit tests do not require the services to be up as they test individual 
+functions in the src code. There are currently only unit tests to test the 
+Smile CDR authentication module in `smilecdr/settings/auth.js`
+
+These unit tests are written in JavaScript and executed with the Jest framework.
+
+You can run the unit tests like this:
+
+```shell
+# Do this once to install dependencies
+npm install --prefix ./tests/javascript
+
+# Run tests
+./bin/run_js_tests.sh
+```
