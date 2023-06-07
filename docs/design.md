@@ -57,6 +57,9 @@ signing into the admin app with basic auth credentials.
 
 See Future Work for more details.
 
+## 🙋🏻‍♂️  End User Access 
+TBD
+
 ## 🛂 Permissions
 
 Smile CDR has a [roles and permissions system](https://smilecdr.com/docs/security/roles_and_permissions.html)
@@ -88,6 +91,59 @@ See Authentication Flows for more details on how this works
 
 ### FHIR Endpoint: OAuth2 Client Credentials Flow
 
-<img src="images/fhir-endpoint-oauth2-flow.png" title="FHIR Endpoint Auth Flow Diagram" alt="FHIR Endpoint Auth Flow Diagram" width="70%">
+<img src="images/fhir-endpoint-oauth2-flow.png" title="FHIR Endpoint Auth Flow Diagram" alt="FHIR Endpoint Auth Flow Diagram" width="80%">
+
+### Admin Endpoint: Basic Auth Flow
+
+<img src="images/admin-endpoint-auth-flow.png" title="Admin Endpoint Auth Flow Diagram" alt="Admin Endpoint Auth Flow Diagram" width="80%">
+
+### Admin UI: Basic Auth Flow
+
+<img src="images/admin-app-auth-flow.png" title="Admin UI Auth Flow Diagram" alt="Admin UI Auth Flow Diagram" width="80%">
 
 ## 🛠️ Future Work
+
+The current FHIR server setup is not perfect and could use several improvements, especially in the security area.
+
+### Basic FHIR Browser App: Protect with OIDC
+
+Since the FHIR endpoint is now internally protected with OIDC auth, users can
+no longer access it directly in a browser since the browser does not know
+how to exchange client credentials for an access token and then send the access 
+token with every request.
+
+Now we will need a web app that users will interact with in order to browse
+data in the FHIR server. This app can be very simple. It just needs to offer
+the following:
+
+- Sign in via OIDC based authentication
+- A UI that allows users to send any request to the FHIR endpoint. The app 
+will automatically include the access token in all requests
+- A UI to display FHIR resources returned from the FHIR server
+
+The OIDC auth flow would look like this:
+
+<img src="images/fhir-app-oauth2-flow.png" title="FHIR Browser App Auth Flow Diagram" alt="FHIR Browser App Auth Flow Diagram" width="80%">
+
+### Admin Endpoint: Protect with OIDC not basic auth
+The admin endpoint is still protected with basic auth. We should do some research
+in the Smile CDR documentation to figure out how to protect this endpoint 
+with OIDC the same way the FHIR endpoint is protected with OIDC.
+
+This shouldn't be too hard to implement since the pattern will be very similar to the FHIR endpoint auth implementation.
+
+<img src="images/admin-endpoint-oauth2-flow.png" title="Admin Endpoint Auth Flow Diagram" alt="Admin Endpoint Auth Flow Diagram" width="80%">
+
+### Admin UI: Protect with OIDC and basic auth
+
+The admin UI is also still protected with basic auth. Ideally, we should protect the admin UI with an OAuth2 app flow 
+by implementing this in the Smile CDR server. However, this might take some time to figure out.
+
+An interim solution would be to protect the admin UI with OAuth2 using the ALB in addition to the basic auth on the admin UI.
+
+<img src="images/admin-app-oauth2-flow.png" title="Admin UI Auth Flow Diagram" alt="Admin UI Auth Flow Diagram" width="80%">
+
+**Note** If we implement the interim solution we NOT be able to have OIDC auth enabled
+on the admin endpoint. We would need to keep basic auth.
+
+
