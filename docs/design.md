@@ -58,7 +58,26 @@ signing into the admin app with basic auth credentials.
 See Future Work for more details.
 
 ## 🙋🏻‍♂️  End User Access 
-TBD
+End users wanting access to the FHIR API will need to obtain a client ID and 
+secret from Keycloak. These credentials will be used to authenticate with 
+Keycloak and receive the access token that will be sent in each request to 
+the FHIR server.
+
+The current process for new user registration can be found on the README of 
+this repo. Here is the summary:
+
+1. New user emails Alex or Natasha to request access to the server. User should include:
+- The access they need: read/write/both access
+- The environment they want access to (dev/qa/prd)
+
+2. Alex/Natasha creates a new client in Keycloak
+3. Alex/Natasha securely emails the user their client ID, secret, and token URL 
+
+This is a very manual process that can be improved with some sort of an 
+application / system which allows users to request registration and administrators
+to approve it in an automated way.
+
+See Future Work for improvements.
 
 ## 🛂 Permissions
 
@@ -104,6 +123,10 @@ See Authentication Flows for more details on how this works
 ## 🛠️ Future Work
 
 The current FHIR server setup is not perfect and could use several improvements, especially in the security area.
+
+### End User Access
+
+Can users on portal manage their API client credentials through the UI?
 
 ### Basic FHIR Browser App: Protect with OIDC
 
