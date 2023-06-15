@@ -1,12 +1,28 @@
 const { onAuthenticateSuccess } = require("../../smilecdr/settings/auth");
 
+/*
+ * Mock Objects
+ *
+ */
+VALID_PERMS = [
+  "ROLE_SUPERUSER",
+  "ROLE_FHIR_CLIENT_SUPERUSER",
+  "ROLE_FHIR_CLIENT_SUPERUSER_RO",
+  "FHIR_ALL_READ",
+  "FHIR_ALL_WRITE",
+  "FHIR_ALL_DELETE",
+];
 mockOutcome = {
   authorities: [],
   hasAuthority: function (role) {
     return this.authorities.includes(role);
   },
   addAuthority: function (role) {
-    this.authorities = [role, ...this.authorities];
+    if (VALID_PERMS.includes(role)) {
+      this.authorities = [role, ...this.authorities];
+    } else {
+      throw new Error(`${role} is invalid because it is unknown!`);
+    }
   },
   setUserData: function (userData) {
     this.userData = userData;
@@ -26,12 +42,10 @@ mockOutcomefactory = {
   },
 };
 
-// ********* Test Cases *********
-
-// Test success case for superuser
-// Test success case for current Keycloak, old keycloak
-// Test failure - no presence of fhir or fhir_roles claim
-
+/*
+ * Test cases
+ *
+ */
 describe("test success", () => {
   beforeEach(() => {
     mockOutcome.authorities = [];
@@ -111,8 +125,17 @@ describe("test failures", () => {
     outcome = onAuthenticateSuccess(mockOutcome, mockOutcomefactory, {});
     expect(outcome.authorities).toHaveLength(0);
   });
-  test("Request access token has no valid FHIR claims", () => {
+  test("Request access token has badly formatted FHIR claims", () => {
     mockRequestContext.fhir = ["foo"];
+    outcome = onAuthenticateSuccess(
+      mockOutcome,
+      mockOutcomefactory,
+      mockRequestContext
+    );
+    expect(outcome.authorities).toHaveLength(0);
+  });
+  test("Request access token has invalid FHIR claims with unknown permission", () => {
+    mockRequestContext.fhir = ["fhir-permission|role-foo"];
     outcome = onAuthenticateSuccess(
       mockOutcome,
       mockOutcomefactory,
