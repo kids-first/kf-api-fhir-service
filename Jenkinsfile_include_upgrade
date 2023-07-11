@@ -29,4 +29,5 @@ deploy {
     external_domain = "includedcc.org"
     service_timeout = "50"
     service_interval = "100"
+    create_ecr_repo = "1"
 }
