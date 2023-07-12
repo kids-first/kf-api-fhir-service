@@ -3,7 +3,6 @@ deploy {
     main_branch                = "include-major-upgrade-2023"
     architecture_type          = "aws-ecs-service-type-1"
   	jenkinsfile_name           = "Jenkinsfile_include_upgrade" 
-    deploy_scripts_version     = "feature/al/ISDEVOPS-317"
 
     projectName                = "include-api-fhir-service-upgrade"
     orgFullName                = "includedcc"
