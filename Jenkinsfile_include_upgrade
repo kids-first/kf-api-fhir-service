@@ -3,11 +3,13 @@ deploy {
     main_branch                = "include-major-upgrade-2023"
     architecture_type          = "aws-ecs-service-type-1"
   	jenkinsfile_name           = "Jenkinsfile_include_upgrade" 
+    deploy_scripts_version     = "feature/al/ISDEVOPS-317"
 
     projectName                = "include-api-fhir-service-upgrade"
     orgFullName                = "includedcc"
     environments               = "dev,qa,prd"
     docker_image_type          = "alpine"
+    dockerfile                 = "DockerfileInclude"
     create_default_iam_role    = "1"
     entrypoint_command         = "/home/smile/smilecdr/bin/smilecdr run"
     quick_deploy               = "true"
