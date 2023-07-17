@@ -8,7 +8,7 @@ deploy {
     orgFullName                = "includedcc"
     environments               = "dev,qa,prd"
     docker_image_type          = "alpine"
-    dockerfile                 = "DockerfileInclude"
+    dockerfile                 = "Dockerfile.includedcc"
     create_default_iam_role    = "1"
     entrypoint_command         = "/home/smile/smilecdr/bin/smilecdr run"
     quick_deploy               = "true"
