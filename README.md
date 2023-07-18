@@ -6,9 +6,10 @@
   <a href="https://circleci.com/gh/kids-first/kf-api-fhir-service"><img src="https://img.shields.io/circleci/project/github/kids-first/kf-api-fhir-service.svg?style=for-the-badge"></a>
 </p>
 
-# 🔥 Kids First FHIR Service
+# 🔥 FHIR Services
 
-FHIR data service for Kids First uses the [Smile CDR FHIR server](https://smilecdr.com/docs/).
+FHIR data service for Include DCC and Kids First uses the
+[Smile CDR FHIR server](https://smilecdr.com/docs/).
 
 ## 🔢 Version
 
@@ -17,19 +18,31 @@ for details
 
 ## 🚀 Deployments
 
-Kids First FHIR services have been deployed into the three standard environments
-within the Kids First Strides AWS account: development, QA, and production.
+### Kids First
+Kids First FHIR services have been deployed into the DEV and QA environments
+within the Kids First Strides AWS account.
+
 The FHIR endpoints for each of these environments are:
 
-- Development: https://kf-api-fhir-service-upgrade-dev.kf-strides.org
+- DEV: https://kf-api-fhir-service-upgrade-dev.kf-strides.org
 - QA: https://kf-api-fhir-service-upgrade-qa.kf-strides.org
-- Production: https://kf-api-fhir-service-upgrade.kf-strides.org
+- (Not deployed yet) PRD: https://kf-api-fhir-service-upgrade.kf-strides.org
+
+### Include DCC 
+Include DCC FHIR services have been deployed into the DEV and QA environments
+within the Include DCC AWS account.
+
+The FHIR endpoints for each of these environments are:
+
+- DEV: https://include-api-fhir-service-upgrade-dev.includedcc.org
+- QA: https://include-api-fhir-service-upgrade-qa.includedcc.org
+- (Not deployed yet) PRD: https://include-api-fhir-service-upgrade.includedcc.org
 
 ## 🧑‍💻 Quickstart - API Users
 
 ### Register for Access
 
-The Kids First FHIR service currently supports OIDC based authentication using
+These FHIR services support OIDC based authentication using
 the [OAuth2 Client Credentials Flow](https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow).
 We use the open source OIDC provider [Keycloak](https://www.keycloak.org/).
 
@@ -51,9 +64,12 @@ client_id: your client id
 client_secret: your client secret
 ```
 
+These client credentials can be used to get a token which will work for any 
+of the KF/INCLUDE servers deployed in either DEV/QA. 
+
 Please keep the client secret securely and privately stored!
 
-### Server Access 
+### FHIR API Access 
 
 Any machine wanting to access the FHIR service must authenticate by providing
 a valid OAuth2 access token issued by the OIDC provider. Here we will walk 
@@ -90,7 +106,7 @@ You will get something that looks like this:
 
 ### Use Token to Make Requests 
 
-Now you can use this token to authenticate with the server and make requests.
+Now you can use this token to authenticate with the FHIR server and make requests.
 
 ```shell
 curl -X GET -H 'Content-Type: application/json' \
