@@ -13,8 +13,8 @@ FHIR data service for Include DCC and Kids First uses the
 
 ## 🔢 Version
 
-Smile CDR 2023.02.R02 (Wizard). See [changelogs](https://smilecdr.com/docs/introduction/changelog.html)
-for details
+The current version of the FHIR servers is Smile CDR 2023.02.R02 (Wizard).
+See [changelogs](https://smilecdr.com/docs/introduction/changelog.html) for details
 
 ## 🚀 Deployments
 
@@ -37,6 +37,23 @@ The FHIR endpoints for each of these environments are:
 - DEV: https://include-api-fhir-service-upgrade-dev.includedcc.org
 - QA: https://include-api-fhir-service-upgrade-qa.includedcc.org
 - (Not deployed yet) PRD: https://include-api-fhir-service-upgrade.includedcc.org
+
+## 🧓🏻 Legacy Servers
+The old servers are still deployed and will be maintained until we fully
+transition to the new servers mentioned above. 
+Documentation for the old servers can be found here: [README.md](docs/legacy/README.md)
+
+Key feature differences between the legacy servers and upgraded servers are:
+
+|                           | **Legacy** | **Upgraded** |
+|---------------------------|------------|--------------|
+| **OAuth2 Authentication** |      ❌     |       ✅      |
+| **Custom Authorization**  |      ❌     |       ✅      |
+| **Swagger API docs**      |      ❌     |       ✅      |
+| **Auditing**              |      ❌     |       ✅      |
+
+**Important Note:** Although custom authorization and auditing is supported in the new 
+FHIR servers, we have not yet implemented or enabled those features.
 
 ## 🧑‍💻 Quickstart - API Users
 
