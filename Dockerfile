@@ -1,64 +1,41 @@
-# ------ Environment variables ------
-
-# The following env variables will be overwritten by values in the
-# S3 secrets/app.env files at the time of deployment:
-
-# Set the max memory for the JVM server process
-# JVM_MAX_HEAP_SIZE
-
-# Whether to load the full base FHIR model during server init
-# SEED_CONF_RESOURCES
-
-# Whether to validate resources against FHIR spec AND base profiles
-# REQUEST_VALIDATION
-
-# Whether server should respect forwarded headers 
-# RESPECT_FWD_HEADERS
-
-# FHIR base url 
-# FHIR_ENDPOINT
-
-# Postgres configuration
-# FHIR_DB_HOST
-# FHIR_DB_USERNAME
-# FHIR_DB_PASSWORD
-
-# OIDC Configuration
-# KEYCLOAK_ISSUER
-
 # ------ Integration Test Server Image ------
-FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2023.02.R02 as test
+FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2021.02.R05 as test
 
 WORKDIR /home/smile/smilecdr
 
-RUN ulimit -n 5000
+COPY server/settings/master.properties classes/cdr-config-Master.properties
+COPY server/settings/logback.xml classes/logback.xml
+COPY server/settings/jvm.sh bin/setenv
 
-# Server settings
-COPY smilecdr/settings/server-postgres.properties classes/cdr-config-Master.properties
-COPY smilecdr/settings/jvm.sh bin/setenv
-COPY smilecdr/settings/system-users.json classes/config_seeding/users.json
-COPY smilecdr/settings/oidc-servers.json classes/config_seeding/oidc-servers.json
-COPY smilecdr/settings/auth.js classes/config_seeding/auth.js
-
-ENV JVM_MAX_HEAP_SIZE -Xmx4g
-ENV SEED_CONF_RESOURCES false
-ENV REQUEST_VALIDATION false
+# JVM max memory - 2GB
+ENV JVM_MAX_HEAP_SIZE -Xmx2048m
+# Pretty print JSON
+ENV FHIR_PRETTY_PRINT true
+# Do not store full HTTP bodies in transaction db
+ENV PERSIST_TRANSACTION_BODIES false
+# Respect forwarded headers doesn't matter in test
 ENV RESPECT_FWD_HEADERS false
-ENV FHIR_ENDPOINT http://localhost:8000 
-ENV FHIR_DB_HOST localhost
-ENV FHIR_DB_PORT 5432
-ENV FHIR_DB_NAME cdr
-ENV FHIR_AUDIT_DB_NAME audit
-ENV FHIR_DB_USERNAME admin
-ENV FHIR_DB_PASSWORD password
-ENV KEYCLOAK_ISSUER http://keycloak:8080/realms/fhir-dev
+# Load the full base FHIR model during server init
+ENV SEED_CONF_RESOURCES true
+# Validate resources against FHIR spec AND base profiles
+ENV REQUEST_VALIDATION true
+# Use in memory database
+ENV DB_DRIVER H2_EMBEDDED
+ENV DB_CONN_URL jdbc:h2:file:./database/cdr
+ENV DB_USERNAME admin
+ENV DB_PASSWORD password
 
 # ------ Production Server Image ------
 FROM test as production
-
+RUN apt update
 # JVM max memory - 8GB
 ENV JVM_MAX_HEAP_SIZE -Xmx8g
-ENV SEED_CONF_RESOURCES true
-ENV REQUEST_VALIDATION false
+# Pretty print JSON
+ENV FHIR_PRETTY_PRINT false
+# Respect forwarded headers from load balancer
 ENV RESPECT_FWD_HEADERS true
-
+# Use external Postgres database
+ENV DB_DRIVER POSTGRES_9_4
+ENV DB_CONN_URL jdbc:postgresql://localhost:5432/postgres
+# NOTE - The following get overwritten by values in S3 secrets file
+# DB_CONN_URL, DB_USERNAME, DB_PASSWORD
