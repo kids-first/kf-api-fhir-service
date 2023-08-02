@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "username": "ADMIN",
+      "password": "password",
+      "familyName": "GenericUser",
+      "givenName": "Admin",
+      "authorities": [
+        {
+          "permission": "ROLE_SUPERUSER"
+        }
+      ]
+    },
+    {
+      "username": "ANONYMOUS",
+      "familyName": "Anonymous",
+      "givenName": "Anonymous",
+      "systemUser": true,
+      "authorities": [
+        {
+          "permission": "ROLE_ANONYMOUS"
+        },
+        {
+          "permission": "FHIR_CAPABILITIES"
+        }
+      ]
+    }
+  ]
+}

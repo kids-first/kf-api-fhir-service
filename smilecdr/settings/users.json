@@ -1,0 +1,64 @@
+[
+  {
+    "username": "INGEST_CLIENT",
+    "password": "iamSmile123",
+    "familyName": "Ingest",
+    "givenName": "Client",
+    "accountLocked": false,
+    "systemUser": false,
+    "accountDisabled": false,
+    "failedLoginAttempts": 0,
+    "external": false,
+    "serviceAccount": false,
+    "twoFactorAuthStatus": "NO_KEY_DEFINED",
+    "authorities": [
+      {
+        "permission": "ROLE_FHIR_CLIENT_SUPERUSER"
+      }
+    ],
+    "defaultLaunchContexts": [],
+    "lastActive": "2023-03-27T18:15:22.802+00:00",
+    "lastConnected": "2023-04-21T17:06:29.477+00:00",
+    "auth_config": {
+      "fhir_consent_grants": [
+        "fhir-consent-read-study|SD-0",
+        "fhir-consent-write-study|SD-0",
+        "fhir-consent-delete-study|SD-0"
+      ]
+    },
+    "notes": "{\"fhir_consent_grants\": [\"fhir-consent-read-study|SD-0\", \"fhir-consent-write-study|SD-0\", \"fhir-consent-delete-study|SD-0\"]}",
+    "pid": 3,
+    "nodeId": "Master",
+    "moduleId": "local_security"
+  },
+  {
+    "username": "READ_SPECIFIC",
+    "password": "iamSmile123",
+    "familyName": "Read Specific Studies",
+    "givenName": "Client",
+    "accountLocked": false,
+    "systemUser": false,
+    "accountDisabled": false,
+    "failedLoginAttempts": 0,
+    "external": false,
+    "serviceAccount": false,
+    "twoFactorAuthStatus": "NO_KEY_DEFINED",
+    "authorities": [
+      {
+        "permission": "ROLE_FHIR_CLIENT_SUPERUSER"
+      }
+    ],
+    "auth_config": {
+      "fhir_consent_grants": [
+        "fhir-consent-read-study|SD-0"
+      ]
+    },
+    "defaultLaunchContexts": [],
+    "lastActive": "2023-03-27T18:15:22.802+00:00",
+    "lastConnected": "2023-03-28T13:47:49.190+00:00",
+    "notes": "{\"fhir_consent_grants\": [\"fhir-consent-read-study|SD-0\"]}",
+    "pid": 4,
+    "nodeId": "Master",
+    "moduleId": "local_security"
+  }
+]

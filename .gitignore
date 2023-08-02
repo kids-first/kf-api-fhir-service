@@ -131,5 +131,19 @@ dmypy.json
 # Smile CDR
 *.gz
 
-# Kids First model
-kf-model-fhir/
+# DS_Store
+.DS_Store
+
+# Data
+data/
+
+# Vim
+*.swp
+
+# Secrets
+.deployment
+.envs
+*.secrets
+
+# JS files
+node_modules

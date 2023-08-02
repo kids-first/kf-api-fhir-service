@@ -1,8 +1,12 @@
-version: "3.7"
+
+version: "3.8"
+
 services:
   smilecdr:
     container_name: smilecdr
-    image: kidsfirstdrc/smilecdr:2021.02.R05
+    image: kidsfirstdrc/smilecdr:2023.02.R02
+    env_file:
+      - .env
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -10,49 +14,60 @@ services:
       - "8001:8001"
       - "9200:9200"
       - "9201:9201"
-    depends_on:
-      - postgres_cdr
-    env_file:
-      - .env
     volumes:
-      - ./server/settings/master.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
-      - ./server/settings/logback.xml:/home/smile/smilecdr/classes/logback.xml
-      - ./server/settings/jvm.sh:/home/smile/smilecdr/bin/setenv
-      - smilecdr_log:/home/smile/smilecdr/log
-      - smilecdr_mq:/home/smile/smilecdr/activemq-data
-      - smilecdr_lucene:/home/smile/smilecdr/database/lucene_fhir_persistence
-    restart: unless-stopped
+      # Server with Postgres DB
+      - ./smilecdr/settings/server-postgres.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      # Server with embedded H2 DB
+      # - ./smilecdr/settings/server-quickstart.properties:/home/smile/smilecdr/classes/cdr-config-Master.properties
+      - ./smilecdr/settings/jvm.sh:/home/smile/smilecdr/bin/setenv
+      - ./smilecdr/settings/system-users.json:/home/smile/smilecdr/classes/config_seeding/users.json
+      - ./smilecdr/settings/oidc-servers.json:/home/smile/smilecdr/classes/config_seeding/oidc-servers.json
+      - ./smilecdr/settings/auth.js:/home/smile/smilecdr/classes/config_seeding/auth.js
+    restart: "unless-stopped"
+    depends_on:
+      - smilecdr_postgres
+      - keycloak
 
-  postgres_cdr:
-    container_name: postgres_cdr
-    build:
-      context: ./server/postgres
-    image: postgres_cdr
+  smilecdr_postgres:
+    container_name: smilecdr_postgres
+    image: postgres:11.4-alpine
     ports:
       - "5432:5432"
+    env_file:
+      - .env
     environment:
-      - POSTGRES_USER=${DB_SUPER_USER_ID}
-      - POSTGRES_PASSWORD=${DB_SUPER_USER_PASSWORD}
-      - CDR_DB_NAME=${DB_NAME}
-      - CDR_USER=${DB_USERNAME}
-      - CDR_PASSWORD=${DB_PASSWORD}
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
     volumes:
+      - ./smilecdr/postgres/init_postgresdb.sh:/docker-entrypoint-initdb.d/init_postgresdb.sh
       - smilecdr_db:/var/lib/postgresql/data
     restart: unless-stopped
 
-  dashboard:
-    depends_on:
-      - smilecdr
-    container_name: dashboard
-    image: kidsfirstdrc/kf-ui-fhir-data-dashboard:dev
+  keycloak:
+    container_name: 'keycloak'
+    image: quay.io/keycloak/keycloak:21.0.2
     environment:
-      - REACT_APP_FHIR_API_NAME=Localhost
-      - REACT_APP_FHIR_API_AUTH_TYPE=BASIC_AUTH
-      - REACT_APP_FHIR_API=http://localhost:8000
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
     ports:
-      - "3000:80"
+      - "8080:8080"
+    command: start-dev --hostname-strict-backchannel=true --import-realm
+    volumes:
+      - ./keycloak/settings:/opt/keycloak/data/import
+
+  web:
+    container_name: web_app
+    build:
+      context: web_app
+    depends_on:
+      - keycloak
+    env_file:
+      .env
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./web_app/:/home/app
+      - /home/app/venv
 volumes:
   smilecdr_db:
-  smilecdr_mq:
-  smilecdr_log:
-  smilecdr_lucene:

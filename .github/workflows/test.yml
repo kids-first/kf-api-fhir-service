@@ -1,0 +1,94 @@
+
+name: ✅ Test 
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize, closed] 
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOCKER_HUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_HUB_PW: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  test-dev-setup:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - name: 👩‍💻 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: 📦 Install deps
+        run: |
+          pip install --upgrade virtualenv
+
+      - name: ✅ Test quickstart 
+        run: |
+          ./src/bin/quickstart.sh --delete-volumes
+
+  test-local-integration:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - name: 👩‍💻 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐳 Start docker-compose
+        run: |
+          cp env.sample .env
+          source .env
+          docker login -u ${{ env.DOCKER_HUB_USERNAME }} -p ${{ env.DOCKER_HUB_PW }}
+          docker-compose pull --ignore-pull-failures
+          docker-compose up -d
+
+      - name: 🚑 Healthcheck 
+        run: |
+          source .env
+          ./src/bin/health-check.sh
+          
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: 📦 Install deps
+        run: |
+          pip install --upgrade virtualenv
+          virtualenv -p python3 venv
+          source venv/bin/activate
+          pip install -r dev-requirements.txt
+          pip install -e .
+
+      - name: ✅ Local Integration Test
+        run: |
+          source venv/bin/activate
+          pytest tests
+
+  test-smilecdr-auth:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - name: 👩‍💻 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
+
+      - name: 📦 Install deps 
+        run: |
+          npm install --prefix ./tests/javascript
+
+      - name: ✅ Test auth module 
+        run: |
+          ./bin/run_js_tests.sh 
+
