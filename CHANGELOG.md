@@ -1,5 +1,19 @@
 # Kids First FHIR Service Change History
 
+## Release 1.0.0
+
+### Summary
+
+- Emojis: ⬆️ x1, 💥 x1, ? x1
+- Categories: Additions x1, Ops x1, Other Changes x1
+
+### New features and changes
+
+- [#166](https://github.com/kids-first/kf-api-fhir-service/pull/166) - ⬆️ Bump requests from 2.30.0 to 2.31.0 - [82a74976](https://github.com/kids-first/kf-api-fhir-service/commit/82a7497666264fa0ace008d1832d39f528615827) by [dependabot[bot]](https://github.com/apps/dependabot)
+- [#130](https://github.com/kids-first/kf-api-fhir-service/pull/130) - 💥 Kids First major upgrade to 2023 - [78aec8c9](https://github.com/kids-first/kf-api-fhir-service/commit/78aec8c973851c32fbb43996bad13624e7cfe296) by [znatty22](https://github.com/znatty22)
+- [#129](https://github.com/kids-first/kf-api-fhir-service/pull/129) -  Bugfix/al/devops 1065 sg change - [e6f50c96](https://github.com/kids-first/kf-api-fhir-service/commit/e6f50c96ddffaec9c90a06451d1164b690f5f3cf) by [alubneuski](https://github.com/alubneuski)
+
+
 ## Release 0.4.0
 
 ### Summary
