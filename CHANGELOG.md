@@ -1,5 +1,17 @@
 # Kids First FHIR Service Change History
 
+## Release 1.0.1
+
+### Summary
+
+- Emojis: 🐛 x1
+- Categories: Fixes x1
+
+### New features and changes
+
+- [#168](https://github.com/kids-first/kf-api-fhir-service/pull/168) - 🐛 Add PRD keycloak server to config - [a4fc20f6](https://github.com/kids-first/kf-api-fhir-service/commit/a4fc20f668996f63a4816d47d95f99ab71b88069) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.0.0
 
 ### Summary
