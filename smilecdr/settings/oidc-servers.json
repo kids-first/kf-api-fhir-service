@@ -21,7 +21,7 @@
     {
       "nodeId": "Master",
       "moduleId": "security_in_smart",
-      "issuer": "https://kf-keycloak.kf-strides.org/auth/realms/FHIR-TEST",
+      "issuer": "https://kf-keycloak.kf-strides.org/auth/realms/fhir",
       "name": "Keycloak PRD Strides Server",
       "federationAuthScriptText": "",
       "federationAuthorizationUrl": "",
