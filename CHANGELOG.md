@@ -1,5 +1,17 @@
 # Kids First FHIR Service Change History
 
+## Release 1.0.2
+
+### Summary
+
+- Emojis: ? x1
+- Categories: Other Changes x1
+
+### New features and changes
+
+- [#170](https://github.com/kids-first/kf-api-fhir-service/pull/170) -  :bug: Fix prd OIDC issuer url - [a2ad17bb](https://github.com/kids-first/kf-api-fhir-service/commit/a2ad17bb8162071d384e974209a1ae816ce2ffcd) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.0.1
 
 ### Summary
