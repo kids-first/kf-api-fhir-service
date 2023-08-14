@@ -50,7 +50,9 @@ def create_user(client_id, client_secret, endpoint, user):
         resp.raise_for_status()
         result = resp.json()
         print(f"Created user {username}")
-    except requests.exceptions.HTTPError as e:
+    except (
+        requests.exceptions.HTTPError, requests.exceptions.JSONDecodeError
+    ) as e:
         print(f"Failed to create user {username}")
         print("Problem sending request to FHIR server")
         print(resp.text)
@@ -86,10 +88,12 @@ def upsert_users(client_id, client_secret, endpoint, users):
             result = resp.json().get("users", [])
             if len(result) > 0:
                 result = result[0]
-        except requests.exceptions.HTTPError as e:
+        except (
+            requests.exceptions.HTTPError, requests.exceptions.JSONDecodeError
+        ) as e:
             print(f"Failed to find user {user['username']}")
             print("Problem sending request to FHIR server")
-            print(resp.text)
+            print(f"Response:\n{resp.text}")
             if resp.status_code == 404:
                 pass
             else:
@@ -111,7 +115,9 @@ def upsert_users(client_id, client_secret, endpoint, users):
                 resp.raise_for_status()
                 result = resp.json()
                 print(f"Updated user {username} with pid {pid}")
-            except requests.exceptions.HTTPError as e:
+            except (
+                requests.exceptions.HTTPError, requests.exceptions.JSONDecodeError
+            ) as e:
                 print(f"Failed to update user {user['username']}")
                 print("Problem sending request to FHIR server")
                 print(resp.text)
