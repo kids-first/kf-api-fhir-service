@@ -1,5 +1,18 @@
 # Kids First FHIR Service Change History
 
+## Release 1.1.0
+
+### Summary
+
+- Emojis: ? x1, 💥 x1
+- Categories: Additions x1, Other Changes x1
+
+### New features and changes
+
+- [#172](https://github.com/kids-first/kf-api-fhir-service/pull/172) -  :bug: Gracefully handle json decode error - [e1db5161](https://github.com/kids-first/kf-api-fhir-service/commit/e1db516164eb256e9975af133b6c671f8d819e5e) by [znatty22](https://github.com/znatty22)
+- [#163](https://github.com/kids-first/kf-api-fhir-service/pull/163) - 💥 INCLUDE major upgrade 2023 - [62a96a88](https://github.com/kids-first/kf-api-fhir-service/commit/62a96a88f1f5da069562fa5997f4cc2ea4066085) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.0.2
 
 ### Summary
