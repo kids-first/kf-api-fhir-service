@@ -27,7 +27,7 @@
 # KEYCLOAK_ISSUER
 
 # ------ Integration Test Server Image ------
-FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2023.02.R02 as test
+FROM 232196027141.dkr.ecr.us-east-1.amazonaws.com/kf-strides-smile-cdr:2023.05.R02 as test
 
 WORKDIR /home/smile/smilecdr
 

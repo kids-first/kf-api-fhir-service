@@ -4,7 +4,7 @@ version: "3.8"
 services:
   smilecdr:
     container_name: smilecdr
-    image: kidsfirstdrc/smilecdr:2023.02.R02
+    image: kidsfirstdrc/smilecdr:2023.05.R02
     env_file:
       - .env
     ports:
