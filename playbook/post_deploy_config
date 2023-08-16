@@ -20,3 +20,6 @@ pip install -e .
 # Run tests
 echo "✅ Run integration tests ..."
 pytest tests/python
+
+echo "👮🏻‍♀️ Upsert backup admin user"
+python bin/admin_backup.py
