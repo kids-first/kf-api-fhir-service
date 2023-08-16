@@ -40,7 +40,6 @@ def upsert_smilecdr_users():
 
     # Disable users bc there is no API to delete users
     for user in upserted:
-        user["accountLocked"] = True
         user["authorities"] = []
         disabled_users = upsert_users(
             FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW, USER_MGMNT_ENDPOINT, upserted
