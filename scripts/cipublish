@@ -18,7 +18,7 @@ Publish container images to Elastic Container Registry (ECR).
 if [[ -n "${GIT_COMMIT}" ]]; then
     GIT_COMMIT="${GIT_COMMIT:0:7}"
 else
-    GIT_COMMIT="$(git rev-parse --short HEAD)"
+    GIT_COMMIT="$(git rev-parse HEAD)"
 fi
 
 function amazon_ecr_login() {
