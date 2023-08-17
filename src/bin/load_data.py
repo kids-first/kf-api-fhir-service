@@ -5,13 +5,16 @@ import json
 import argparse
 import time
 from pprint import pprint
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 from requests.auth import HTTPBasicAuth
 
 from src.config import (
     DATA_DIR,
-    FHIR_URL
+    FHIR_URL,
+    FHIR_APP_ADMIN,
+    FHIR_APP_ADMIN_PW
 )
 from src.misc import elapsed_time_hms
 
@@ -21,7 +24,29 @@ RESOURCE_LOAD_ORDER = [
 ]
 
 
-def load_data(client_id, client_secret):
+def do_put(base_url, endpoint, headers, username, password, resource):
+    """
+    Helper function to PUT FHIR resource
+    """
+    url = f"{base_url}/{endpoint}/{resource['id']}"
+
+    try:
+        print(f"Upserting {endpoint} {resource['id']}")
+        resp = requests.put(
+            url,
+            headers=headers,
+            auth=HTTPBasicAuth(username, password),
+            json=resource
+        )
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        print("Problem sending request to FHIR server")
+        print(resp.text)
+        raise e
+    return f"PUT {FHIR_URL}/{endpoint}/{resource['id']}"
+
+
+def load_data(username, password, use_async=False):
     """
     Load test data into FHIR server
     """
@@ -39,20 +64,24 @@ def load_data(client_id, client_secret):
             data = json.load(json_file)
         endpoint = filename.split(".")[0]
 
-        for i, resource in enumerate(data):
-            try:
-                print(f"Upserting {endpoint} {resource['id']}")
-                resp = requests.put(
-                    f"{FHIR_URL}/{endpoint}/{resource['id']}",
-                    headers=headers,
-                    auth=HTTPBasicAuth(client_id, client_secret),
-                    json=resource
+        if use_async:
+            print("⚡️ Using async loading ...")
+            with ThreadPoolExecutor() as tpex:
+                futures = []
+                for i, resource in enumerate(data):
+                    futures.append(
+                        tpex.submit(do_put, FHIR_URL, endpoint, headers,
+                                    username, password, resource)
+                    )
+                for f in as_completed(futures):
+                    print(f.result())
+                    pass
+        else:
+            for i, resource in enumerate(data):
+                do_put(
+                    FHIR_URL, endpoint, headers,
+                    username, password, resource
                 )
-                resp.raise_for_status()
-            except requests.exceptions.HTTPError as e:
-                print("Problem sending request to FHIR server")
-                print(resp.text)
-                raise e
     print(f"\nElapsed time (hh:mm:ss): {elapsed_time_hms(start_time)}\n")
 
 
@@ -64,16 +93,23 @@ def cli():
         description='Load data into FHIR server'
     )
     parser.add_argument(
-        "client_id",
-        help="Client ID to authenticate with FHIR server",
+        "--username",
+        default=FHIR_APP_ADMIN,
+        help="Username to authenticate with FHIR server",
     )
     parser.add_argument(
-        "client_secret",
-        help="Client secret to authenticate with FHIR server",
+        "--password",
+        default=FHIR_APP_ADMIN_PW,
+        help="Password to authenticate with FHIR server",
+    )
+    parser.add_argument(
+        "--use_async",
+        action="store_true",
+        help="Use async loading to update FHIR server",
     )
     args = parser.parse_args()
 
-    load_data(args.client_id, args.client_secret)
+    load_data(args.username, args.password, args.use_async)
 
     print("✅ Load data complete")
 

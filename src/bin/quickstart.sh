@@ -42,7 +42,7 @@ echo "🏭 Generating sample data ..."
 ./src/bin/generate_data.py 2 5
 
 echo "🔼 Load sample data ..."
-./src/bin/load_data.py admin password 
+./src/bin/load_data.py --username=admin --password=password --use_async
 
 echo "🔼 Seed Smile CDR users ..."
 ./src/bin/seed_users.py admin password smilecdr/settings/users.json
