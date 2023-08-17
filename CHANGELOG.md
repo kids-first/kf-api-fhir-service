@@ -1,5 +1,19 @@
 # Kids First FHIR Service Change History
 
+## Release 1.2.0
+
+### Summary
+
+- Emojis: ⬆️ x1, 👷‍♀️ x1, ? x1
+- Categories: Ops x1, Other Changes x2
+
+### New features and changes
+
+- [#175](https://github.com/kids-first/kf-api-fhir-service/pull/175) - ⬆️ Upgrade to version 2023.05.R02 - [366ed2fd](https://github.com/kids-first/kf-api-fhir-service/commit/366ed2fd0e18d62bfc70053841302d2077f5ab4c) by [znatty22](https://github.com/znatty22)
+- [#176](https://github.com/kids-first/kf-api-fhir-service/pull/176) - 👷‍♀️ Deploy to QA from master branch - [c40fd097](https://github.com/kids-first/kf-api-fhir-service/commit/c40fd097445deac91b3bcc228faffc4a8f685c83) by [znatty22](https://github.com/znatty22)
+- [#174](https://github.com/kids-first/kf-api-fhir-service/pull/174) -  :sparkles: Create backup admin in case admin is locked out - [6cbbf507](https://github.com/kids-first/kf-api-fhir-service/commit/6cbbf5072faefe5c1ad9a3081a249d62de1b7c4d) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.1.0
 
 ### Summary
