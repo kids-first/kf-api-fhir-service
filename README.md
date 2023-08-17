@@ -247,6 +247,35 @@ releases website to download new images:
 
 https://releases.smilecdr.com/
 
+### Upgrading to a New Version
+
+Follow these steps to upgrade to a new version of Smile CDR:
+
+1. Download the docker image tarball from the smilecdr releases site ^
+2. Create a new local image from the tarball
+3. Tag and push the image to the kidsfirstdrc/smilecdr repo on Dockerhub so 
+that other developers have access to the image
+4. Tag and push the image to both kf-stridess and include ECRs so
+that future deployments have access to the new version
+5. Update the base image in the Dockerfiles (Dockerfile.includedcc, Dockerfile.kidsfirst_upgrade)
+6. Update the docker-compose.yml file to use the new image
+7. Push the changes to Github to trigger the deployment and ensure the new
+image works
+
+There are scripts to help with all of these steps. Here is an example of how 
+to upgrade to version 2023.05.R02:
+
+```shell
+# Step 2
+./bin/upgrade/new_image.sh ~/Downloads/smilecdr-2023.05.R02-docker.tar.gz 2023.05.R02
+
+# Step 3
+./bin/upgrade/upgrade_dockherhub_image.sh kidsfirstdrc:smilecdr/2023.05.R02
+
+# Step 4
+./bin/upgrade/upgrade_ecr_image.sh kf-strides-smile-cdr 2023.05.R02
+```
+
 ## 💻 Codebase
 
 ## Smile CDR
