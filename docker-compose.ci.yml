@@ -1,6 +1,0 @@
-services:
-  test:
-    image: test:${GIT_COMMIT:-latest}
-    build:
-        context: .
-        dockerfile: Dockerfile
