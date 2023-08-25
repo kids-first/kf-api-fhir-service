@@ -10,13 +10,15 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DOCKER_HUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKER_HUB_PW: ${{ secrets.DOCKERHUB_PASSWORD }}
+  GITHUB_PAT_SMILECDR: {{ secrets.GH_PAT_SMILECDR }}
+  GITHUB_USERNAME: {{ secrets.GH_USERNAME }}
 
 jobs:
   test-dev-setup:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
+    permissions:
+      packages: read
     steps:
       - name: 👩‍💻 Checkout code
         uses: actions/checkout@v3
@@ -37,6 +39,8 @@ jobs:
   test-local-integration:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
+    permissions:
+      packages: read
     steps:
       - name: 👩‍💻 Checkout code
         uses: actions/checkout@v3
@@ -45,7 +49,7 @@ jobs:
         run: |
           cp env.sample .env
           source .env
-          docker login -u ${{ env.DOCKER_HUB_USERNAME }} -p ${{ env.DOCKER_HUB_PW }}
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
           docker-compose pull --ignore-pull-failures
           docker-compose up -d
 
