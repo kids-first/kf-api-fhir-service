@@ -9,7 +9,7 @@ START_TIME=$SECONDS
 if [[ -z $1 && -z $2 ]];
 then
     echo "You must supply the path to the docker tar.gz and the image tag to use"
-    echo "Usage: ./bin/$(basename "$0") path/to/tar.gz kidsfirstdrc:smilecdr/2023.05.R02"
+    echo "Usage: ./bin/$(basename "$0") path/to/tar.gz kids-first:smilecdr/2023.05.R02"
     exit 1
 fi
 
