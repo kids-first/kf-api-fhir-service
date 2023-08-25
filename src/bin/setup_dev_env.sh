@@ -54,10 +54,12 @@ fi
 # Check github packages registry creds 
 if [[ -z $GITHUB_USERNAME ]] || [[ -z $GITHUB_PAT_SMILECDR ]]
 then
-    echo "🔐 You must have the GITHUB_USERNAME and GITHUB_PAT_SMILECDR environment variable set to "
-    echo "continue. GITHUB_PAT_SMILECDR should contain a Github personal access token (classic)"
+    echo "🔐 You must have the GITHUB_USERNAME and GITHUB_PAT_SMILECDR environment variable set to continue. "
+    echo "GITHUB_USERNAME should be set to your github username and GITHUB_PAT_SMILECDR should contain a Github personal access token (classic)"
     echo "with the appropriate permissions for reading from the Github package registry"
+
     echo "See https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic for details"
+
     echo "🛂 You will also need to be a collaborator on the repo in GHCR"
     echo "Please contact Natasha Singh singn4@chop.edu or Alex Lubneuski lubneuskia@chop.edu"
     exit 1

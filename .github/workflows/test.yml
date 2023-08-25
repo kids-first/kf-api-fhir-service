@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GITHUB_PAT_SMILECDR: {{ secrets.GH_PAT_SMILECDR }}
-  GITHUB_USERNAME: {{ secrets.GH_USERNAME }}
+  GITHUB_PAT_SMILECDR: ${{ secrets.GH_PAT_SMILECDR }}
+  GITHUB_USERNAME: ${{ secrets.GH_USERNAME }}
 
 jobs:
   test-dev-setup:
