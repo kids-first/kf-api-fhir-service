@@ -11,8 +11,8 @@ set -e
 
 START_TIME=$SECONDS
 DELETE_VOLUMES=0
-DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME}
-DOCKER_HUB_PW=${DOCKER_HUB_PW}
+GITHUB_USERNAME=${GITHUB_USERNAME}
+GITHUB_PAT_SMILECDR=${GITHUB_PAT_SMILECDR}
 
 while [ -n "$1" ]; do 
 	case "$1" in
@@ -51,16 +51,20 @@ else
     docker-compose down
 fi
 
-# Check docker hub creds 
-if [[ -z $DOCKER_HUB_USERNAME ]] || [[ -z $DOCKER_HUB_PW ]]
+# Check github packages registry creds 
+if [[ -z $GITHUB_USERNAME ]] || [[ -z $GITHUB_PAT_SMILECDR ]]
 then
-    echo "🔐 You need the Kids First DRC docker hub credentials to continue" 
-    echo "Please contact the Github repo admins: natasha@d3b.center or meenchulkim@d3b.center" 
+    echo "🔐 You must have the GITHUB_USERNAME and GITHUB_PAT_SMILECDR environment variable set to "
+    echo "continue. GITHUB_PAT_SMILECDR should contain a Github personal access token (classic)"
+    echo "with the appropriate permissions for reading from the Github package registry"
+    echo "See https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic for details"
+    echo "🛂 You will also need to be a collaborator on the repo in GHCR"
+    echo "Please contact Natasha Singh singn4@chop.edu or Alex Lubneuski lubneuskia@chop.edu"
     exit 1
 fi
 
-echo "Logging into Docker Hub ..."
-echo "$DOCKER_HUB_PW" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+echo "Logging into Github packages registry ..."
+echo "$GITHUB_PAT_SMILECDR" | docker login ghcr.io -u "$GITHUB_USERNAME" --password-stdin
 
 sleep 10
 
