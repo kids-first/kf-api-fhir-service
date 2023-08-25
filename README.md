@@ -26,7 +26,7 @@ The FHIR endpoints for each of these environments are:
 
 - DEV: https://kf-api-fhir-service-upgrade-dev.kf-strides.org
 - QA: https://kf-api-fhir-service-upgrade-qa.kf-strides.org
-- (Not deployed yet) PRD: https://kf-api-fhir-service-upgrade.kf-strides.org
+- PRD: https://kf-api-fhir-service-upgrade.kf-strides.org
 
 ### Include DCC 
 Include DCC FHIR services have been deployed into the DEV and QA environments
@@ -36,7 +36,7 @@ The FHIR endpoints for each of these environments are:
 
 - DEV: https://include-api-fhir-service-upgrade-dev.includedcc.org
 - QA: https://include-api-fhir-service-upgrade-qa.includedcc.org
-- (Not deployed yet) PRD: https://include-api-fhir-service-upgrade.includedcc.org
+- PRD: https://include-api-fhir-service-upgrade.includedcc.org
 
 ## 🧓🏻 Legacy Servers
 The old servers are still deployed and will be maintained until we fully

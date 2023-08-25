@@ -17,9 +17,10 @@ source venv/bin/activate
 pip install -r dev-requirements.txt
 pip install -e .
 
+echo "👮🏻‍♀️ Upsert backup admin user"
+python bin/admin_backup.py
+
 # Run tests
 echo "✅ Run integration tests ..."
 pytest tests/python
 
-echo "👮🏻‍♀️ Upsert backup admin user"
-python bin/admin_backup.py
