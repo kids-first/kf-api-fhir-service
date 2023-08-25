@@ -145,6 +145,14 @@ how everything works.
 Please make sure you have [Docker](https://docs.docker.com/desktop/) 
 installed on your system and it is running. 
 
+You will also need to do the following in order to access the private docker 
+image on Github packages registry:
+
+1. Create a [Github personal access token (classic)](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic) with `read:packages` scope
+2. export `GITHUB_PAT_SMILECDR=<your token>`
+3. export `GITHUB_USERNAME=<your github username>`
+4. Request access to the smilecdr image: contact Natasha Singh singn4@chop.edu or Alex Lubneuski lubneuskia@chop.edu 
+
 ### Setup
 ```shell
 ./src/bin/quickstart.sh --delete-volumes
@@ -165,21 +173,6 @@ curl -X POST -H 'Content-Type: application/json' \
 -d '{"client_id": "ingest-study-client","client_secret": "lkhZRex5E58JCjcnIKkLcT4t1Q9dw5OW"}' \
 http://localhost:8081/keycloak-proxy/token
 ```
-
-### 💡 Important Note About Keycloak
-You may notice the instructions to get the access token are different here 
-in the Developer section than the Quickstart secion.
-
-Unfortunately we cannot send requests directly to Keycloak to get access tokens
-since Keycloak will then use "localhost" in the access token's issuer field 
-(ex. `http://localhost:8080/realms/fhir-dev/protocol/openid-connect/token`).
-
-Then when this access token is sent to Smile CDR inside the docker stack, it 
-will fail since Smile CDR inside the docker network does not know what 
-`http://localhost:8080` is. 
-
-To mitigate this we simply send requests to the proxy service which then 
-forwards the request to the Keycloack docker service. 
 
 ### Inspect Token
 You should get back a response that looks like this (access token removed 
@@ -249,32 +242,32 @@ https://releases.smilecdr.com/
 
 ### Upgrading to a New Version
 
-Follow these steps to upgrade to a new version of Smile CDR:
-
+### Steps
 1. Download the docker image tarball from the smilecdr releases site ^
 2. Create a new local image from the tarball
-3. Tag and push the image to the kidsfirstdrc/smilecdr repo on Dockerhub so 
+3. Tag and push the image to the kids-first/smilecdr repo on Github packages so 
 that other developers have access to the image
 4. Tag and push the image to both kf-stridess and include ECRs so
 that future deployments have access to the new version
 5. Update the base image in the Dockerfiles (Dockerfile.includedcc, Dockerfile.kidsfirst_upgrade)
-6. Update the docker-compose.yml file to use the new image
+6. Update the docker-compose.yml file to use the new image tag
 7. Push the changes to Github to trigger the deployment and ensure the new
 image works
 
-There are scripts to help with all of these steps. Here is an example of how 
-to upgrade to version 2023.05.R02:
+Run the following scripts to do steps 2-4. Here is an example of how to upgrade to version 2023.05.R02:
 
 ```shell
 # Step 2
 ./bin/upgrade/new_image.sh ~/Downloads/smilecdr-2023.05.R02-docker.tar.gz 2023.05.R02
 
 # Step 3
-./bin/upgrade/upgrade_dockherhub_image.sh kidsfirstdrc:smilecdr/2023.05.R02
+./bin/upgrade/upgrade_ghcr_image.sh kids-first:smilecdr/2023.05.R02
 
 # Step 4
 ./bin/upgrade/upgrade_ecr_image.sh kf-strides-smile-cdr 2023.05.R02
 ```
+
+
 
 ## 💻 Codebase
 
@@ -347,6 +340,21 @@ time (on docker-compose up)
 
 - Keycloak clients that have been configured with different FHIR roles and 
 consent grants. These get loaded in at deploy time (on docker-compose up)
+
+### 💡 Important Note About Keycloak
+You may notice the instructions to get the access token are different here 
+in the Developer section than the Quickstart secion.
+
+Unfortunately we cannot send requests directly to Keycloak to get access tokens
+since Keycloak will then use "localhost" in the access token's issuer field 
+(ex. `http://localhost:8080/realms/fhir-dev/protocol/openid-connect/token`).
+
+Then when this access token is sent to Smile CDR inside the docker stack, it 
+will fail since Smile CDR inside the docker network does not know what 
+`http://localhost:8080` is. 
+
+To mitigate this we simply send requests to the proxy service which then 
+forwards the request to the Keycloack docker service. 
 
 ## Web App
 - A simple Keycloak proxy that makes it easy to get an access token from 
