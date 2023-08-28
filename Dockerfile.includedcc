@@ -42,7 +42,7 @@ COPY smilecdr/settings/oidc-servers.json classes/config_seeding/oidc-servers.jso
 COPY smilecdr/settings/auth.js classes/config_seeding/auth.js
 
 ENV JVM_MAX_HEAP_SIZE -Xmx4g
-ENV SEED_CONF_RESOURCES false
+ENV SEED_CONF_RESOURCES true
 ENV REQUEST_VALIDATION false
 ENV RESPECT_FWD_HEADERS false
 ENV FHIR_ENDPOINT http://localhost:8000 
