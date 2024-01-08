@@ -99,13 +99,13 @@ credentials and then use these to get the access token from Keycloak:
 ```shell
 client_id: myclient
 client_secret: mysecret
-token_url: https://kf-keycloak-qa.kf-strides.org/auth/realms/FHIR-TEST/protocol/openid-connect/token
+token_url: https://keycloak-qa.kf-strides.org/realms/FHIR-TEST/protocol/openid-connect/token
 ```
 
 ```shell
 curl -X POST -d "client_id=myclient&client_secret=mysecret&grant_type=client_credentials" \
     -H "Content-Type: application/x-www-form-urlencoded" \
-    https://kf-keycloak-qa.kf-strides.org/auth/realms/FHIR-TEST/protocol/openid-connect/token
+    https://keycloak-qa.kf-strides.org/realms/FHIR-TEST/protocol/openid-connect/token
 ```
 
 You will get something that looks like this:
