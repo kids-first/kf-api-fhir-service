@@ -17,8 +17,10 @@ source venv/bin/activate
 pip install -r dev-requirements.txt
 pip install -e .
 
+# Unlock admin account
+python bin/unlock_account.py
+
 echo "👮🏻‍♀️ Upsert backup admin user"
-python bin/unlock_account.py --username=admin
 python bin/admin_backup.py
 
 # Run tests
