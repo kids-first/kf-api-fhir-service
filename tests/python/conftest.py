@@ -25,8 +25,6 @@ def upsert_smilecdr_users():
         """
         Upsert list of user objects into smilecdr
         """
-        for user in users:
-            user["accountLocked"] = False
         upserted.extend(
             upsert_users(
                 FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW, USER_MGMNT_ENDPOINT, users

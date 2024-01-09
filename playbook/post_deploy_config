@@ -18,6 +18,7 @@ pip install -r dev-requirements.txt
 pip install -e .
 
 echo "👮🏻‍♀️ Upsert backup admin user"
+python bin/unlock_account.py --username=admin
 python bin/admin_backup.py
 
 # Run tests
