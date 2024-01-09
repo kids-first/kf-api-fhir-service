@@ -30,9 +30,11 @@ def upsert_admin(username, password):
             ],
         }
     ]
-    upsert_users(
+    users = upsert_users(
         FHIR_APP_ADMIN, FHIR_APP_ADMIN_PW, USER_MGMNT_ENDPOINT, users
     )
+
+    return users
 
 
 def cli():

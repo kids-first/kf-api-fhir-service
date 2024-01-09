@@ -16,6 +16,37 @@ from src.config import (
 )
 
 
+def get_user(url, username, client_id, client_secret):
+    """
+    Get user by username
+    """
+    headers = {
+        "Content-Type": "application/json",
+    }
+    # Get user by username
+    result = None
+    try:
+        resp = requests.get(
+            f"{url}?searchTerm={username}",
+            headers=headers,
+            auth=HTTPBasicAuth(client_id, client_secret),
+        )
+        resp.raise_for_status()
+        result = resp.json().get("users", [])
+        if len(result) > 0:
+            result = result[0]
+    except (
+        requests.exceptions.HTTPError, requests.exceptions.JSONDecodeError
+    ) as e:
+        print("Problem sending request to FHIR server")
+        print(f"Response:\n{resp.text}")
+        if resp.status_code == 404:
+            print(f"Could not find user {username}")
+        else:
+            raise e
+    return result
+
+
 def add_authorization(user):
     # Extract consent authorizations and store in user.notes as JSON encoded str
     consent = user.get("auth_config", {})
@@ -77,27 +108,7 @@ def upsert_users(client_id, client_secret, endpoint, users):
         module_endpoint = f"{endpoint}/{node_id}/{module_id}"
 
         # Get user by username
-        result = None
-        try:
-            resp = requests.get(
-                f"{module_endpoint}?searchTerm={username}",
-                headers=headers,
-                auth=HTTPBasicAuth(client_id, client_secret),
-            )
-            resp.raise_for_status()
-            result = resp.json().get("users", [])
-            if len(result) > 0:
-                result = result[0]
-        except (
-            requests.exceptions.HTTPError, requests.exceptions.JSONDecodeError
-        ) as e:
-            print(f"Failed to find user {user['username']}")
-            print("Problem sending request to FHIR server")
-            print(f"Response:\n{resp.text}")
-            if resp.status_code == 404:
-                pass
-            else:
-                raise e
+        result = get_user(module_endpoint, username, client_id, client_secret)
 
         # Update  user
         if result:
