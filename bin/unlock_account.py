@@ -32,10 +32,10 @@ def unlock_account(user, admin_username, admin_password):
     url = f"{USER_MGMNT_ENDPOINT}/Master/local_security/{pid}"
 
     result = None
+    headers = {
+        "Content-Type": "application/json",
+    }
     try:
-        headers = {
-            "Content-Type": "application/json",
-        }
         resp = requests.put(
             url,
             headers=headers,
@@ -52,10 +52,52 @@ def unlock_account(user, admin_username, admin_password):
         print("Problem sending request to FHIR server")
         print(resp.text)
         if "ConstraintViolationException" in resp.text:
-            update_pid = True
+            pass
         else:
             raise e
     return result
+
+
+def unlock_admin_with_backup(
+    admin_backup_username="admin_backup", admin_backup_pw=FHIR_APP_ADMIN_PW
+):
+    """
+    This is used to unlock the main admin account. Often times during
+    deployment, the main admin account gets locked. We don't know why
+    but we can unlock it with the backup admin account
+    """
+    username = FHIR_APP_ADMIN
+    print(
+        f"🔎 Searching for user: {username}"
+    )
+    # We must fetch the user to get its PID - required for update
+    result = None
+    try:
+        result = get_user(
+            f"{USER_MGMNT_ENDPOINT}/Master/local_security",
+            username,
+            admin_backup_username,
+            admin_backup_pw,
+        )
+        if not result:
+            print(
+                f"❌ Could not unlock user '{username}' because"
+                " user does not exist yet"
+            )
+            return
+    except Exception as e:
+        print(
+            f"❌ Failed to unlock user '{username}'."
+            f" User '{admin_backup_username}' may not exist yet or there is"
+            " a problem with the password or the account is locked"
+        )
+        print(str(e))
+    else:
+        users = unlock_account(
+            result, admin_backup_username, admin_backup_pw
+        )
+        pprint(users)
+        print(f"✅ Unlock {username} complete")
 
 
 def cli():
@@ -63,46 +105,22 @@ def cli():
     CLI for running this script
     """
     parser = argparse.ArgumentParser(
-        description='Unlock user account'
+        description='Unlock admin user account'
     )
     parser.add_argument(
-        "--username",
-        help="Username to unlock",
-    )
-    parser.add_argument(
-        "--admin_username",
+        "--admin_backup_username",
         default="admin_backup",
-        help="Admin username",
+        help="Backup admin username",
     )
     parser.add_argument(
-        "--admin_password",
+        "--admin_backup_pw",
         default=FHIR_APP_ADMIN_PW,
-        help="Admin password",
+        help="Backup admin password",
     )
     args = parser.parse_args()
 
     # Unlock the account with backup admin
-    print(
-        f"🔎 Searching for user: {args.username}"
-    )
-    result = get_user(
-        f"{USER_MGMNT_ENDPOINT}/Master/local_security",
-        args.username,
-        FHIR_APP_ADMIN,
-        FHIR_APP_ADMIN_PW,
-    )
-    if not result:
-        print(
-            f"❌ Could not unlock user '{args.username}' because"
-            " user does not exist yet"
-        )
-    else:
-        print(f"🔓 Attempting to unlock account {args.username}")
-        users = unlock_account(
-            result, args.admin_username, args.admin_password
-        )
-        pprint(users)
-        print(f"✅ Unlock {args.username} complete")
+    unlock_admin_with_backup(args.admin_backup_username, args.admin_backup_pw)
 
 
 if __name__ == "__main__":
