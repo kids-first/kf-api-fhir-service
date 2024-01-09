@@ -1,5 +1,20 @@
 # Kids First FHIR Service Change History
 
+## Release 1.3.0
+
+### Summary
+
+- Emojis: ? x3, 👷‍♀️ x1
+- Categories: Other Changes x4
+
+### New features and changes
+
+- [#183](https://github.com/kids-first/kf-api-fhir-service/pull/183) -  :wrench: Enable expunge / delete-expunge operations - [42c0d556](https://github.com/kids-first/kf-api-fhir-service/commit/42c0d556c8be3cac9b3e1971e93a516a77d9e3b7) by [znatty22](https://github.com/znatty22)
+- [#182](https://github.com/kids-first/kf-api-fhir-service/pull/182) -  :wrench: Update OIDC issuer in QA - [fb43c4bf](https://github.com/kids-first/kf-api-fhir-service/commit/fb43c4bf524f7a1ad7f81a2ebc8e8f7c5c637b09) by [znatty22](https://github.com/znatty22)
+- [#179](https://github.com/kids-first/kf-api-fhir-service/pull/179) - 👷‍♀️ Transition from Dockerhub to GitHub packages - [23d11de4](https://github.com/kids-first/kf-api-fhir-service/commit/23d11de4f869fcfd96495528c7db6afe026fe908) by [znatty22](https://github.com/znatty22)
+- [#178](https://github.com/kids-first/kf-api-fhir-service/pull/178) -  :bug: Create admin backup before any chance of lockout - [2ae2974a](https://github.com/kids-first/kf-api-fhir-service/commit/2ae2974ae9600ddfb1c307ef3010597cc7024aae) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.2.0
 
 ### Summary
