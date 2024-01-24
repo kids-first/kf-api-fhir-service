@@ -239,6 +239,13 @@ image on Github packages registry:
 3. export `GITHUB_USERNAME=<your github username>`
 4. Request access to the smilecdr image: contact Natasha Singh singn4@chop.edu or Alex Lubneuski lubneuskia@chop.edu 
 
+### Get Codebase 
+
+```shell
+git clone git@github.com:kids-first/kf-api-fhir-service.git
+cd kf-api-fhir-service
+```
+
 ### Setup
 ```shell
 ./src/bin/quickstart.sh --delete-volumes
@@ -257,7 +264,7 @@ client.
 ```shell
 curl -X POST -H 'Content-Type: application/json' \
 -d '{"client_id": "ingest-study-client","client_secret": "lkhZRex5E58JCjcnIKkLcT4t1Q9dw5OW"}' \
-http://localhost:8081/keycloak-proxy/token
+http://localhost:8081/token
 ```
 
 ### Inspect Token
@@ -340,7 +347,7 @@ that future deployments have access to the new version
 7. Push the changes to Github to trigger the deployment and ensure the new
 image works
 
-Run the following scripts to do steps 2-4. Here is an example of how to upgrade to version 2023.05.R02:
+**Run the following scripts to do steps 2-4. Here is an example of how to upgrade to version 2023.05.R02**:
 
 ```shell
 # Step 2
