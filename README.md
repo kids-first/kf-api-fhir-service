@@ -134,6 +134,92 @@ https://kf-api-fhir-service-upgrade-qa.kf-strides.org/Patient
 **Note** that your code will need to include logic that requests a new token 
 after the current token expires.
 
+## 🔎 Kids First Data Queries
+
+These example queries can be used to search for all of the Kids First FHIR 
+resources. 
+
+**NOTE** These queries use the PRD legacy server because it 
+does not require auth to view data and this makes it easiser to test out 
+in a browser. You can use the same queries on the upgraded FHIR server but 
+you must include the access token for authorization.
+
+### Study specific resources
+
+Query for study specific resources using `_tag` query parameter. All resources
+are tagged with the study ID
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_MEOWME0W
+```
+
+### Get total count in results
+Use the `_total` query parameter to include total count of resources
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_DYPMEHHF&_total=accurate
+```
+
+### Study Patients 
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_DYPMEHHF
+```
+
+### Study Proband Status
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_DYPMEHHF
+```
+
+### Study Families
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Group?_tag=SD_DYPMEHHF&code=FAMMEMB
+```
+
+### Study Family Relationships
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Observation?_tag=SD_DYPMEHHF&code=FAMMEMB
+```
+
+### Study Specimens 
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Specimen?_tag=SD_DYPMEHHF
+```
+
+### Study Phenotypes 
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Condition?_tag=SD_DK0KRWK8&_profile:below=https://ncpi-fhir.github.io/ncpi-fhir-ig/StructureDefinition/phenotype
+```
+
+### Study Diagnoses / Diseases
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Condition?_tag=SD_DYPMEHHF&_profile:below=https://ncpi-fhir.github.io/ncpi-fhir-ig/StructureDefinition/disease
+```
+
+### Study Outcome / Vital Status
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Observation?_tag=SD_DYPMEHHF&code=263493007
+```
+
+### Study BiospecimenDiagnosis / Histopathology 
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/Observation?_tag=SD_DYPMEHHF&code=250537006
+```
+
+### Study DRS Data Files
+
+```shell
+https://kf-api-fhir-service.kf-strides.org/DocumentationReference?_tag=SD_DYPMEHHF
+```
+
 ## 👩‍💻  Quickstart - API Developers
 
 The quickstart script bootstraps the development environment, seeds the FHIR server
@@ -153,6 +239,13 @@ image on Github packages registry:
 3. export `GITHUB_USERNAME=<your github username>`
 4. Request access to the smilecdr image: contact Natasha Singh singn4@chop.edu or Alex Lubneuski lubneuskia@chop.edu 
 
+### Get Codebase 
+
+```shell
+git clone git@github.com:kids-first/kf-api-fhir-service.git
+cd kf-api-fhir-service
+```
+
 ### Setup
 ```shell
 ./src/bin/quickstart.sh --delete-volumes
@@ -171,7 +264,7 @@ client.
 ```shell
 curl -X POST -H 'Content-Type: application/json' \
 -d '{"client_id": "ingest-study-client","client_secret": "lkhZRex5E58JCjcnIKkLcT4t1Q9dw5OW"}' \
-http://localhost:8081/keycloak-proxy/token
+http://localhost:8081/token
 ```
 
 ### Inspect Token
@@ -254,7 +347,7 @@ that future deployments have access to the new version
 7. Push the changes to Github to trigger the deployment and ensure the new
 image works
 
-Run the following scripts to do steps 2-4. Here is an example of how to upgrade to version 2023.05.R02:
+**Run the following scripts to do steps 2-4. Here is an example of how to upgrade to version 2023.05.R02**:
 
 ```shell
 # Step 2
