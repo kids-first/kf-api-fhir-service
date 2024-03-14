@@ -1,5 +1,21 @@
 # Kids First FHIR Service Change History
 
+## Release 1.4.0
+
+### Summary
+
+- Emojis: ? x3, 📝 x1, ⬆️ x1
+- Categories: Documentation x1, Ops x1, Other Changes x3
+
+### New features and changes
+
+- [#189](https://github.com/kids-first/kf-api-fhir-service/pull/189) -  :wrench: Update keycloak prd base url - [6572fd1d](https://github.com/kids-first/kf-api-fhir-service/commit/6572fd1db61c54630b77a2248248dfffac02ffa3) by [znatty22](https://github.com/znatty22)
+- [#187](https://github.com/kids-first/kf-api-fhir-service/pull/187) -  :wrench: Change PRD Keycloak URL to new one - [d3df986d](https://github.com/kids-first/kf-api-fhir-service/commit/d3df986d34bdf9ed9eddba585a6fa9be9b9d52ed) by [znatty22](https://github.com/znatty22)
+- [#186](https://github.com/kids-first/kf-api-fhir-service/pull/186) - 📝 Fix dev section and add example FHIR queries to README - [4c5e5506](https://github.com/kids-first/kf-api-fhir-service/commit/4c5e550645d29995c7fc9ede2e2b512790279548) by [znatty22](https://github.com/znatty22)
+- [#181](https://github.com/kids-first/kf-api-fhir-service/pull/181) - ⬆️ Bump @babel/traverse from 7.22.4 to 7.23.2 in /tests/javascript - [134d1bfd](https://github.com/kids-first/kf-api-fhir-service/commit/134d1bfd605afbf08d49c23bb00d8ee9c30a0954) by [dependabot[bot]](https://github.com/apps/dependabot)
+- [#185](https://github.com/kids-first/kf-api-fhir-service/pull/185) -  :lock: Unlock admin w backup admin before integration tests - [4503c288](https://github.com/kids-first/kf-api-fhir-service/commit/4503c28805f026e7d4785398bd0cbadd0406aa91) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.3.0
 
 ### Summary
