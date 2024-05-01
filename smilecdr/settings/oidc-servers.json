@@ -51,6 +51,23 @@
       "tokenIntrospectionClientSecret": "",
       "validationJwkFile": "",
       "validationJwkText": ""
+    },
+    {
+      "nodeId": "Master",
+      "moduleId": "security_in_smart",
+      "issuer": "https://keycloak-qa.373997854230.d3b.io/realms/includedcc",
+      "name": "Include Keycloak QA Server",
+      "federationAuthScriptText": "",
+      "federationAuthorizationUrl": "",
+      "federationJwkSetUrl": "",
+      "federationRequestScopes": "openid profile fhir",
+      "federationTokenUrl": "",
+      "federationUserInfoUrl": "",
+      "federationUserMappingScriptText": "",
+      "tokenIntrospectionClientId": "",
+      "tokenIntrospectionClientSecret": "",
+      "validationJwkFile": "",
+      "validationJwkText": ""
     }
   ]
 }
