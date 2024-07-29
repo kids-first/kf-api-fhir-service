@@ -24,9 +24,9 @@ within the Kids First Strides AWS account.
 
 The FHIR endpoints for each of these environments are:
 
-- DEV: https://kf-api-fhir-service-upgrade-dev.kf-strides.org
-- QA: https://kf-api-fhir-service-upgrade-qa.kf-strides.org
-- PRD: https://kf-api-fhir-service-upgrade.kf-strides.org
+- DEV: https://fhir-dev.kidsfirstdrc.org
+- QA: https://fhir-qa.kidsfirstdrc.org
+- PRD: https://fhir.kidsfirstdrc.org
 
 ### Include DCC 
 Include DCC FHIR services have been deployed into the DEV and QA environments
