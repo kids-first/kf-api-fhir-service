@@ -24,9 +24,9 @@ within the Kids First Strides AWS account.
 
 The FHIR endpoints for each of these environments are:
 
-- DEV: https://kf-api-fhir-service-upgrade-dev.kf-strides.org
-- QA: https://kf-api-fhir-service-upgrade-qa.kf-strides.org
-- PRD: https://kf-api-fhir-service-upgrade.kf-strides.org
+- DEV: https://fhir-dev.kidsfirstdrc.org
+- QA: https://fhir-qa.kidsfirstdrc.org
+- PRD: https://fhir.kidsfirstdrc.org
 
 ### Include DCC 
 Include DCC FHIR services have been deployed into the DEV and QA environments
@@ -128,7 +128,7 @@ Now you can use this token to authenticate with the FHIR server and make request
 ```shell
 curl -X GET -H 'Content-Type: application/json' \
 -H 'Authorization: Bearer <put access token here>'\ 
-https://kf-api-fhir-service-upgrade-qa.kf-strides.org/Patient
+https://fhir-qa.kidsfirstdrc.org/Patient
 ```
 
 **Note** that your code will need to include logic that requests a new token 
@@ -150,74 +150,74 @@ Query for study specific resources using `_tag` query parameter. All resources
 are tagged with the study ID
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_MEOWME0W
+https://fhir.kidsfirstdrc.org/Patient?_tag=SD_MEOWME0W
 ```
 
 ### Get total count in results
 Use the `_total` query parameter to include total count of resources
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_DYPMEHHF&_total=accurate
+https://fhir.kidsfirstdrc.org/Patient?_tag=SD_DYPMEHHF&_total=accurate
 ```
 
 ### Study Patients 
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_DYPMEHHF
+https://fhir.kidsfirstdrc.org/Patient?_tag=SD_DYPMEHHF
 ```
 
 ### Study Proband Status
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Patient?_tag=SD_DYPMEHHF
+https://fhir.kidsfirstdrc.org/Patient?_tag=SD_DYPMEHHF
 ```
 
 ### Study Families
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Group?_tag=SD_DYPMEHHF&code=FAMMEMB
+https://fhir.kidsfirstdrc.org/Group?_tag=SD_DYPMEHHF&code=FAMMEMB
 ```
 
 ### Study Family Relationships
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Observation?_tag=SD_DYPMEHHF&code=FAMMEMB
+https://fhir.kidsfirstdrc.org/Observation?_tag=SD_DYPMEHHF&code=FAMMEMB
 ```
 
 ### Study Specimens 
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Specimen?_tag=SD_DYPMEHHF
+https://fhir.kidsfirstdrc.org/Specimen?_tag=SD_DYPMEHHF
 ```
 
 ### Study Phenotypes 
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Condition?_tag=SD_DK0KRWK8&_profile:below=https://ncpi-fhir.github.io/ncpi-fhir-ig/StructureDefinition/phenotype
+https://fhir.kidsfirstdrc.org/Condition?_tag=SD_DK0KRWK8&_profile:below=https://ncpi-fhir.github.io/ncpi-fhir-ig/StructureDefinition/phenotype
 ```
 
 ### Study Diagnoses / Diseases
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Condition?_tag=SD_DYPMEHHF&_profile:below=https://ncpi-fhir.github.io/ncpi-fhir-ig/StructureDefinition/disease
+https://fhir.kidsfirstdrc.org/Condition?_tag=SD_DYPMEHHF&_profile:below=https://ncpi-fhir.github.io/ncpi-fhir-ig/StructureDefinition/disease
 ```
 
 ### Study Outcome / Vital Status
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Observation?_tag=SD_DYPMEHHF&code=263493007
+https://fhir.kidsfirstdrc.org/Observation?_tag=SD_DYPMEHHF&code=263493007
 ```
 
 ### Study BiospecimenDiagnosis / Histopathology 
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/Observation?_tag=SD_DYPMEHHF&code=250537006
+https://fhir.kidsfirstdrc.org/Observation?_tag=SD_DYPMEHHF&code=250537006
 ```
 
 ### Study DRS Data Files
 
 ```shell
-https://kf-api-fhir-service.kf-strides.org/DocumentationReference?_tag=SD_DYPMEHHF
+https://fhir.kidsfirstdrc.org/DocumentationReference?_tag=SD_DYPMEHHF
 ```
 
 ## 👩‍💻  Quickstart - API Developers
