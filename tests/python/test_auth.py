@@ -4,7 +4,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from src.config import (
-    FHIR_URL,
+    FHIR_DIRECT_URL,
     KEYCLOAK_READ_CLIENT_ID,
     KEYCLOAK_READ_CLIENT_SECRET,
 )
@@ -19,7 +19,7 @@ def test_anonymous_valid_actions(action, endpoint):
     """
     Test that anonymous user can GET /metadata and /swagger-ui
     """
-    url = f"{FHIR_URL}/{endpoint}"
+    url = f"{FHIR_DIRECT_URL}/{endpoint}"
     resp = send_request(action, url)
 
 
@@ -40,7 +40,7 @@ def test_anonymous_invalid_actions(action, endpoint):
         }
         kwargs = {"json": patient}
 
-    url = f"{FHIR_URL}/{endpoint}"
+    url = f"{FHIR_DIRECT_URL}/{endpoint}"
 
     with pytest.raises(requests.exceptions.HTTPError) as e:
         resp = send_request(action, url, **kwargs)
@@ -54,7 +54,7 @@ def test_crud_with_basic_auth(fhir_superuser):
     """
     username = fhir_superuser["username"]
     password = fhir_superuser["password"]
-    url = f"{FHIR_URL}/Patient"
+    url = f"{FHIR_DIRECT_URL}/Patient"
     kwargs = {"auth": HTTPBasicAuth(username, password)}
 
     # Post
@@ -95,7 +95,7 @@ def test_crud_with_oidc_auth():
             "Authorization": f"Bearer {access_token}"
         }
     }
-    url = f"{FHIR_URL}/Patient"
+    url = f"{FHIR_DIRECT_URL}/Patient"
 
     # Post
     patient = {
@@ -139,7 +139,7 @@ def test_read_only_oidc_client(patients):
             "Authorization": f"Bearer {access_token}"
         }
     }
-    url = f"{FHIR_URL}/Patient"
+    url = f"{FHIR_DIRECT_URL}/Patient"
 
     # Post - Fail
     patient = {

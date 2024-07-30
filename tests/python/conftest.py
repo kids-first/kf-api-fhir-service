@@ -4,7 +4,7 @@ import pytest
 from requests.auth import HTTPBasicAuth
 
 from src.config import (
-    FHIR_URL,
+    FHIR_DIRECT_URL,
     USER_MGMNT_ENDPOINT,
     FHIR_APP_ADMIN,
     FHIR_APP_ADMIN_PW,
@@ -83,7 +83,7 @@ def upsert_fhir_resources():
         for resource in resources:
             id_ = resource["id"]
             resource_type = resource["resourceType"]
-            url = f"{FHIR_URL}/{resource_type}/{id_}"
+            url = f"{FHIR_DIRECT_URL}/{resource_type}/{id_}"
             kwargs.update({"json": resource})
             resp = send_request("put", url, **kwargs)
 
@@ -100,7 +100,7 @@ def upsert_fhir_resources():
     for resource in upserted:
         id_ = resource["id"]
         resource_type = resource["resourceType"]
-        url = f"{FHIR_URL}/{resource_type}/{id_}"
+        url = f"{FHIR_DIRECT_URL}/{resource_type}/{id_}"
         kwargs.update({"json": resource})
 
         send_request("delete", url, **kwargs)

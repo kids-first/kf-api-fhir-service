@@ -12,6 +12,7 @@ if DOTENV_PATH:
 
 BASE_URL = os.environ.get("FHIR_ENDPOINT")
 FHIR_URL = BASE_URL
+FHIR_DIRECT_URL = os.environ.get("FHIR_DIRECT_ENDPOINT")
 FHIR_APP_ADMIN = os.environ.get("FHIR_APP_ADMIN")
 FHIR_APP_ADMIN_PW = os.environ.get("FHIR_APP_ADMIN_PW")
 FHIR_TEST_USER_PW = os.environ.get("FHIR_TEST_USER_PW")
