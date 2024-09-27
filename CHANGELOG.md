@@ -1,5 +1,22 @@
 # Kids First FHIR Service Change History
 
+## Release 1.5.0
+
+### Summary
+
+- Emojis: ⬆️ x2, ? x3, 🛠️ x1
+- Categories: Ops x2, Other Changes x4
+
+### New features and changes
+
+- [#194](https://github.com/kids-first/kf-api-fhir-service/pull/194) - ⬆️ Bump requests from 2.31.0 to 2.32.0 in /web_app - [20fa046c](https://github.com/kids-first/kf-api-fhir-service/commit/20fa046cb7afe35d6da8bcd019d167f499afca81) by [dependabot[bot]](https://github.com/apps/dependabot)
+- [#195](https://github.com/kids-first/kf-api-fhir-service/pull/195) - ⬆️ Bump braces from 3.0.2 to 3.0.3 in /tests/javascript - [333cce6b](https://github.com/kids-first/kf-api-fhir-service/commit/333cce6b6a6a386f4b21d114141549e7f43fc7ed) by [dependabot[bot]](https://github.com/apps/dependabot)
+- [#192](https://github.com/kids-first/kf-api-fhir-service/pull/192) -  :wrench: Add INCLUDE keycloak config to smilecdr - [37c31034](https://github.com/kids-first/kf-api-fhir-service/commit/37c310348d296bd9c6f1d2c429236b9644678512) by [znatty22](https://github.com/znatty22)
+- [#190](https://github.com/kids-first/kf-api-fhir-service/pull/190) -  :sparkles: Add patient us-core-race and us-core-ethnicity search params - [55e8c58a](https://github.com/kids-first/kf-api-fhir-service/commit/55e8c58a278fba1db66dc8951a47130a94523f93) by [znatty22](https://github.com/znatty22)
+- [#193](https://github.com/kids-first/kf-api-fhir-service/pull/193) -  :memo: Update README w KF short URLs - [febe2c0f](https://github.com/kids-first/kf-api-fhir-service/commit/febe2c0fbdfcee773517483304c917b7188724d2) by [znatty22](https://github.com/znatty22)
+- [#197](https://github.com/kids-first/kf-api-fhir-service/pull/197) - 🛠️ Use FHIR Direct URL for tests - [fed7cec9](https://github.com/kids-first/kf-api-fhir-service/commit/fed7cec9b62b1fa9f6f9990efb83888b42c9f288) by [znatty22](https://github.com/znatty22)
+
+
 ## Release 1.4.0
 
 ### Summary
